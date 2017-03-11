@@ -7,7 +7,6 @@ STM8_serial_flasher.exe
 x_*
 
 # misc: STM8 documentation, ideas, scripts, etc.
-README.txt
 Ideen.txt
 doxygen/html
 Manuals/*
