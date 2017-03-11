@@ -15,4 +15,4 @@ Georg
 Revision History
 ----------------
 
-1.0.0 (2015-10-17): initial release by Georg Icking-Konert under MIT license
+1.0.0 (2017-03-11): initial release by Georg Icking-Konert under Apache License
