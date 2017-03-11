@@ -9,5 +9,6 @@ x_*
 # misc: STM8 documentation, ideas, scripts, etc.
 Ideen.txt
 doxygen/html
-Manuals/*
+/Docu/Manuals
+/Docu/Obsolete
 
