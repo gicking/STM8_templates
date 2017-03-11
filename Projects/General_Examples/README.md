@@ -12,9 +12,9 @@ Minimal-C:
   Can be used as starting point for projects with extreme
   memory limitations or real-time requirements.
   Functionality:
-    - init FCPU to 16MHz
-    - configure pin as output
-    - toggle pin every 500ms w/o timer -> blocking
+  - init FCPU to 16MHz
+  - configure pin as output
+  - toggle pin every 500ms w/o timer -> blocking
 
 
 Basic_Project: 
