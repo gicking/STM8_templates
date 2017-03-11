@@ -3,6 +3,14 @@ stm8flash
 STM8_serial_flasher
 STM8_serial_flasher.exe
 
+# SDCC build output
+Makefile
+output
+
+# Cosmic build output
+Release
+Debug
+
 # untested or unfinished projects (starting with 'x_')
 x_*
 
@@ -11,4 +19,6 @@ Ideen.txt
 doxygen/html
 /Docu/Manuals
 /Docu/Obsolete
-/Docu/.~lock.Commands.xlsx#
+/Docu/.~lock.*
+
+/Projects/General_Examples/Attach_1ms_Interrupt/output/gpio.asm
