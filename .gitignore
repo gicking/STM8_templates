@@ -1,0 +1,14 @@
+# upload tools
+stm8flash
+STM8_serial_flasher
+STM8_serial_flasher.exe
+
+# untested or unfinished projects (starting with 'x_')
+x_*
+
+# misc: STM8 documentation, ideas, scripts, etc.
+README.txt
+Ideen.txt
+doxygen/html
+Manuals/*
+
