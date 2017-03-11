@@ -50,4 +50,10 @@ Flash Loader Demonstrator (external):
   Available from http://www.st.com
 
 
+====================================
+
+Revision History
+----------------
+
+1.0.0 (2017-03-11): initial release by Georg Icking-Konert under Apache license
 
