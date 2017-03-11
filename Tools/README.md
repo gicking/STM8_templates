@@ -1,8 +1,5 @@
-|=================================|
-|                                 |
-| Helper Tools for STM8 templates |
-|                                 |
-|=================================|
+Helper Tools for STM8 templates
+=================================
 
 In a nutshell: 
   - to upload code to STM8 download stm8flash (debug interface) and/or 
