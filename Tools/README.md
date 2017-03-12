@@ -32,12 +32,3 @@ terminal.py (provided):
 [Flash Loader Demonstrator](http://www.st.com) (external):
 -------------------------------------
   Tool for uploading hexfile to STM8 via UART bootloader. Closed source, Windows only, not supported by automatic build.
-
-
-====================================
-
-Revision History
-----------------
-
-1.0.0 (2017-03-11): initial release by Georg Icking-Konert under Apache license
-
