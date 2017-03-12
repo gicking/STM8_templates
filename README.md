@@ -1,4 +1,4 @@
-STM8_templates
+STM8 Templates with Arduino look&feel 
 =================
 
 This repository provides C-libraries & -templates for the low-cost [STM8A and STM8S](https://en.wikipedia.org/wiki/STM8) 8-bit microcontrollers by [STMicro](http://st.com).
