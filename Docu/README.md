@@ -26,7 +26,7 @@ Usage:
 ------
 
   - in project folder adapt "build_upload.py" to your setting, e.g. COM port and upload method
-  - if required also set file execute permission
+  - if required set file execute permission for "build_upload.py" (chmod u+x build_upload.py)
   - double-click on "build_upload.py" and follow instructions
 
 ====================================
