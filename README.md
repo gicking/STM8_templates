@@ -8,7 +8,7 @@ Where sensible, compatibility with Arduino has been kept. However, due to focus 
 - details on installation and usage can be found on the [Docu](Docu) page
 - an API description can be found in the [Wiki](https://github.com/gicking/STM8_templates/wiki)
 - for bugs reports, feature requests, please drop me a note or use the [issues page](https://github.com/gicking/STM8_templates/issues)
-- for legal stuff see file "LICENSE".
+- for legal stuff see [LICENSE](LICENSE)
 - and, last but not least, volunteers are highly welcome...
 
 Have fun!  
