@@ -4,4 +4,7 @@ Are automatically searched by the build process -> names have to be unique
 
 A description of commands and API is found in the [Wiki](https://github.com/gicking/STM8_templates/wiki)
 
-<img src="../../Docu/Images/muBoard.jpg" alt="muBoard" width="326" height="319">
+<p align="center">
+  <img src="../../Docu/Images/muBoard.jpg" alt="muBoard" width="326" height="319">
+</p>
+
