@@ -6,8 +6,8 @@ In a nutshell:
   - make respective binary and place in this folder
   - adapt the project "build_upload.py" to use the respective upload method 
   - make "build_upload.py" executable
-  - double-click "build_upload.py"
-
+  - double-click "build_upload.py"  
+For installation of other tools, e.g. compiler, see [Docu](../Docu) 
 
 terminal.py (provided):
 ----------------------------------
