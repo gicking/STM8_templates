@@ -8,6 +8,5 @@ Where sensible, compatibility with Arduino has been kept. However, due to focus 
 Details on istallation and usage can be found on the [Wiki](https://github.com/gicking/STM8_templates/wiki) page. For bugs reports or feature requests, please send me a note. For legal stuff see file "LICENSE".
 
 Have fun!
-
 Georg Icking-Konert
 
