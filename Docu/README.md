@@ -16,8 +16,20 @@
     - make STM8_serial_flasher and copy executable to `Tools`
   - if necessary, set execute permission for *.py files in project folders
   - configure your OS to launch *.py files on double-click
+  
+# Usage
 
-## Notes
+***
+  - in project folder
+    - set STM8 device and library options in `config.h`
+    - adapt `build_upload.py`, e.g. upload method and PC serial port
+    - double-click on `build_upload.py`
+    - for cleaning up, double-click on `clean.py`
+    
+# Notes
+
+***
+
   - the STM8 template libraries & example projects are also compatible with [Cosmic compiler](http://www.cosmic-software.com/) and [STVisualDevelop](http://www.st.com) IDE. These are not supported by the automatic build, but allow graphical debugging which is not yet supported by SDCC 
   - on Windows
     - SWIM upload can also be performed via [STVisualProgrammer](http://www.st.com). However, this is not supported by the automatic build
