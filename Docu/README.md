@@ -20,7 +20,7 @@
 # Usage
 
 ***
-  - in project folder
+  - in respective project folder
     - set STM8 device and library options in `config.h`
     - adapt `build_upload.py`, e.g. upload method and PC serial port
     - double-click on `build_upload.py`
