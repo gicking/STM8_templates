@@ -69,7 +69,7 @@ void toggle_green(void) {
     // toggle LED state
     LED_GREEN ^= 1;
 
-    // after 10 cycles swap to other user function
+    // after 10 more cycles detach user function
     if (++numToggle == 10)
       detachInterruptMillis();
 
@@ -101,7 +101,7 @@ void setup() {
 //////////
 void loop() {
 
-  // dummy. Action is happening in 1ms interrupt & above routines
+  // dummy. Action is happening in 1ms interrupt & above toggle_x() routines
 
 } // loop
 
