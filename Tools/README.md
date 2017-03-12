@@ -1,4 +1,4 @@
-Helper Tools for STM8 templates
+Helper Tools for STM8 Templates
 =================================
 
 In a nutshell: 
