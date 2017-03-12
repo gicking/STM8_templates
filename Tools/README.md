@@ -19,6 +19,10 @@ terminal.py (provided):
 [stm8flash](https://github.com/vdudouyt/stm8flash) (external):
 ----------------------------------
   Tool for uploading hexfile to STM8 via SWIM debug interface. Open source, platform independent.
+  - requires libusb-dev (e.g. sudo apt-get install libusb-1.0-0-dev)
+  - on Linux grant write access to ST-Link debugger by creating a file /etc/udev/rules.d/99-stlinkv2.rules with content  
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3744", MODE="0666"  
+    Note: check the idProduct of your ST-Link device via terminal command usb-devices
 
 
 [STVisualProgrammer](http://www.st.com) (external):
