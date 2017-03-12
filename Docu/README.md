@@ -1,30 +1,24 @@
-Installation:
--------------
+# Toolchain Installation
 
-  - cross-compiler: the C modules & examples are compatible with
-    - [SDCC open-source compiler](http://sdcc.sourceforge.net/) and [Python](https://www.python.org/) for automatic build process (see below) -> any OS
-    - [Cosmic compiler](http://www.cosmic-software.com/) and [STVisualDevelop](http://www.st.com) -> Windows only, not supported by automatic build
-  
-  - build process for SDCC:
-    - GNU make -> any OS. Windows requires separate install, e.g. from [MinGW](http://www.mingw.org) or [GnuWin](http://gnuwin32.sourceforge.net/packages/make.htm)
-    - [Python](https://www.python.org/) with additional pySerial module for build process and terminal
+***
 
-  - STM8 programming 
-    - SWIM debug interface: requires debug hardware, e.g. ST-Link, and 
-      - [stm8flash](https://github.com/vdudouyt/stm8flash) -> any OS
-      - [STVisualProgrammer](http://www.st.com) -> Windows only, not supported by automatic build
-    - STM8 serial bootloader: requires serial connection e.g. USB<->UART adapter, and
-      - [STM8 serial flasher](https://github.com/gicking/STM8_serial_flasher) -> any OS
-      - [Flash Loader Demonstrator](http://www.st.com) -> Windows only, not supported by automatic build
-      
-  - helper tools like stm8flash and python terminal need to be located in ./Tools
-  - install SDCC compiler, Python and make and assert that binaries are in $(PATH)
+  - if required, download and install [SDCC](http://sdcc.sourceforge.net/), Python and Gnu-Make. Add binaries to $(PATH)
+  - for STM8 programming via SWIM debug interface
+    - download [stm8flash](https://github.com/vdudouyt/stm8flash) source code
+    - install libusb-dev (e.g. `sudo apt-get install libusb-1.0-0-dev`)
+    - make stm8flash and copy executable to `Tools`
+    - on Linux grant write access to ST-Link debugger by creating a file `/etc/udev/rules.d/99-stlinkv2.rules` with content  
+    `SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3744", MODE="0666"`  
+    Note: since several versions of ST-Link exist, check the idProduct of your device via command `usb-devices`
+  - for STM8 programming via serial bootloader
+    - download [STM8 serial flasher](https://github.com/gicking/STM8_serial_flasher) source code
+    - install Python module `pySerial`
+    - make STM8_serial_flasher and copy executable to `Tools`
+  - if necessary, set execute permission for *.py files in project folders
   - configure your OS to launch *.py files on double-click
 
-
-Usage:
-------
-
-  - in project folder adapt `build_upload.py` to your setting, e.g. COM port and upload method
-  - if required set file execute permission for `build_upload.py`
-  - double-click on `build_upload.py`
+## Notes
+  - the STM8 template libraries & example projects are also compatible with [Cosmic compiler](http://www.cosmic-software.com/) and [STVisualDevelop](http://www.st.com) IDE. These are not supported by the automatic build, but allow graphical debugging which is not yet supported by SDCC 
+  - on Windows
+    - SWIM upload can also be performed via [STVisualProgrammer](http://www.st.com). However, this is not supported by the automatic build
+    - bootloader upload can also be performed via [Flash Loader Demonstrator](http://www.st.com). However, this is not supported by the automatic build
