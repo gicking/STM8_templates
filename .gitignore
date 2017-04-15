@@ -19,6 +19,7 @@ Ideen.txt
 doxygen/html
 /Docu/Manuals
 /Docu/Obsolete
+/Docu/PiAndMore_2017
 /Docu/.~lock.*
 
 /Projects/General_Examples/Attach_1ms_Interrupt/output/gpio.asm

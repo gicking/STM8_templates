@@ -78,6 +78,18 @@ Printf_UART:
   via UART to PC terminal. Optionally in integer (small)
   or floating (large; #define USE_FTOA) format.
   Functionality:
-  - configure UART1 and putchar() for PC output
+  - configure UART1
+  - configure putchar() for PC output via UART1
   - every 500ms send current time via printf()
+
+
+Gets_Printf_UART:
+----------
+  Arduino-like project with setup() & loop(). Read number
+  via UART from PC terminal and print it again.
+  Functionality:
+  - configure UART1
+  - configure putchar() for PC output via UART1
+  - configure getchar() for PC input via UART1
+  - read number from terminal and echo it again
 

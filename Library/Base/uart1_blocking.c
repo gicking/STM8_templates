@@ -126,6 +126,32 @@ uint8_t UART1_read(void) {
 
 } // UART1_read
 
+
+
+/**
+  \fn uint8_t UART1_readBlock(void)
+   
+  \brief UART1 byte receive function. Blocking
+  
+  \return received byte
+  
+  wait until byte received via UART1 and return content of Rx register
+*/
+uint8_t UART1_readBlock(void) {
+
+  uint8_t   data;
+  
+  // wait until byte received
+  while (!(UART1.SR.reg.RXNE));
+
+  // ger data from Rx buffer
+  data = UART1.DR.byte;
+   
+  // return byte
+  return(data);
+
+} // UART1_readBlock
+
 /*-----------------------------------------------------------------------------
     END OF MODULE
 -----------------------------------------------------------------------------*/

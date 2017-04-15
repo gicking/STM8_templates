@@ -5,10 +5,10 @@
   \date 2015-04-09
   \version 0.1
    
-  \brief declaration of required putchar() function
+  \brief declaration of putchar() function for printf()
    
   declaration of putchar() function required for stdio.h
-  functions, e.g. printf(). Is dummy (required by Makefile)
+  functions, e.g. printf(). 
 */
 
 /*-----------------------------------------------------------------------------
@@ -28,7 +28,7 @@
     DECLARATION OF GLOBAL MACROS
 -----------------------------------------------------------------------------*/
 
-/// detach send function. Is 
+/// detach send function
 #define putcharDetach()  putcharAttach(putchar_Default)
   
 

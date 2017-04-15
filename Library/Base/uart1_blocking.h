@@ -56,6 +56,9 @@ void     UART1_writeBytes(uint16_t num, uint8_t *buf);
 /// UART1 byte receive function. Non-blocking
 uint8_t  UART1_read(void);
 
+/// UART1 byte receive function. Blocking
+uint8_t  UART1_readBlock(void);
+
 
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION

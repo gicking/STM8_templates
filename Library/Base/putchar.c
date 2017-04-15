@@ -5,7 +5,7 @@
   \date 2015-04-09
   \version 0.1
    
-  \brief implementation of required putchar() function
+  \brief implementation of putchar() function for printf()
    
   implementation of putchar() function required for stdio.h
   functions, e.g. printf().
@@ -38,7 +38,7 @@ volatile void (*m_putchar_Tx_pFct)(uint8_t) = putchar_Default;   ///< pointer to
   \param[in]  c  char to (not) send
    
   Dummy send routine for putchar() / printf().
-  Doesn't do anythin. Is used because this is faster than
+  Doesn't do anything. Is used because this is faster than
   an if check for a NULL pointer
 */
 void putchar_Default(uint8_t c) {
@@ -73,11 +73,11 @@ void putcharAttach(void (*pFct)(uint8_t)) {
 /**
   \fn void putchar(char byte)
    
-  \brief send byte via UART1
+  \brief output routine for printf()
   
   \param[in]  byte   data to send
   
-  \return  always zero (SDCC only)
+  \return  always zero (Cosmic & SDCC >=3.6.0)
 
   implementation of putchar() for printf(), using selected output channel.
   Use send routine set via putchar_attach()
