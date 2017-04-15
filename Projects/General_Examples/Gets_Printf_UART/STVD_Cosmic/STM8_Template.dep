@@ -1,0 +1,41 @@
+;	STMicroelectronics dependencies file
+
+[Version]
+Keyword=ST7Project
+Number=1.3
+
+[Root.STM8_Lib...\..\..\..\library\base\gpio.c.Config.0]
+ExternDep= ..\..\..\..\library\base\gpio.c  "C:\Program Files\COSMIC\CXSTM8\Hstm8\modsl.h"
+
+[Root.STM8_Lib...\..\..\..\library\base\gpio.c.Config.1]
+ExternDep= ..\..\..\..\library\base\gpio.c  "C:\Program Files\COSMIC\CXSTM8\Hstm8\modsl.h"  ..\..\..\..\library\base\gpio.h ..\..\..\..\library\base\stm8as.h  ..\..\..\..\library\base\stdint.h ..\config.h
+
+[Root.STM8_Lib...\..\..\..\library\base\main_general.c.Config.0]
+ExternDep= ..\..\..\..\library\base\main_general.c  "C:\Program Files\COSMIC\CXSTM8\Hstm8\modsl.h"  ..\..\..\..\library\base\main_general.h ..\config.h  ..\..\..\..\library\base\stm8as.h ..\..\..\..\library\base\stdint.h  ..\..\..\..\library\base\gpio.h ..\..\..\..\library\base\timer4.h  ..\..\..\..\library\base\binary.h ..\..\..\..\library\base\sw_delay.h
+
+[Root.STM8_Lib...\..\..\..\library\base\main_general.c.Config.1]
+ExternDep= ..\..\..\..\library\base\main_general.c  "C:\Program Files\COSMIC\CXSTM8\Hstm8\modsl.h"  ..\..\..\..\library\base\main_general.h ..\config.h  ..\..\..\..\library\base\stm8as.h ..\..\..\..\library\base\stdint.h  ..\..\..\..\library\base\gpio.h ..\..\..\..\library\base\timer4.h  ..\..\..\..\library\base\binary.h ..\..\..\..\library\base\misc.h  ..\..\..\..\library\base\sw_delay.h  "C:\Program Files\COSMIC\CXSTM8\Hstm8\ctype.h"  "C:\Program Files\COSMIC\CXSTM8\Hstm8\float.h"  "C:\Program Files\COSMIC\CXSTM8\Hstm8\math.h"  "C:\Program Files\COSMIC\CXSTM8\Hstm8\stdio.h"  "C:\Program Files\COSMIC\CXSTM8\Hstm8\string.h"
+
+[Root.STM8_Lib...\..\..\..\library\base\putchar.c.Config.1]
+ExternDep= ..\..\..\..\library\base\putchar.c  "C:\Program Files\COSMIC\CXSTM8\Hstm8\modsl.h"  "C:\Program Files\COSMIC\CXSTM8\Hstm8\stdio.h"  "C:\Program Files\COSMIC\CXSTM8\Hstm8\string.h"  ..\..\..\..\library\base\putchar.h ..\..\..\..\library\base\stm8as.h  ..\..\..\..\library\base\stdint.h ..\config.h
+
+[Root.STM8_Lib...\..\..\..\library\base\timer4.c.Config.0]
+ExternDep= ..\..\..\..\library\base\timer4.c  "C:\Program Files\COSMIC\CXSTM8\Hstm8\modsl.h"  ..\..\..\..\library\base\stdint.h  "C:\Program Files\COSMIC\CXSTM8\Hstm8\stdlib.h"  ..\..\..\..\library\base\stm8as.h ..\config.h  ..\..\..\..\library\base\timer4.h
+
+[Root.STM8_Lib...\..\..\..\library\base\timer4.c.Config.1]
+ExternDep= ..\..\..\..\library\base\timer4.c  "C:\Program Files\COSMIC\CXSTM8\Hstm8\modsl.h"  ..\..\..\..\library\base\stdint.h  "C:\Program Files\COSMIC\CXSTM8\Hstm8\stdlib.h"  ..\..\..\..\library\base\stm8as.h ..\config.h  ..\..\..\..\library\base\timer4.h
+
+[Root.STM8_Lib...\..\..\..\library\base\uart1_blocking.c.Config.1]
+ExternDep= ..\..\..\..\library\base\uart1_blocking.c  "C:\Program Files\COSMIC\CXSTM8\Hstm8\modsl.h"  ..\..\..\..\library\base\uart1_blocking.h ..\..\..\..\library\base\stm8as.h  ..\..\..\..\library\base\stdint.h ..\config.h
+
+[Root.Source Files...\..\..\..\library\base\stm8_interrupt_vector.c.Config.0]
+ExternDep=  ..\..\..\..\library\base\stm8_interrupt_vector.c  "C:\Program Files\COSMIC\CXSTM8\Hstm8\modsl.h"  "C:\Program Files\COSMIC\CXSTM8\Hstm8\stdlib.h" ..\config.h  ..\..\..\..\library\base\timer4.h ..\..\..\..\library\base\stdint.h  ..\..\..\..\library\base\stm8as.h
+
+[Root.Source Files...\..\..\..\library\base\stm8_interrupt_vector.c.Config.1]
+ExternDep=  ..\..\..\..\library\base\stm8_interrupt_vector.c  "C:\Program Files\COSMIC\CXSTM8\Hstm8\modsl.h"  "C:\Program Files\COSMIC\CXSTM8\Hstm8\stdlib.h" ..\config.h  ..\..\..\..\library\base\timer4.h ..\..\..\..\library\base\stdint.h  ..\..\..\..\library\base\stm8as.h
+
+[Root.Source Files...\main.c.Config.0]
+ExternDep= ..\main.c "C:\Program Files\COSMIC\CXSTM8\Hstm8\modsl.h"  ..\..\..\..\library\base\main_general.h ..\config.h  ..\..\..\..\library\base\stm8as.h ..\..\..\..\library\base\stdint.h  ..\..\..\..\library\base\gpio.h ..\..\..\..\library\base\timer4.h  ..\..\..\..\library\base\binary.h ..\..\..\..\library\base\sw_delay.h
+
+[Root.Source Files...\main.c.Config.1]
+ExternDep= ..\main.c "C:\Program Files\COSMIC\CXSTM8\Hstm8\modsl.h"  ..\..\..\..\library\base\main_general.h ..\config.h  ..\..\..\..\library\base\stm8as.h ..\..\..\..\library\base\stdint.h  ..\..\..\..\library\base\gpio.h ..\..\..\..\library\base\timer4.h  ..\..\..\..\library\base\binary.h ..\..\..\..\library\base\misc.h  ..\..\..\..\library\base\sw_delay.h  "C:\Program Files\COSMIC\CXSTM8\Hstm8\ctype.h"  "C:\Program Files\COSMIC\CXSTM8\Hstm8\float.h"  "C:\Program Files\COSMIC\CXSTM8\Hstm8\math.h"  "C:\Program Files\COSMIC\CXSTM8\Hstm8\stdio.h"  "C:\Program Files\COSMIC\CXSTM8\Hstm8\string.h"  ..\..\..\..\library\base\uart1_blocking.h ..\..\..\..\library\base\putchar.h
