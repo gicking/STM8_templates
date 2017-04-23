@@ -18,8 +18,12 @@
 #define _CONFIG_H_
 
 
-/// select STM8 device (no default). For supported devices see file "stm8as.h"
+// select board to set STM8 family, memory size etc. 
+//#include "muBoard_config.h"
+
+/// alternatively select STM8 device directly. For supported devices see file "stm8as.h"
 #define STM8S208      // muBoard
+
 
 // use ftoa() function for printing floats. Requires ~3.3kB flash
 #define USE_FTOA 

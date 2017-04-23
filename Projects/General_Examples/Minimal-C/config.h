@@ -18,9 +18,12 @@
 #define _CONFIG_H_
 
 
-/// select STM8 device (no default). For supported devices see file "stm8as.h"
-//#define STM8S208      // muBoard
-#define STM8S105      // STM8S Discovery
+//#include "muBoard_config.h"
+//#include "STM8S_Discovery_config.h"
+
+/// alternatively select STM8 device directly. For supported devices see file "stm8as.h"
+#define STM8S208      // muBoard
+//#define STM8S105      // muBoard
 
 
 /*-----------------------------------------------------------------------------

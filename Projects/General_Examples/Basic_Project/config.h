@@ -17,11 +17,9 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
-
-/// select STM8 device (no default). For supported devices see file "stm8as.h"
-//#define STM8S208      // muBoard
-#define STM8S105      // STM8S Discovery
-
+// select board to set STM8 family, memory size etc. 
+#include "muBoard_config.h"
+//#include "STM8S_Discovery_config.h"
 
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION

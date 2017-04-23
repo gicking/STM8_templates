@@ -1,4 +1,3 @@
-
 /**********************
   Arduino-like project with setup() & loop(). Only 1ms interrupts
   are used, but no other optional features. Can be used as a 
@@ -19,9 +18,9 @@
 ----------------------------------------------------------*/
 
 // define board LED pin
-#if defined(STM8S105)
+#if defined(STM8S_DISCOVERY)
   #define LED   pinSet(PORT_D, pin0)   // STM8S Discovery Board
-#elif defined(STM8S208) || defined(STM8AF52ax)
+#elif defined(MUBOARD)
   #define LED   pinSet(PORT_H, pin3)   // muBoard LED
 #else
   #error select supported device/board!
@@ -38,7 +37,7 @@
 void setup() {
   
   // configure LED pin as output
-  #if defined(STM8S105)
+  #if defined(STM8S_DISCOVERY)
     pinMode(PORT_D, pin0, OUTPUT);    // STM8S Discovery Board
   #else
     pinMode(PORT_H, pin3, OUTPUT);    // muBoard LED

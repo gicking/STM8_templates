@@ -18,8 +18,9 @@
 #define _CONFIG_H_
 
 
-/// select STM8 device (no default). For supported devices see file "stm8as.h"
-#define STM8S105
+// select board to set STM8 family, memory size etc. 
+#include "STM8S_Discovery_config.h"
+
 
 /// allow attaching user function to 1ms interrupt
 #define USE_MILLI_ISR

@@ -1,21 +1,26 @@
 /**********************
-  Arduino-like project with setup() & loop(). Demonstrate tone
-  output via beeper module.
-  Note: requires option byte AFR7=1 for alternate usage of BEEP pin 
+  Arduino-like project with setup() & loop(). 
+  Activate/Deactivate STM8 ROM bootloader depending on
+  state of pin PD7 (=switch "automode" on muBoard)
   Functionality:
-    - play tone ladder with increasing frequency
+    - configure pin as input pull-up
+    - wait a bit and read pin state
+    - activate(state=1) or deactivate(state=0) BL via option byte
 **********************/
 
 /*----------------------------------------------------------
     INCLUDE FILES
 ----------------------------------------------------------*/
 #include "main_general.h"   // board-independent main
-#include "tone.h"
+#include "eeprom.h"
 
 
 /*----------------------------------------------------------
     MACROS
 ----------------------------------------------------------*/
+
+// access switch(=PD7) pin. See gpio.h
+#define PIN_BSL    pinRead(PORT_D, pin7)
 
 
 /*----------------------------------------------------------
@@ -26,6 +31,17 @@
 // user setup, called once after reset
 //////////
 void setup() {
+  
+  // configure PD7 as input pull-up and wait a bit to be sure
+  pinMode(PORT_D, pin7, INPUT_PULLUP);
+  sw_delay(5);
+
+  if (PIN_BSL == true) {
+    OPT_setBootloader(true);
+  }
+  else {
+    OPT_setBootloader(false);
+  }
 
 } // setup
 
@@ -36,12 +52,7 @@ void setup() {
 //////////
 void loop() {
 
-  uint16_t freq;
-  
-  for (freq=500; freq<=4000; freq+=100) {
-    tone(freq,0);
-    sw_delay(50);
-  }
+  // dummy. Action happens in setup()
 
 } // loop
 

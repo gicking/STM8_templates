@@ -27,15 +27,6 @@ Basic_Project:
   - poll SW clock and toggle pin every 500ms -> non-blocking
 
 
-Play_Tone: 
-----------
-  Arduino-like project with setup() & loop(). Demonstrate tone
-  output via beeper module.
-  Note: requires option byte AFR7=1 for alternate usage of BEEP pin 
-  Functionality:
-  - play tone ladder with increasing frequency
-
-
 Attach_1ms_Interrupt: 
 ----------
   Arduino-like project with setup() & loop(). Dynamically attach 
@@ -92,4 +83,45 @@ Gets_Printf_UART:
   - configure putchar() for PC output via UART1
   - configure getchar() for PC input via UART1
   - read number from terminal and echo it again
+
+
+Bootloader_Activation
+----------
+  Arduino-like project with setup() & loop(). 
+  Activate/Deactivate STM8 ROM bootloader depending on
+  state of pin PD7 (=switch "automode" on muBoard)
+  Functionality:
+    - configure pin as input pull-up
+    - wait a bit and read pin state
+    - activate(state=1) or deactivate(state=0) BL via option byte
+
+
+Beeper: 
+----------
+  Arduino-like project with setup() & loop(). 
+  Demonstrate tone output via beeper module.
+  Beeper requires option byte AFR7=1 for alternate usage of BEEP pin 
+  Functionality:
+    - assert option byte setting for beeper output 
+    - play tones with different pitch
+
+
+EEPROM_Datalogger:
+----------
+  Arduino-like project with setup() & loop(). 
+  Write data to EEPROM and read back.
+  Functionality:
+    - configure UART1 and putchar() for PC output
+    - save data to EEPROM
+    - read from EEPROM and print to terminal 
+
+
+P-Flash_Datalogger:
+----------
+  Arduino-like project with setup() & loop(). 
+  Write data to P-flash and read back.
+  Functionality:
+    - configure UART1 and putchar() for PC output
+    - save data to P-flash (take care not to overwrite application)
+    - read from P-flash and print to terminal 
 

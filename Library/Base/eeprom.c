@@ -84,7 +84,7 @@ uint8_t OPT_writeByte(uint16_t addr, uint8_t byte) {
 /**
   \fn void OPT_setDefault(void)
   
-  \brief revert to default option byte setting
+  \brief revert to default option byte setting & reset on change
   
   assert that all option bytes have their default setting (see below).
   On change trigger a reset.
@@ -132,34 +132,33 @@ void OPT_setDefault() {
 /**
   \fn uint8_t OPT_setBootloader(uint8_t state)
   
-  \brief dis-/enable ROM bootloader
+  \brief dis-/enable ROM bootloader & reset on change
   
   \param[in] state  enable(=1) or disable(=0) bootloader
   
-  \return state changed (=1) or unchanged (=0)
-
   write single byte to address in P-flash or EEPROM.
-  Do not trigger a reset on change.
+  On change trigger a reset.
   For address width see file stm8as.h
 */
-uint8_t OPT_setBootloader(uint8_t state) {
+void OPT_setBootloader(uint8_t state) {
   
-  uint8_t   result = 0;
+  uint8_t   flag = 0;
   
   // activate ROM-bootloader (=OPT17/NOPT17)  
   if (state == 1) {
-    result += OPT_writeByte(OPT17,  0x55);
-    result += OPT_writeByte(NOPT17, 0xAA);
+    flag += OPT_writeByte(OPT17,  0x55);
+    flag += OPT_writeByte(NOPT17, 0xAA);
   }
   
   // deactivate bootloader
   else {
-    result += OPT_writeByte(OPT17,  0x00);
-    result += OPT_writeByte(NOPT17, 0x00);
+    flag += OPT_writeByte(OPT17,  0x00);
+    flag += OPT_writeByte(NOPT17, 0x00);
   }
-  
-  // return state change 
-  return(result);
+ 
+  // if option byte was changed trigger SW reset
+  if (flag != 0)
+    SW_RESET;
 
 } // OPT_setBootloader
 

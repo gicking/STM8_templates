@@ -16,17 +16,22 @@ if platform.system() == 'Windows':
   PORT         = 'COM6'
   BSL_FLASHER  = 'STM8_serial_flasher.exe'
   SWIM_FLASHER = 'C:\Programme\STMicroelectronics\st_toolset\stvp\STVP_CmdLine.exe'
+  SWIM_TOOL    = 'ST-LINK'
+  SWIM_NAME    = 'STM8S105x6'  # STM8 Discovery
+  #SWIM_NAME    = 'STM8S208xB'  # muBoard
   MAKE_TOOL    = 'mingw32-make.exe'
 else:
   PORT         = '/dev/ttyUSB0'
   BSL_FLASHER  = 'STM8_serial_flasher'
   SWIM_FLASHER = 'stm8flash'
+  SWIM_TOOL    = 'stlink'
+  SWIM_NAME    = 'stm8s105c6'  # STM8 Discovery
+  #SWIM_NAME    = 'stm8s208?b'  # muBoard
   MAKE_TOOL    = 'make'
 
-# set general
+# set general options
 MAKE_CORES    = 4
-UPLOAD_BSL    = True
-UPLOAD_SWIM   = False
+UPLOAD        = 'BSL'  # select 'BSL' or 'SWIM'
 OPEN_TERMINAL = False
   
 
@@ -97,6 +102,18 @@ def get_exitcode_stdout_stderr(cmd):
   return exitcode, out, err
 
 
+#########
+def get_swim_device(start='.'):
+  """
+   execute the external command and get its exitcode, stdout and stderr.
+  """
+  args = shlex.split(cmd)
+  proc = Popen(args, stdout=PIPE, stderr=PIPE)
+  out, err = proc.communicate()
+  exitcode = proc.returncode
+  return exitcode, out, err
+
+
 
 ##################
 # main program
@@ -142,8 +159,10 @@ if platform.system() == 'Windows':
   Makefile.write('	mkdir $(OBJDIR)\n')
 else:
   Makefile.write('	mkdir -p $(OBJDIR)\n')
+Makefile.write('\n')
 
 # iteratively add project sources to Makefile
+Makefile.write('# compile sources\n')
 while (len(source_todo) > 0):
 
   # get next pending source and mark as done
@@ -191,6 +210,7 @@ while (len(source_todo) > 0):
 
 
 # link project object files
+Makefile.write('# link sources\n')
 Makefile.write('$(OBJDIR)/$(TARGET): ')
 for next in object_done:
   Makefile.write('$(OBJDIR)/'+next+' ')
@@ -218,7 +238,7 @@ else:
 
 
 # upload to STM8 via UART bootloader
-if UPLOAD_BSL == True:
+if UPLOAD == 'BSL':
   if OPEN_TERMINAL == True:
     sys.stdout.write('reset STM8 and press return to continue') # avoid conflict with possible serial output from STM8
     getchar()
@@ -237,12 +257,12 @@ if UPLOAD_BSL == True:
 
 
 # upload to STM8 via SWIM
-if UPLOAD_SWIM == True:
+if UPLOAD == 'SWIM':
   if platform.system() == 'Windows':    # Windows: STVP commandline version, see http://www.st.com
-    cmd = SWIM_FLASHER+' -BoardName=ST-LINK -Port=USB -ProgMode=SWIM -Device=STM8S105x6 -readData -readOption -no_progData -no_progOption -no_loop -no_log -FileProg='+OBJDIR+'/'+TARGET
+    cmd = SWIM_FLASHER+' -BoardName='+SWIM_TOOL+' -Port=USB -ProgMode=SWIM -Device='+SWIM_NAME+' -readData -readOption -no_progData -no_progOption -no_loop -no_log -FileProg='+OBJDIR+'/'+TARGET
     cmd = cmd.replace('/','\\')
   else:                                 # POSIX: use stm8flash, see https://github.com/vdudouyt/stm8flash 
-    cmd = TOOL_DIR+SWIM_FLASHER+' -c stlink -w '+OBJDIR+'/'+TARGET+' -p stm8s105c6' 
+    cmd = TOOL_DIR+SWIM_FLASHER+' -c '+SWIM_TOOL+' -w '+OBJDIR+'/'+TARGET+' -p '+SWIM_NAME 
   #print cmd
   #exitcode, out, err = get_exitcode_stdout_stderr(cmd)
   exitcode = os.system(cmd)

@@ -323,8 +323,8 @@
 
 // option byte routines
 uint8_t   OPT_writeByte(uint16_t addr, uint8_t data);            ///< write option byte (are in 16-bit range)
-void      OPT_setDefault(void);                                  ///< revert to default option byte setting
-uint8_t   OPT_setBootloader(uint8_t state);                      ///< dis-/enable ROM bootloader
+void      OPT_setDefault(void);                                  ///< revert to default option byte setting & reset on change
+void      OPT_setBootloader(uint8_t state);                      ///< dis-/enable ROM bootloader & reset on change
 
 // P-flash and EEPROM routines
 void      flash_writeByte(MEM_POINTER_T physAddr, uint8_t data); ///< write 1B to P-flash (physical address)

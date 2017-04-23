@@ -30,31 +30,120 @@
  STM8S207     standard line high density device without CAN
  STM8AF622x   automotive low density devices without CAN
  STM8AF626x   automotive medium density devices without CAN
- STM8AF52ax   automotive high density devices with CAN
- STM8AF62ax   automotive high density devices without CAN
+ STM8AF52Ax   automotive high density devices with CAN
+ STM8AF62Ax   automotive high density devices without CAN
  STM8S003     value line low density device
  STM8S005     value line medium density device
  STM8S007     value line high density device
 */
 
+// availability of peripherals (partially device dependent)
+#define HAS_PORTA
+#define HAS_PORTB
+#define HAS_PORTC
+#define HAS_PORTD
+#define HAS_PORTE
+#define HAS_PORTF
+#if defined(STM8S207) || defined (STM8S007) || defined(STM8S208) || defined(STM8S105) || defined(STM8S005) || defined (STM8AF52Ax) || \
+    defined (STM8AF62Ax) || defined (STM8AF626x)
+  #define HAS_PORTG
+#endif
+#if defined(STM8S207) || defined (STM8S007) || defined(STM8S208) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+  #define HAS_PORTH
+  #define HAS_PORTI
+#endif
+#define HAS_CLK
+#define HAS_WWDG
+#define HAS_IWDG
+#define HAS_FLASH
+#define HAS_AWU
+#define HAS_BEEP
+#define HAS_RST
+#define HAS_CFG
+#define HAS_EXTI
+#define HAS_ITC
+#define HAS_SPI
+#define HAS_I2C
+#if defined (STM8S208) || defined (STM8AF52Ax)
+  #define HAS_CAN
+#endif
+#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || defined(STM8S003) || defined(STM8S903) || \
+    defined (STM8AF52Ax) || defined (STM8AF62Ax)
+  #define HAS_UART1
+#endif
+#if defined (STM8S105) || defined (STM8S005) || defined (STM8AF626x)
+  #define HAS_UART2
+#endif
+#if defined(STM8S208) ||defined(STM8S207) || defined (STM8S007) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+  #define HAS_UART3
+#endif
+#if defined(STM8AF622x)
+  #define HAS_UART4
+#endif
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8S103) || defined(STM8S003) || defined(STM8S903) || defined(STM8AF626x) || \
+    defined(STM8AF622x)
+  #define HAS_ADC1
+#endif
+#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+  #define HAS_ADC2
+#endif
+#define HAS_TIM1
+#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || defined(STM8S003) || defined(STM8S105) || \
+    defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
+  #define HAS_TIM2
+#endif
+#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined(STM8S105) || \
+    defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
+  #define HAS_TIM3
+#endif
+#if defined(STM8S208) ||defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || defined(STM8S003) || defined(STM8S105) || \
+    defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
+  #define HAS_TIM4
+#endif
+#if defined (STM8S903) || defined (STM8AF622x)
+  #define HAS_TIM5
+#endif
+#if defined (STM8S903) || defined (STM8AF622x)
+  #define HAS_TIM6
+#endif
+
 
 /*-----------------------------------------------------------------------------
-  memory range <=64kB (->16b pointer) or >=64kB (->32b pointer)
+  memory address and address range <=64kB (->16b pointer) or >=64kB (->32b pointer)
 -----------------------------------------------------------------------------*/
-#if defined(STM8S208) || defined(STM8S207) || defined(STM8AF52Ax) || defined(STM8AF62Ax) || defined(STM8S007)
+
+// If not defined in config.h, assume the smallest STM8A/S memory size
+#ifndef PFLASH_SIZE
+  #define PFLASH_SIZE  1024*4
+#endif
+#ifndef RAM_SIZE
+  #define RAM_SIZE     1024*1
+#endif
+#ifndef EEPROM_SIZE
+  #define EEPROM_SIZE  640
+#endif
+
+// memory addresses
+#define PFLASH_START 0x8000
+#define PFLASH_END   (PFLASH_START + PFLASH_SIZE - 1)
+#define RAM_START    0x0000
+#define RAM_END      (RAM_START + RAM_SIZE - 1)
+#define EEPROM_START 0x4000
+#define EEPROM_END   (EEPROM_START + EEPROM_SIZE - 1)
+
+// address space width
+#if (PFLASH_END <= 0xFFFF)
+  #define ADDR_WIDTH      16
+  #define MEM_POINTER_T   uint16_t
+#else
   #define ADDR_WIDTH      32
   #define MEM_POINTER_T   uint32_t
-#elif defined(STM8S103) || defined(STM8S903) || defined(STM8S105) || defined(STM8AF622x) || defined(STM8AF626x) || defined(STM8S003) || defined(STM8S005)
-  #define ADDR_WIDTH 16
-  #define MEM_POINTER_T   uint16_t
-#else 
- #error "unsupported STM8 device, check Makefile"
 #endif
 
 
 /*-----------------------------------------------------------------------------
     set peripherals base addresses. From datasheets it seems like they are
-    identical across all devices.
+    identical across all STM8A/S devices.
 -----------------------------------------------------------------------------*/
 #define OPT_BaseAddress         0x4800
 #define PORTA_BaseAddress       0x5000
@@ -252,25 +341,35 @@ typedef struct {
   } PORT_t;
 
   // port A..F implemented on all devices
-  reg(PORTA_BaseAddress, PORT_t, PORT_A);   ///< registers for port A access
-  reg(PORTB_BaseAddress, PORT_t, PORT_B);   ///< registers for port B access
-  reg(PORTC_BaseAddress, PORT_t, PORT_C);   ///< registers for port C access
-  reg(PORTD_BaseAddress, PORT_t, PORT_D);   ///< registers for port D access
-  reg(PORTE_BaseAddress, PORT_t, PORT_E);   ///< registers for port E access
-  reg(PORTF_BaseAddress, PORT_t, PORT_F);   ///< registers for port F access
+  #if defined(HAS_PORTA)
+    reg(PORTA_BaseAddress, PORT_t, PORT_A);   ///< registers for port A access
+  #endif
+  #if defined(HAS_PORTB)
+    reg(PORTB_BaseAddress, PORT_t, PORT_B);   ///< registers for port B access
+  #endif
+  #if defined(HAS_PORTC)
+    reg(PORTC_BaseAddress, PORT_t, PORT_C);   ///< registers for port C access
+  #endif
+  #if defined(HAS_PORTD)
+    reg(PORTD_BaseAddress, PORT_t, PORT_D);   ///< registers for port D access
+  #endif
+  #if defined(HAS_PORTE)
+    reg(PORTE_BaseAddress, PORT_t, PORT_E);   ///< registers for port E access
+  #endif
+  #if defined(HAS_PORTF)
+    reg(PORTF_BaseAddress, PORT_t, PORT_F);   ///< registers for port F access
+  #endif
 
-  // port G implemented on selected devices
-  #if defined(STM8S207) || defined (STM8S007) || defined(STM8S208) || defined(STM8S105) || \
-      defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
+  // port G+H+I implemented on selected devices
+  #if defined(HAS_PORTG)
     reg(PORTG_BaseAddress, PORT_t, PORT_G);   ///< registers for port G access
-  #endif /* (STM8S208) ||(STM8S207)  || (STM8S105) || (STM8AF52Ax) || (STM8AF62Ax) || (STM8AF626x) */
-
-  // port H+I implemented on selected devices
-  #if defined(STM8S207) || defined (STM8S007) || defined(STM8S208) || defined (STM8AF52Ax) || \
-      defined (STM8AF62Ax)
-    reg(PORTH_BaseAddress, PORT_t, PORT_H);   ///< registers for PORT port H access
-    reg(PORTI_BaseAddress, PORT_t, PORT_I);   ///< registers for PORT port I access
-  #endif /* (STM8S208) ||(STM8S207) || (STM8AF62Ax) || (STM8AF52Ax) */
+  #endif
+  #if defined(HAS_PORTH)
+    reg(PORTH_BaseAddress, PORT_t, PORT_H);   ///< registers for port H access
+  #endif
+  #if defined(HAS_PORTI)
+    reg(PORTI_BaseAddress, PORT_t, PORT_I);   ///< registers for port I access
+  #endif
 
   /* PORT Module Reset Values (all ports) */
   #define PORT_ODR_RESET_VALUE ((uint8_t)0x00)
@@ -512,8 +611,10 @@ typedef struct {
   } CLK_t;
 
   /// pointer to all CLK registers (all devices)
-  reg(CLK_BaseAddress, CLK_t, CLK);
-
+  #if defined(HAS_CLK)
+    reg(CLK_BaseAddress, CLK_t, CLK);
+  #endif
+  
   /* CLK Module Reset Values */
   #define CLK_ICKR_RESET_VALUE     ((uint8_t)0x01)
   #define CLK_ECKR_RESET_VALUE     ((uint8_t)0x00)
@@ -572,7 +673,9 @@ typedef struct {
   } WWDG_t;
 
   /// pointer to all WWDG Window Watchdog registers (all devices)
-  reg(WWDG_BaseAddress, WWDG_t, WWDG);
+  #if defined(HAS_WWDG)
+    reg(WWDG_BaseAddress, WWDG_t, WWDG);
+  #endif
 
   /* WWDG Module Reset Values */
   #define WWDG_CR_RESET_VALUE ((uint8_t)0x7F)
@@ -635,7 +738,9 @@ typedef struct {
   } IWDG_t;
 
   /// pointer to all IWDG independent timeout watchdog registers (all devices)
-  reg(IWDG_BaseAddress, IWDG_t, IWDG);
+  #if defined(HAS_IWDG)
+    reg(IWDG_BaseAddress, IWDG_t, IWDG);
+  #endif
 
   /* IWDG Module Reset Values */
   #define IWDG_PR_RESET_VALUE  ((uint8_t)0x00)
@@ -796,7 +901,9 @@ typedef struct {
   } FLASH_t;
 
   /// pointer to all Flash registers (all devices, but differet sizes)
-  reg(FLASH_BaseAddress, FLASH_t, FLASH);
+  #if defined(HAS_FLASH)
+    reg(FLASH_BaseAddress, FLASH_t, FLASH);
+  #endif
 
   /* FLASH Module Reset Values */
   #define FLASH_CR1_RESET_VALUE   ((uint8_t)0x00)
@@ -868,7 +975,9 @@ typedef struct {
   } AWU_t;
 
   /// pointer to all AWU registers (all devices)
-  reg(AWU_BaseAddress, AWU_t, AWU);
+  #if defined(HAS_AWU)
+    reg(AWU_BaseAddress, AWU_t, AWU);
+  #endif
 
   /* AWU Module Reset Values */
   #define AWU_CSR_RESET_VALUE ((uint8_t)0x00)
@@ -905,7 +1014,9 @@ typedef struct {
   } BEEP_t;
 
   /// register for beeper control (all devices)
-  reg(BEEP_BaseAddress, BEEP_t, BEEP);
+  #if defined(HAS_BEEP)
+    reg(BEEP_BaseAddress, BEEP_t, BEEP);
+  #endif
 
   /* BEEP Module Reset Values */
   #define BEEP_CSR_RESET_VALUE ((uint8_t)0x1F)
@@ -943,7 +1054,9 @@ typedef struct {
   } RST_t;
 
   /// register for reset status module (all devices)
-  reg(RST_BaseAddress, RST_t, RST);
+  #if defined(HAS_RST)
+    reg(RST_BaseAddress, RST_t, RST);
+  #endif
 
 #endif // (1)
 
@@ -975,7 +1088,9 @@ typedef struct {
   } CFG_t;
 
   /// register for CFG module (all devices)
-  reg(CFG_BaseAddress, CFG_t, CFG);
+  #if defined(HAS_CFG)
+    reg(CFG_BaseAddress, CFG_t, CFG);
+  #endif
 
   /* CFG Module Reset Values */
   #define CFG_GCR_RESET_VALUE ((uint8_t)0x00)
@@ -1027,7 +1142,9 @@ typedef struct {
   } EXTI_t;
 
   /// pointer to all EXTI registers (all devices)
-  reg(EXTI_BaseAddress, EXTI_t, EXTI);
+  #if defined(HAS_EXTI)
+    reg(EXTI_BaseAddress, EXTI_t, EXTI);
+  #endif
 
   /* EXTI Module Reset Values */
   #define EXTI_CR1_RESET_VALUE ((uint8_t)0x00)
@@ -1181,7 +1298,9 @@ typedef struct {
   } ITC_t;
 
   /// register for ITC control (all devices)
-  reg(ITC_BaseAddress, ITC_t, ITC);
+  #if defined(HAS_ITC)
+    reg(ITC_BaseAddress, ITC_t, ITC);
+  #endif
 
   /* ITC Module Reset Values (all registers) */
   #define ITC_SPRX_RESET_VALUE ((uint8_t)0xFF)
@@ -1325,7 +1444,9 @@ typedef struct {
   } SPI_t;
 
   /// register for SPI control
-  reg(SPI_BaseAddress, SPI_t, SPI);
+  #if defined(HAS_SPI)
+    reg(SPI_BaseAddress, SPI_t, SPI);
+  #endif
 
   /* SPI Module Reset Values */
   #define SPI_CR1_RESET_VALUE    ((uint8_t)0x00) /*!< Control Register 1 reset value */
@@ -1578,7 +1699,9 @@ typedef struct {
   } I2C_t;
 
   /// pointer to all I2C registers (all devices)
-  reg(I2C_BaseAddress, I2C_t, I2C);
+  #if defined(HAS_I2C)
+    reg(I2C_BaseAddress, I2C_t, I2C);
+  #endif
 
   /* I2C Module Reset Values */
   #define I2C_CR1_RESET_VALUE    ((uint8_t)0x00)
@@ -1601,7 +1724,7 @@ typedef struct {
 //------------------------
 // Controller Area Network CAN Module (selected devices)
 //------------------------
-#if defined (STM8S208) || defined (STM8AF52Ax)
+#if (1)   // dummy for filtering out in editor
 
   /** struct containing CAN registers (selected devices) */
   typedef struct {
@@ -2326,7 +2449,9 @@ typedef struct {
   } CAN_t;
 
   /// pointer to all CAN registers (all devices)
-  reg(CAN_BaseAddress, CAN_t, CAN);
+  #if defined(HAS_CAN)
+    reg(CAN_BaseAddress, CAN_t, CAN);
+  #endif
 
   /* CAN Module Reset Values */
   #define  	CAN_MCR_RESET_VALUE			((uint8_t)0x02)
@@ -2352,7 +2477,7 @@ typedef struct {
   #define  	CAN_MDLC_RESET_VALUE		((uint8_t)0x00)
   #define  	CAN_MCSR_RESET_VALUE		((uint8_t)0x00)
 
-#endif /* (STM8S208) || (STM8AF52Ax) */
+#endif // (1)
 
 
 
@@ -2364,8 +2489,7 @@ typedef struct {
 //    1-wire, half-duplex
 //    LIN master mode
 //------------------------
-#if defined(STM8S208) ||defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || \
-    defined(STM8S003) ||defined(STM8S903) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+#if (1)   // dummy for filtering out in editor
 
   /** struct containing UART1 registers (selected devices) */
   typedef struct {
@@ -2534,7 +2658,9 @@ typedef struct {
   } UART1_t;
     
   /// pointer to UART1 registers
-  reg(UART1_BaseAddress, UART1_t, UART1);
+  #if defined(HAS_UART1)
+    reg(UART1_BaseAddress, UART1_t, UART1);
+  #endif
 
   /* UART1 Module Reset Values */
   #define UART1_SR_RESET_VALUE   ((uint8_t)0xC0)
@@ -2548,7 +2674,7 @@ typedef struct {
   #define UART1_GTR_RESET_VALUE  ((uint8_t)0x00)
   #define UART1_PSCR_RESET_VALUE ((uint8_t)0x00)
 
-#endif /* (STM8S208) ||(STM8S207)  || (STM8S103) || (STM8S903) || (STM8AF52Ax) || (STM8AF62Ax) */
+#endif // (1)
 
 
 
@@ -2559,7 +2685,7 @@ typedef struct {
 //    SmartCard & IrDA mode
 //    LIN master & slave mode
 //------------------------
-#if defined (STM8S105) || defined (STM8S005) || defined (STM8AF626x)
+#if (1)   // dummy for filtering out in editor
 
   /** struct containing UART2 registers (selected devices) */
   typedef struct   {
@@ -2749,7 +2875,9 @@ typedef struct {
   } UART2_t;
 
   /// pointer to UART2 registers
-  reg(UART2_BaseAddress, UART2_t, UART2);
+  #if defined(HAS_UART2)
+    reg(UART2_BaseAddress, UART2_t, UART2);
+  #endif
 
   /* UART2 Module Reset Values */
   #define UART2_SR_RESET_VALUE   ((uint8_t)0xC0)
@@ -2764,7 +2892,7 @@ typedef struct {
   #define UART2_GTR_RESET_VALUE  ((uint8_t)0x00)
   #define UART2_PSCR_RESET_VALUE ((uint8_t)0x00)
 
-#endif /* STM8S105 || STM8S005 || STM8AF626x */
+#endif // (1)
 
 
 
@@ -2774,8 +2902,7 @@ typedef struct {
 //    multiprocessor communication
 //    LIN master & slave mode
 //------------------------
-#if defined(STM8S208) ||defined(STM8S207) || defined (STM8S007) || defined (STM8AF52Ax) || \
-    defined (STM8AF62Ax)
+#if (1)   // dummy for filtering out in editor
 
   /** struct containing UART3 registers (selected devices) */
   typedef struct {
@@ -2938,7 +3065,9 @@ typedef struct {
   } UART3_t;
 
   /// pointer to UART3 registers
-  reg(UART3_BaseAddress, UART3_t, UART3);
+  #if defined(HAS_UART3)
+    reg(UART3_BaseAddress, UART3_t, UART3);
+  #endif
 
   /* UART3 Module Reset Values */
   #define UART3_SR_RESET_VALUE   ((uint8_t)0xC0)
@@ -2950,7 +3079,7 @@ typedef struct {
   #define UART3_CR4_RESET_VALUE  ((uint8_t)0x00)
   #define UART3_CR6_RESET_VALUE  ((uint8_t)0x00)
 
-#endif /* (STM8S208) ||(STM8S207) || (STM8AF62Ax) || (STM8AF52Ax) */
+#endif // (1)
 
 
 
@@ -2962,7 +3091,7 @@ typedef struct {
 //    1-wire, half-duplex
 //    LIN master & slave mode
 //------------------------
-#if defined(STM8AF622x)
+#if (1)   // dummy for filtering out in editor
 
   /** struct containing UART4 registers (selected devices) */
   typedef struct {
@@ -3152,7 +3281,9 @@ typedef struct {
   } UART4_t;
     
   /// pointer to UART4 registers
-  reg(UART4_BaseAddress, UART4_t, UART4);
+  #if defined(HAS_UART4)
+    reg(UART4_BaseAddress, UART4_t, UART4);
+  #endif
 
   /* UART4 Module Reset Values */
   #define UART4_SR_RESET_VALUE   ((uint8_t)0xC0)
@@ -3167,15 +3298,14 @@ typedef struct {
   #define UART4_GTR_RESET_VALUE  ((uint8_t)0x00)
   #define UART4_PSCR_RESET_VALUE ((uint8_t)0x00)
  
-#endif /* (STM8AF622x) */
+#endif // (1)
 
 
 
 //------------------------
 // Analog Digital Converter ADC1 (selected devices) with result buffer & analog watchdog etc
 //------------------------
-#if defined(STM8S105) || defined(STM8S005) || defined(STM8S103) || defined(STM8S003) || \
-    defined(STM8S903) || defined(STM8AF626x) || defined(STM8AF622x)
+#if (1)   // dummy for filtering out in editor
 
   /** struct containing ADC1 registers (selected devices) */
   typedef struct {
@@ -3308,7 +3438,9 @@ typedef struct {
   } ADC1_t;
     
   /// pointer to ADC1 registers
-  reg(ADC1_BaseAddress, ADC1_t, ADC1);
+  #if defined(HAS_ADC1)
+    reg(ADC1_BaseAddress, ADC1_t, ADC1);
+  #endif
 
   /* ADC1 Module Reset Values */
   #define  ADC1_CSR_RESET_VALUE    ((uint8_t)0x00)
@@ -3324,14 +3456,14 @@ typedef struct {
   #define  ADC1_AWCRH_RESET_VALUE  ((uint8_t)0x00)
   #define  ADC1_AWCRL_RESET_VALUE  ((uint8_t)0x00)
 
-#endif // ADC1 on STM8S105 || STM8S103 || STM8S005 || STM8S003 || STM8S903 || STM8AF626x || STM8AF622x
+#endif // (1)
 
 
 
 //------------------------
 // Analog Digital Converter ADC2 (selected devices) without result buffer, analog watchdog etc.
 //------------------------
-#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+#if (1)   // dummy for filtering out in editor
 
   /** struct containing ADC2 registers (selected devices) */
   typedef struct {
@@ -3405,7 +3537,9 @@ typedef struct {
   } ADC2_t;
     
   /// pointer to all ADC2 registers
-  reg(ADC2_BaseAddress, ADC2_t, ADC2);
+  #if defined(HAS_ADC2)
+    reg(ADC2_BaseAddress, ADC2_t, ADC2);
+  #endif
 
   /* ADC2 Module Reset Values */
   #define  ADC2_CSR_RESET_VALUE  ((uint8_t)0x00)
@@ -3414,7 +3548,7 @@ typedef struct {
   #define  ADC2_TDRL_RESET_VALUE ((uint8_t)0x00)
   #define  ADC2_TDRH_RESET_VALUE ((uint8_t)0x00)
 
-#endif // ADC2 on STM8S208 || STM8S207 || STM8S007 || STM8AF52Ax || STM8AF62Ax
+#endif // (1)
 
 
 
@@ -3821,7 +3955,9 @@ typedef struct {
   } TIM1_t;
 
   /// pointer to all TIM1 registers
-  reg(TIM1_BaseAddress, TIM1_t, TIM1);
+  #if defined(HAS_TIM1)
+    reg(TIM1_BaseAddress, TIM1_t, TIM1);
+  #endif
 
   /* TIM1 Module Reset Values */
   #define TIM1_CR1_RESET_VALUE   ((uint8_t)0x00)
@@ -3864,9 +4000,7 @@ typedef struct {
 //------------------------
 // 16-Bit Timer TIM2 (selected devices)
 //------------------------
-#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || \
-    defined(STM8S003) || defined(STM8S105) || defined(STM8S005) || defined (STM8AF52Ax) || \
-    defined (STM8AF62Ax) || defined (STM8AF626x)
+#if (1)   // dummy for filtering out in editor
 
   /** struct containing TIM2 registers */
   typedef struct {
@@ -4115,7 +4249,9 @@ typedef struct {
   } TIM2_t;
 
   /// pointer to all TIM2 registers (selected devices)
-  reg(TIM2_BaseAddress, TIM2_t, TIM2);
+  #if defined(HAS_TIM2)
+    reg(TIM2_BaseAddress, TIM2_t, TIM2);
+  #endif
 
   /* TIM2 Module Reset Values */
   #define TIM2_CR1_RESET_VALUE   ((uint8_t)0x00)
@@ -4140,15 +4276,14 @@ typedef struct {
   #define TIM2_CCR3H_RESET_VALUE ((uint8_t)0x00)
   #define TIM2_CCR3L_RESET_VALUE ((uint8_t)0x00)
 
-#endif /* (STM8S208) ||(STM8S207)  || (STM8S103) || (STM8S105) || (STM8AF52Ax) || (STM8AF62Ax) || (STM8AF626x)*/
+#endif // (1)
 
 
 
 //------------------------
 // 16-Bit Timer TIM3 (selected devices)
 //------------------------
-#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined(STM8S105) || \
-    defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
+#if (1)   // dummy for filtering out in editor
 
   /** struct containing TIM3 registers */
   typedef struct {
@@ -4342,7 +4477,9 @@ typedef struct {
   } TIM3_t;
 
   /// pointer to all TIM3 registers (selected devices)
-  reg(TIM3_BaseAddress, TIM3_t, TIM3);
+  #if defined(HAS_TIM3)
+    reg(TIM3_BaseAddress, TIM3_t, TIM3);
+  #endif
 
   /* TIM3 Module Reset Values */
   #define TIM3_CR1_RESET_VALUE   ((uint8_t)0x00)
@@ -4363,17 +4500,14 @@ typedef struct {
   #define TIM3_CCR2H_RESET_VALUE ((uint8_t)0x00)
   #define TIM3_CCR2L_RESET_VALUE ((uint8_t)0x00)
 
-#endif /* (STM8S208) ||(STM8S207)  || (STM8S105) || (STM8AF62Ax) || (STM8AF52Ax) || (STM8AF626x)*/
+#endif // (1)
 
 
 
 //------------------------
 // 8-Bit Timer TIM4 (selected devices)
 //------------------------
-/// TIM4 only implemented on selected devices
-#if defined(STM8S208) ||defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || \
-    defined(STM8S003) || defined(STM8S105) || defined(STM8S005) || defined (STM8AF52Ax) || \
-    defined (STM8AF62Ax) || defined (STM8AF626x)
+#if (1)   // dummy for filtering out in editor
 
   /** struct containing TIM4 registers (selected devices) */
   typedef struct {
@@ -4473,7 +4607,9 @@ typedef struct {
   } TIM4_t;
   
   /// pointer to TIM4 registers
-  reg(TIM4_BaseAddress, TIM4_t, TIM4);
+  #if defined(HAS_TIM4)
+    reg(TIM4_BaseAddress, TIM4_t, TIM4);
+  #endif
 
   /* TIM4 Module Reset Values */
   #define TIM4_CR1_RESET_VALUE  ((uint8_t)0x00)
@@ -4484,14 +4620,14 @@ typedef struct {
   #define TIM4_PSCR_RESET_VALUE ((uint8_t)0x00)
   #define TIM4_ARR_RESET_VALUE  ((uint8_t)0xFF)
 
-#endif /* (STM8S208) ||(STM8S207)  || (STM8S103) || (STM8S105) || (STM8AF52Ax) || (STM8AF62Ax) || (STM8AF626x)*/
+#endif // (1)
 
 
 
 //------------------------
 // 16-Bit Timer TIM5 (selected devices)
 //------------------------
-#if defined (STM8S903) || defined (STM8AF622x)
+#if (1)   // dummy for filtering out in editor
 
   /** struct containing TIM5 registers */
   typedef struct {
@@ -4776,7 +4912,9 @@ typedef struct {
   } TIM5_t;
 
   /// pointer to all TIM5 registers (selected devices)
-  reg(TIM5_BaseAddress, TIM5_t, TIM5);
+  #if defined(HAS_TIM5)
+    reg(TIM5_BaseAddress, TIM5_t, TIM5);
+  #endif
 
   /* TIM5 Module Reset Values */
   #define TIM5_CR1_RESET_VALUE   ((uint8_t)0x00)
@@ -4803,14 +4941,14 @@ typedef struct {
   #define TIM5_CCR3H_RESET_VALUE ((uint8_t)0x00)
   #define TIM5_CCR3L_RESET_VALUE ((uint8_t)0x00)
 
-#endif /* (STM8S903) || (STM8AF622x) */ 
+#endif // (1) 
 
 
 
 //------------------------
 // 8-Bit Timer TIM6 (selected devices)
 //------------------------
-#if defined (STM8S903) || defined (STM8AF622x)
+#if (1)   // dummy for filtering out in editor
 
   /** struct containing TIM6 registers (selected devices) */
   typedef struct {
@@ -4937,7 +5075,9 @@ typedef struct {
   } TIM6_t;
 
   /// pointer to all TIM6 registers (selected devices)
-  reg(TIM6_BaseAddress, TIM6_t, TIM6);
+  #if defined(HAS_TIM6)
+    reg(TIM6_BaseAddress, TIM6_t, TIM6);
+  #endif
   
   /* TIM6 Module Reset Values */
   #define TIM6_CR1_RESET_VALUE    ((uint8_t)0x00)
@@ -4950,7 +5090,7 @@ typedef struct {
   #define TIM6_PSCR_RESET_VALUE   ((uint8_t)0x00)
   #define TIM6_ARR_RESET_VALUE    ((uint8_t)0xFF)
 
-#endif /* (STM8S903) || (STM8AF622x) */ 
+#endif // (1) 
 
 
 /*-----------------------------------------------------------------------------
