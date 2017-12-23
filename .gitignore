@@ -1,5 +1,7 @@
-# upload tools
+# ignore upload tools (distributed separately)
 stm8flash
+stm8gal
+stm8gal.exe
 STM8_serial_flasher
 STM8_serial_flasher.exe
 
@@ -23,3 +25,4 @@ doxygen/html
 /Docu/.~lock.*
 
 /Projects/General_Examples/Attach_1ms_Interrupt/output/gpio.asm
+

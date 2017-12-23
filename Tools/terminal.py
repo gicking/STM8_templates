@@ -84,9 +84,9 @@ def receiver():
     num=port.inWaiting()    # check for data received
     if num>0:
       rcv = port.read(num)  # read data from buffer
-      #print rcv             # display
+      #print(rcv)           # display
       sys.stdout.write(rcv)
-      #print chr(13)
+      #print(chr(13))
       sys.stdout.flush()
   exit()
   return
@@ -99,25 +99,28 @@ def receiver():
 # main program
 ##########
 
+# check python version
+#version = sys.version_info
+#print(version)
+
 # serial port & baudrate
-#PORT     = '/dev/ttyUSB0'
-#BAUDRATE = 115200
 PORT     = '/dev/ttyUSB0'
 BAUDRATE = 115200
+TIMEOUT  = 2.0
 
-# commandline parameters
-parser = argparse.ArgumentParser(description="simple terminal script")
-parser.add_argument('-p', '--port', type=str, help='port name', required=False, default=PORT)
-parser.add_argument('-b', '--baud', type=int, help='baudrate', required=False, default=BAUDRATE)
-parser.add_argument('-t', '--timeout', type=float, help='timeout', required=False, default=2.0)
+# commandline parameters with above defaults
+parser = argparse.ArgumentParser(description="simple python terminal")
+parser.add_argument('-p', '--port',    type=str,   help='port name', required=False, default=PORT)
+parser.add_argument('-b', '--baud',    type=int,   help='baudrate',  required=False, default=BAUDRATE)
+parser.add_argument('-t', '--timeout', type=float, help='timeout',   required=False, default=TIMEOUT)
 args = parser.parse_args()
 
 # print message
-print ' '
-print 'Simple Python Terminal (v0.1)'
-print 'connect', args.port, 'at', args.baud, 'Baud'
-print 'press Ctrl-C to exit'
-print ' '
+print(' ')
+print('Simple Python Terminal (v0.1)')
+print('connect', args.port, 'at', args.baud, 'Baud')
+print('press Ctrl-C to exit')
+print(' ')
 
 # open serial port
 port = serial.Serial(args.port, baudrate=args.baud, timeout=args.timeout)

@@ -4,11 +4,6 @@ Helper Tools for STM8 Templates
 For installation of required tools, e.g. compiler, see [Docu](../Docu) 
 
 
-terminal.py (provided):
-----------------------------------
-  Simple serial terminal in Python. Requires [Python](https://www.python.org/) installation with additional package `pySerial`
-
-
 [stm8flash](https://github.com/vdudouyt/stm8flash) (external):
 ----------------------------------
   Tool for uploading hexfile to STM8 via SWIM debug interface. Open source, platform independent.
@@ -20,4 +15,20 @@ terminal.py (provided):
 
 [STM8 serial flasher](https://github.com/gicking/STM8_serial_flasher) (external):
 ----------------------------------
-  Tool for uploading hexfile to STM8 via UART bootloader. Open source, platform independent.
+  Tool for uploading hexfile to STM8 via UART bootloader. Open source, platform independent
+
+
+terminal.py (provided):
+----------------------------------
+  Simple serial terminal in Python. Requires [Python](https://www.python.org/) installation with additional package `pySerial`
+
+
+create_makefile.py (provided):
+----------------------------------
+  Helper script to generate a Makefile for SDCC with automatic dependency checking. Is called by project build script
+
+
+build_project.py (provided):
+----------------------------------
+  Helper script to build a SDCC project using above Makefile. Is called by project build script
+
