@@ -3,10 +3,10 @@
   user functions to 1ms interrupt (-> #define USE_MILLI_ISR) to 
   automatically call function every 1ms. 
   Functionality:
-    - configure 2 pins as output high
-    - attach pin toggle function to 1ms interrupt -> background operation
-    - after 10 cycles swap user function
-    - after 20 cycles detach user function
+  - configure 2 pins as output high
+  - attach pin toggle function to 1ms interrupt -> background operation
+  - after 10 cycles swap user function
+  - after 20 cycles detach user function
 **********************/
 
 /*----------------------------------------------------------

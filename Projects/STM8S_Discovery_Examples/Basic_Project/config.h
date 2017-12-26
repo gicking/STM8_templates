@@ -25,6 +25,9 @@
 #define STM8S105
 
 
+/// required for timekeeping (1ms interrupt)
+#define USE_TIM4_UPD_ISR
+
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION
 -----------------------------------------------------------------------------*/

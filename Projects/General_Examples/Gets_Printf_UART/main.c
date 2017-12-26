@@ -2,17 +2,15 @@
   Arduino-like project with setup() & loop(). Read number
   as string via UART from PC terminal and echo value back.
   Functionality:
-    - configure UART1 for PC in-/output
-    - use UART1 send for putchar() output
-    - use UART1 receive for gets() input
-    - read string from PC, convert to number and send value to PC
+  - configure UART1 for PC in-/output
+  - use UART1 send for putchar() output
+  - use UART1 receive for gets() input
+  - read string from PC, convert to number and send value to PC
 **********************/
 
 /*----------------------------------------------------------
     INCLUDE FILES
 ----------------------------------------------------------*/
-#include <stdlib.h>
-#include <stdio.h>
 #include "main_general.h"    // board-independent main
 #include "uart1_blocking.h"  // minimal UART1 communication
 #include "putchar.h"         // for printf()
@@ -36,6 +34,9 @@ void setup() {
 
   // use UART1 blocking read for gets() input
   getcharAttach(UART1_readBlock);
+  
+  // wait a it for console to launch
+  sw_delay(1000);
 
 } // setup
 
@@ -61,3 +62,6 @@ void loop() {
   
 } // loop
 
+/*-----------------------------------------------------------------------------
+    END OF MODULE
+-----------------------------------------------------------------------------*/

@@ -21,6 +21,10 @@
 #include "muBoard_config.h"
 //#include "STM8S_Discovery_config.h"
 
+
+/// required for timekeeping (1ms interrupt)
+#define USE_TIM4_UPD_ISR
+
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION
 -----------------------------------------------------------------------------*/

@@ -3,8 +3,8 @@
   Demonstrate tone output via beeper module.
   Beeper requires option byte AFR7=1 for alternate usage of BEEP pin 
   Functionality:
-    - assert option byte setting for beeper output 
-    - play tones with different pitch
+  - assert option byte setting for beeper output 
+  - play tones with different pitch
 **********************/
 
 /*----------------------------------------------------------

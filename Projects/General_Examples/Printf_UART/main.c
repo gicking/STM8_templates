@@ -1,17 +1,17 @@
-
 /**********************
   Arduino-like project with setup() & loop(). Print output
   via UART to PC terminal. Optionally in integer (small)
-  or floating (large) format.
+  or floating (large) number format. 
+  For float output #define USE_FTOA in config.h)
   Functionality:
-    - configure UART1 and putchar() for PC output
-    - every 500ms send current time via printf()
+  - configure UART1
+  - configure putchar() for PC output via UART1
+  - every 500ms send current time via printf()
 **********************/
 
 /*----------------------------------------------------------
     INCLUDE FILES
 ----------------------------------------------------------*/
-#include <stdio.h>
 #include "main_general.h"    // board-independent main
 #include "uart1_blocking.h"  // minimal UART1 communication
 #include "putchar.h"         // for printf()
@@ -34,6 +34,8 @@
 //////////
 void setup() {
 
+  char    str[20];
+  
   // configure LED pin
   pinMode(PORT_H, pin3, OUTPUT);
 
@@ -64,7 +66,7 @@ void loop() {
     if (!(millis() % 500)) {
       LED ^= 1;
       #if defined(USE_FTOA)
-        printf("time is %s s\n", floatToString(str, millis()/1000.0, 2));
+        printf("time is %s s\n", floatToString(str, millis()/1000.0, 3));
       #else
         printf("time is %d ms\n", (int) (millis()));
       #endif

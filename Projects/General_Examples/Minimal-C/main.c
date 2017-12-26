@@ -4,9 +4,9 @@
   Can be used as starting point for projects with extreme
   memory limitations.
   Functionality:
-    - init FCPU to 16MHz
-    - configure pin as output
-    - toggle pin every 500ms w/o timer -> blocking
+  - init FCPU to 16MHz
+  - configure pin as output
+  - toggle pin every 500ms w/o timer -> blocking
 **********************/
 
 /*----------------------------------------------------------

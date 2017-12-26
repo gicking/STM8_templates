@@ -2,9 +2,10 @@
   Arduino-like project with setup() & loop(). 
   Write data to P-flash and read back.
   Functionality:
-    - configure UART1 and putchar() for PC output
-    - save data to P-flash (take care not to overwrite application)
-    - read from P-flash and print to terminal 
+  - configure UART1
+  - configure putchar() for PC output via UART1
+  - save data to P-flash (take care not to overwrite application)
+  - read from P-flash and print to terminal 
 **********************/
 
 /*----------------------------------------------------------

@@ -9,8 +9,8 @@ import os
 import platform
 
 # set path of s19 file
-#HEXFILE = './Release/STM8_Template.s19'
-HEXFILE = './Debug/STM8_Template.s19'
+HEXFILE = './Release/STM8_Template.s19'
+#HEXFILE = './Debug/STM8_Template.s19'
 
 # set tool path
 ROOT_DIR = '../../../../'
@@ -24,11 +24,11 @@ OS = platform.system()
 FLASHTOOL = ''
 PORT      = ''
 if OS == 'Windows':
-  PORT      = 'COM6'
-  FLASHTOOL = 'STM8_serial_flasher.exe'
+  PORT      = 'COM10'
+  FLASHTOOL = 'stm8gal.exe'
 else:
   PORT = '/dev/ttyUSB0'
-  FLASHTOOL = 'STM8_serial_flasher'
+  FLASHTOOL = 'stm8gal'
 
 # set general
 TERMINAL  = False
@@ -78,7 +78,7 @@ def get_exitcode_stdout_stderr(cmd):
 ##################
 
 # on success upload to STM8
-cmd = TOOL_DIR+FLASHTOOL+' -p '+PORT+' -w '+HEXFILE+' -v -Q' 
+cmd = TOOL_DIR+FLASHTOOL+' -p '+PORT+' -w '+HEXFILE+' -v' 
 if OS == 'Windows':
   cmd = cmd.replace('/','\\')
 #print cmd

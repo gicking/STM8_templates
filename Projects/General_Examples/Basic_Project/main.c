@@ -3,8 +3,8 @@
   are used, but no other optional features. Can be used as a 
   starting point for simple Arduino-like STM8 projects.
   Functionality:
-    - configure pin as output
-    - poll SW clock and toggle pin every 500ms -> non-blocking
+  - configure pin as output
+  - poll SW clock and toggle pin every 500ms -> non-blocking
 **********************/
 
 /*----------------------------------------------------------

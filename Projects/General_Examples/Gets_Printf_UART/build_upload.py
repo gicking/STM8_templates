@@ -13,8 +13,8 @@ from subprocess import Popen, PIPE
 
 # set OS specific
 if platform.system() == 'Windows':
-  PORT         = 'COM6'
-  BSL_FLASHER  = 'STM8_serial_flasher.exe'
+  PORT         = 'COM10'
+  BSL_FLASHER  = 'stm8gal.exe'
   SWIM_FLASHER = 'C:\Programme\STMicroelectronics\st_toolset\stvp\STVP_CmdLine.exe'
   SWIM_TOOL    = 'ST-LINK'
   SWIM_NAME    = 'STM8S105x6'  # STM8 Discovery
@@ -22,7 +22,7 @@ if platform.system() == 'Windows':
   MAKE_TOOL    = 'mingw32-make.exe'
 else:
   PORT         = '/dev/ttyUSB0'
-  BSL_FLASHER  = 'STM8_serial_flasher'
+  BSL_FLASHER  = 'stm8gal'
   SWIM_FLASHER = 'stm8flash'
   SWIM_TOOL    = 'stlink'
   SWIM_NAME    = 'stm8s105c6'  # STM8 Discovery
@@ -137,7 +137,7 @@ INCLUDE  = '-I. '
 for dir in listSubdirs(PRJ_ROOT):
   INCLUDE += '-I' + dir + ' '
 for dir in listSubdirs(LIB_ROOT):
-  INCLUDE += '-I' + dir + ' '
+  INCLUDE += '-I' + dir + '/inc '
 
 # get set of .c files in project folder incl. subdirectories
 source_todo = listFiles(PRJ_ROOT,".c")
@@ -205,6 +205,7 @@ while (len(source_todo) > 0):
     if next.endswith('.h'):
       if next not in header_done:           # not yet in list
         header_done.add(next)                 # add to treated headers
+        next = (next[::-1].replace("/inc/"[::-1], "/src/"[::-1], 1))[::-1]  # replace last /inc/ by /src/ (see https://stackoverflow.com/questions/2556108/rreplace-how-to-replace-the-last-occurrence-of-an-expression-in-a-string)        
         if (os.path.isfile(next[:-1]+'c')):   # if corresponding .c exists, add to todo list
           source_todo.add(next[:-1]+'c')
 
@@ -243,7 +244,7 @@ if UPLOAD == 'BSL':
     sys.stdout.write('reset STM8 and press return to continue') # avoid conflict with possible serial output from STM8
     getchar()
     print(' ')
-  cmd = TOOL_DIR+BSL_FLASHER+' -p '+PORT+' -w '+OBJDIR+'/'+TARGET+' -v -Q' 
+  cmd = TOOL_DIR+BSL_FLASHER+' -p '+PORT+' -w '+OBJDIR+'/'+TARGET+' -v' 
   if platform.system() == 'Windows':
     cmd = cmd.replace('/','\\')
   #print cmd

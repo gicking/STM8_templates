@@ -1,10 +1,10 @@
 /**********************
   Arduino-like project with setup() & loop(). Dynamically attach 
-  user functions to 1ms interrupt (-> #define USE_CLK_ISR) to 
+  user functions to 1ms interrupt (-> #define USE_MILLI_ISR) to 
   automatically call function every 1ms. 
   Functionality:
   - configure LED pin as output
-  - attach LED toggle function to 1ms interrupt -> background operation
+  - attach pin toggle function to 1ms interrupt -> background operation
   - after 20 cycles detach user function
 **********************/
 

@@ -2,9 +2,10 @@
   Arduino-like project with setup() & loop(). Write data 
   to EEPROM and read back.
   Functionality:
-    - configure UART1 and putchar() for PC output
-    - save data to EEPROM
-    - read from EEPROM and print to terminal 
+  - configure UART1
+  - configure putchar() for PC output via UART1
+  - save data to EEPROM
+  - read from EEPROM and print to terminal 
 **********************/
 
 /*----------------------------------------------------------

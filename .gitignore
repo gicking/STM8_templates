@@ -1,5 +1,6 @@
-# ignore upload tools (distributed separately)
+# upload tools (distributed separately)
 stm8flash
+stm8flash.exe
 stm8gal
 stm8gal.exe
 STM8_serial_flasher
@@ -13,6 +14,10 @@ output
 Release
 Debug
 
+# STM8 Standard Peripheral Library (patch distributed separately, note license)
+SPL
+*_StdPeriph_Driver
+
 # untested or unfinished projects (starting with 'x_')
 x_*
 
@@ -23,6 +28,3 @@ doxygen/html
 /Docu/Obsolete
 /Docu/PiAndMore_2017
 /Docu/.~lock.*
-
-/Projects/General_Examples/Attach_1ms_Interrupt/output/gpio.asm
-

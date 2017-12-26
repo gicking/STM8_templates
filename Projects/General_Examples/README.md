@@ -10,7 +10,7 @@ Minimal-C:
   simple C-project without Arduino-like initialization and 
   setup()/loop(). No assumption is made, no interrupts used.
   Can be used as starting point for projects with extreme
-  memory limitations or real-time requirements.
+  memory limitations.
   Functionality:
   - init FCPU to 16MHz
   - configure pin as output
@@ -30,7 +30,7 @@ Basic_Project:
 Attach_1ms_Interrupt: 
 ----------
   Arduino-like project with setup() & loop(). Dynamically attach 
-  user functions to 1ms interrupt (-> #define USE_CLK_ISR) to 
+  user functions to 1ms interrupt (-> #define USE_MILLI_ISR) to 
   automatically call function every 1ms. 
   Functionality:
   - configure 2 pins as output high
@@ -39,35 +39,36 @@ Attach_1ms_Interrupt:
   - after 20 cycles detach user function
 
 
-Attach_Port_Interrupt: 
+Pin_Interrupt: 
 ----------
-  Arduino-like project with setup() & loop(). Dynamically attach 
-  user function to external port interrupt @ PE5 (=io_1 on muBoard)
-  (-> #define USE_PORT_ISR) to call function on falling edge. 
-  Functionality:
-  - configure 1 pins as input pull-up & 2 pins as output high
-  - attach user function to port interrupt -> background operation
-  - after 10 ISR calls detach user function
-  - poll button and mirror to LED
-
-
-Attach_Pin_Interrupt: 
-----------
-  Arduino-like project with setup() & loop(). Dynamically attach 
-  user function to TLI pin interrupt @ PD7 (=automode on muBoard)
+  Arduino-like project with setup() & loop(). 
+  Use TLI interrupt @ pin PD7 (=automode on muBoard)
   (-> #define USE_TLI_ISR) to call function on falling edge. 
   Functionality:
   - configure 1 pins as input pull-up & 2 pins as output high
-  - attach user function to port interrupt -> background operation
-  - after 10 ISR calls detach user function
+  - attach ISR to TLI interrupt -> background operation
+  - after 10 ISR calls disable ISR
   - poll TLI pin and mirror to LED
+
+
+Port_Interrupt: 
+----------
+  Arduino-like project with setup() & loop(). 
+  Use EXINT port interrupt @ pin PE5 (=io_1 on muBoard)
+  (-> #define USE_PORT_ISR) to call function on falling edge. 
+  Functionality:
+  - configure 1 pins as input pull-up & 2 pins as output high
+  - attach ISR to port interrupt -> background operation
+  - after 10 ISR calls disable ISR
+  - poll button and mirror to LED
 
 
 Printf_UART:
 ----------
   Arduino-like project with setup() & loop(). Print output
   via UART to PC terminal. Optionally in integer (small)
-  or floating (large; #define USE_FTOA) format.
+  or floating (large) number format. 
+  For float output #define USE_FTOA in config.h)
   Functionality:
   - configure UART1
   - configure putchar() for PC output via UART1
@@ -77,43 +78,44 @@ Printf_UART:
 Gets_Printf_UART:
 ----------
   Arduino-like project with setup() & loop(). Read number
-  via UART from PC terminal and print it again.
+  as string via UART from PC terminal and echo value back.
   Functionality:
-  - configure UART1
-  - configure putchar() for PC output via UART1
-  - configure getchar() for PC input via UART1
-  - read number from terminal and echo it again
+  - configure UART1 for PC in-/output
+  - use UART1 send for putchar() output
+  - use UART1 receive for gets() input
+  - read string from PC, convert to number and send value to PC
 
 
+Beeper:
+----------
+  Arduino-like project with setup() & loop(). 
+  Demonstrate tone output via beeper module.
+  Beeper requires option byte AFR7=1 for alternate usage of BEEP pin 
+  Functionality:
+  - assert option byte setting for beeper output 
+  - play tones with different pitch
+
+  
 Bootloader_Activation
 ----------
   Arduino-like project with setup() & loop(). 
   Activate/Deactivate STM8 ROM bootloader depending on
   state of pin PD7 (=switch "automode" on muBoard)
   Functionality:
-    - configure pin as input pull-up
-    - wait a bit and read pin state
-    - activate(state=1) or deactivate(state=0) BL via option byte
-
-
-Beeper: 
-----------
-  Arduino-like project with setup() & loop(). 
-  Demonstrate tone output via beeper module.
-  Beeper requires option byte AFR7=1 for alternate usage of BEEP pin 
-  Functionality:
-    - assert option byte setting for beeper output 
-    - play tones with different pitch
+  - configure pin as input pull-up
+  - wait a bit and read pin state
+  - activate(state=1) or deactivate(state=0) BL via option byte
 
 
 EEPROM_Datalogger:
 ----------
-  Arduino-like project with setup() & loop(). 
-  Write data to EEPROM and read back.
+  Arduino-like project with setup() & loop(). Write data 
+  to EEPROM and read back.
   Functionality:
-    - configure UART1 and putchar() for PC output
-    - save data to EEPROM
-    - read from EEPROM and print to terminal 
+  - configure UART1
+  - configure putchar() for PC output via UART1
+  - save data to EEPROM
+  - read from EEPROM and print to terminal 
 
 
 P-Flash_Datalogger:
@@ -121,7 +123,46 @@ P-Flash_Datalogger:
   Arduino-like project with setup() & loop(). 
   Write data to P-flash and read back.
   Functionality:
-    - configure UART1 and putchar() for PC output
-    - save data to P-flash (take care not to overwrite application)
-    - read from P-flash and print to terminal 
+  - configure UART1
+  - configure putchar() for PC output via UART1
+  - save data to P-flash (take care not to overwrite application)
+  - read from P-flash and print to terminal 
+
+
+ADC2_Measure:
+----------
+  Arduino-like project with setup() & loop().
+  Periodically measure via ADC2 and send result via 
+  UART1 in ADC interrupt routine (muBoard)
+  Functionality:
+  - configure UART1 for PC in-/output
+  - use UART1 send for putchar() output
+  - initialize ADC2 for single measurement
+  - periodically send ADC result via UART1 and blink LED
+
+
+ADC2_Continuous_Interrupt:
+----------
+  Arduino-like project with setup() & loop().
+  Continuously measure via ADC2 and send result via 
+  UART1 in ADC interrupt routine (muBoard)
+  Functionality:
+  - configure UART1 for PC in-/output
+  - use UART1 send for putchar() output
+  - initialize ADC2 for continuous mode
+  - attach ISR to ADC2_EOC interrupt
+  - in ADC ISR send every Nth result via UART1 and blink LED
+
+
+Auto-Wakeup:
+----------
+  Arduino-like project with setup() & loop().
+  Periodically enter STOP mode with auto-wake.
+  Send Status via UART1 to PC
+  Functionality:
+  - configure UART1 for PC in-/output
+  - use UART1 send for putchar() output
+  - attach ISR to AWU interrupt
+  - periodically enter STOP mode
+  - in AWU interrupt print status
 
