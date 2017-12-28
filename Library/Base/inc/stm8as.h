@@ -192,8 +192,8 @@
   
   #define reg(addr,type,name)    extern volatile type name @addr    ///< syntax for variables at absolute addresses
   #define ASM(mnem)    _asm(mnem)                                   ///< single line inline assembler
-  #define ASM_START    #asm                                         ///< start multi-line inline assembler
-  #define ASM_END      #endasm                                      ///< end multi-line inline assembler
+	#define ASM_START    _Pragma("asm")                               ///< start multi-line inline assembler
+  #define ASM_END      _Pragma("endasm")                            ///< end multi-line inline assembler
   
   #define FAR          @far
   #define NEAR         @near
