@@ -8,6 +8,9 @@ The STM8 SPL is a powerful library containing many functions for controlling
 STM8 peripherals. In addition the [STM homepage](http://www.st.com) contains
 many software examples, which use SPL function calls.
 
+For compilation, the SPL libraries are required under STM8_templates_Library.
+Links work (at least under Linux). Subfolder are supported.
+
 SPL libraries with corresponding examples are available for several STM8 
 (and STM32) families on the [STM homepage](http://www.st.com). For a specific 
 device type, just search for:
