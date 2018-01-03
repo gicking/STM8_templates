@@ -14,7 +14,8 @@ Minimal-C:
   Functionality:
   - init FCPU to 16MHz
   - configure pin as output
-  - toggle pin every 500ms w/o timer -> blocking
+  - toggle pin every 500ms with delay (->blocking)
+  - optionally use delay via SW (less overhead & latency) or timer 3 (robust against high ISR load)
 
 
 Basic_Project: 

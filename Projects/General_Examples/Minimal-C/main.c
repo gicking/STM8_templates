@@ -6,7 +6,8 @@
   Functionality:
   - init FCPU to 16MHz
   - configure pin as output
-  - toggle pin every 500ms w/o timer -> blocking
+  - toggle pin every 500ms with delay (->blocking)
+  - optionally use delay via SW (less overhead & latency) or timer 3 (robust against high ISR load)
 **********************/
 
 // define if SW or high-rez delay function is used
@@ -26,10 +27,8 @@
 // define board LED pin
 #if defined(STM8S105)
   #define LED   pinSet(PORT_D, pin0)   // STM8S Discovery Board
-#elif defined(STM8S208) || defined(STM8AF52ax)
-  #define LED   pinSet(PORT_H, pin3)   // muBoard LED
 #else
-  #error select supported device/board!
+  #define LED   pinSet(PORT_H, pin3)   // muBoard LED
 #endif
 
 

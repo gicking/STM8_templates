@@ -114,11 +114,9 @@ void TIM3_delay(uint32_t ms) {
    
   code execution is halted for specified number of microseconds
   using timer 3 -> more accurate than sw_delay() or delay(). 
+  Note: measured overhead is ~5.5us 
 */
 void TIM3_delayMicroseconds(uint16_t dt) {
-  
-  // correct for function latency (empirical @ 16MHz)
-  dt -= 0;
   
   // stop timer
   TIM3.CR1.reg.CEN = 0;
@@ -146,6 +144,10 @@ void TIM3_delayMicroseconds(uint16_t dt) {
   // clear status registers (do this last)
   TIM3.SR1.byte = 0x00;
   
+  // on zero delay return. Do here to have similar overhead for dt=0
+  if (!dt)
+    return;
+  
   // wait for overflow (no interrupts!)
   while (!(TIM3.SR1.reg.UIF));
     
@@ -161,7 +163,8 @@ void TIM3_delayMicroseconds(uint16_t dt) {
   \param dt halt duration in 62.5ns units
    
   code execution is halted for specified number of 62.5ns 
-  using timer 3. Note function overhead of xxx ns! 
+  using timer 3. 
+  Note: measured overhead is ~4.7us 
 */
 void TIM3_delayNanoseconds(uint16_t dt) {
   
@@ -190,6 +193,10 @@ void TIM3_delayNanoseconds(uint16_t dt) {
   
   // clear status registers (do this last)
   TIM3.SR1.byte = 0x00;
+  
+  // on zero delay return. Do here to have similar overhead for dt=0
+  if (!dt)
+    return;
   
   // wait for overflow (no interrupts!)
   while (!(TIM3.SR1.reg.UIF));

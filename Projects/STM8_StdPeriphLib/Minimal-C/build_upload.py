@@ -132,8 +132,8 @@ TARGET   = 'main.ihx'
 
 # set command for creating dependencies and set search paths 
 CC       = 'sdcc '
-CFLAGS   = '-mstm8 --std-sdcc99 --std-c99 --opt-code-speed -D'+SPL_DEVICE+' '
-#CFLAGS   = '-mstm8 --std-sdcc99 --std-c99 --debug -DDEBUG -D'+SPL_DEVICE+' '
+CFLAGS   = '-mstm8 --std-sdcc99 --opt-code-speed -D'+SPL_DEVICE+' '
+#CFLAGS   = '-mstm8 --std-sdcc99 --debug -DDEBUG -D'+SPL_DEVICE+' '
 
 LFLAGS   = '-mstm8 -lstm8 --out-fmt-ihx '
 DEPEND   = '-MM '
