@@ -69,9 +69,10 @@ void i2c_init() {
 */
 uint8_t i2c_waitFree() {
 
-  uint32_t  countTimeout = 100000L;
+  uint16_t  countTimeout;     // use counter for timeout to minimize dependencies
   
-  // wait until bus free with (crude) timeout
+  // wait until bus free with timeout
+  countTimeout = 10000;                           // ~1.1us/inc -> ~10ms
   while ((I2C_BUSY) && (countTimeout--));
  
   // on I2C timeout return error
@@ -96,10 +97,11 @@ uint8_t i2c_waitFree() {
 */
 uint8_t i2c_start() {
 
-  uint32_t  countTimeout = 100000L;
+  uint16_t  countTimeout;     // use counter for timeout to minimize dependencies
   
-  // generate start condition with (crude) timeout
+  // generate start condition with timeout
   I2C.CR2.reg.START = 1;
+  countTimeout = 10000;                           // ~1.1us/inc -> ~10ms
   while ((!I2C.SR1.reg.SB) && (countTimeout--));
  
   // on I2C timeout return error
@@ -124,10 +126,11 @@ uint8_t i2c_start() {
 */
 uint8_t i2c_stop() {
 
-  uint32_t  countTimeout = 100000L;
+  uint16_t  countTimeout;     // use counter for timeout to minimize dependencies
 
-  // generate stop condition with (crude) timeout
+  // generate stop condition with timeout
   I2C.CR2.reg.STOP = 1;
+  countTimeout = 10000;                           // ~1.1us/inc -> ~10ms
   while ((I2C.SR3.reg.MSL) && (countTimeout--));
  
   // on I2C timeout set error flag
@@ -158,19 +161,21 @@ uint8_t i2c_stop() {
 uint8_t i2c_send(uint8_t addr, uint8_t numTx, uint8_t *bufTx) {
 
   uint8_t   i;
-  uint32_t  countTimeout = 100000L;
+  uint16_t  countTimeout;     // use counter for timeout to minimize dependencies
 
   // send 7b slave adress [7:1] + write flag (LSB=0)
   I2C.DR.byte = (uint8_t) ((addr << 1) & ~0x01);       // shift left and set LSB (write=0, read=1)
+  countTimeout = 10000;                                // ~1.1us/inc -> ~10ms
   while ((!I2C.SR1.reg.ADDR) && (countTimeout--));     // wait until address sent or timeout
-  countTimeout = 100000L;
+  countTimeout = 10000;                                // ~1.1us/inc -> ~10ms 
   while ((!I2C.SR3.reg.BUSY) && (countTimeout--));     // seems to be required...???
   
   // no I2C timeout -> send data
   if (countTimeout) {
     for (i=0; i<numTx; i++) {
       I2C.DR.byte = bufTx[i];
-      while ((!I2C.SR1.reg.TXE) && (countTimeout--));    // wait until DR buffer empty or timeout
+      countTimeout = 1000;                             // ~1.1us/inc -> ~1ms 
+      while ((!I2C.SR1.reg.TXE) && (countTimeout--));  // wait until DR buffer empty or timeout
     }
   }
  
@@ -202,7 +207,7 @@ uint8_t i2c_send(uint8_t addr, uint8_t numTx, uint8_t *bufTx) {
 uint8_t i2c_request(uint8_t slaveAddr, uint8_t numRx, uint8_t *bufRx) {
 
   uint8_t   i;
-  uint32_t  countTimeout = 100000L;
+  uint16_t  countTimeout;     // use counter for timeout to minimize dependencies
   
   // init receive buffer
   for (i=0; i<numRx; i++)
@@ -210,10 +215,13 @@ uint8_t i2c_request(uint8_t slaveAddr, uint8_t numRx, uint8_t *bufRx) {
     
   // send 7b slave adress [7:1] + read flag (LSB=1)
   I2C.DR.byte = (uint8_t) ((slaveAddr << 1) | 0x01);   // shift left and set LSB (write=0, read=1)
+  countTimeout = 10000;                                // ~1.1us/inc -> ~10ms
   while ((!I2C.SR1.reg.ADDR) && (countTimeout--));     // wait until adress sent or timeout
+  countTimeout = 1000;                                 // ~1.1us/inc -> ~1ms 
   while ((!I2C.SR3.reg.BUSY) && (countTimeout--));     // seems to be required...???
 
   for (i=0; i<numRx; i++) {
+    countTimeout = 1000;                               // ~1.1us/inc -> ~1ms 
     while ((!I2C.SR1.reg.RXNE) && (countTimeout--));   // wait until DR buffer not empty or timeout
     bufRx[i] = I2C.DR.byte;
   }

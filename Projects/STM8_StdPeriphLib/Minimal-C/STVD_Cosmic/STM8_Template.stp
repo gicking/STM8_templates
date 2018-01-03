@@ -78,15 +78,15 @@ String.103.0=.\;..;..\..\..\..\library\base\src;..\..\..\..\library\base\inc;
 
 [Root.Config.0.Settings.2]
 String.2.0=
-String.6.0=2017,12,25,22,56,45
+String.6.0=2017,12,24,13,39,36
 String.100.0=STM8AF52AA
 
 [Root.Config.0.Settings.3]
 String.2.0=Compiling $(InputFile)...
-String.3.0=cxstm8 +mods0 -customDebCompat -customOpt-no -customC-pp -customLst -l -dDEBUG -i.. -i..\..\..\..\library\base\inc -i..\..\..\..\library\muboard\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.3.0=cxstm8 +mods0 -customDebCompat -customOpt-no -customC-pp -customLst -l -dDEBUG -i.. -i..\..\..\..\library\base\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).ls
-String.6.0=2017,12,25,22,46,17
+String.6.0=2017,12,25,23,4,47
 
 [Root.Config.0.Settings.4]
 String.2.0=Assembling $(InputFile)...
@@ -106,7 +106,7 @@ String.3.0=clnk $(ToolsetLibOpts) -o $(OutputPath)$(TargetSName).sm8 -fakeIntege
 String.3.1=cvdwarf $(OutputPath)$(TargetSName).sm8 -fakeVectAddr0x8000
 String.4.0=$(OutputPath)$(TargetFName)
 String.5.0=
-String.6.0=2017,12,25,22,56,45
+String.6.0=2017,12,24,13,41,59
 String.100.0=
 String.101.0=crtsi.st7
 String.102.0=+seg .const -b 0x8080 -m 0x1ff80 -n .const -it 
@@ -161,15 +161,15 @@ String.103.0=.\;..;..\..\..\..\library\base\inc;..\..\..\..\library\base\src;
 
 [Root.Config.1.Settings.2]
 String.2.0=
-String.6.0=2017,12,25,22,56,45
+String.6.0=2017,12,24,13,39,36
 String.100.0=STM8AF52AA
 
 [Root.Config.1.Settings.3]
 String.2.0=Compiling $(InputFile)...
-String.3.0=cxstm8 +mods0 -customC-pp -i.. -i..\..\..\..\library\base\inc -i..\..\..\..\library\muboard\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.3.0=cxstm8 +mods0 -customC-pp -i.. -i..\..\..\..\library\base\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).ls
-String.6.0=2017,12,24,14,10,39
+String.6.0=2017,12,24,14,47,43
 
 [Root.Config.1.Settings.4]
 String.2.0=Assembling $(InputFile)...
@@ -189,7 +189,7 @@ String.3.0=clnk -fakeRunConv -fakeInteger -fakeSemiAutoGen $(ToolsetLibOpts) -o 
 String.3.1=cvdwarf $(OutputPath)$(TargetSName).sm8 -fakeVectAddr0x8000
 String.4.0=$(OutputPath)$(TargetFName)
 String.5.0=
-String.6.0=2017,12,25,22,56,45
+String.6.0=2017,12,24,13,39,36
 String.100.0=
 String.101.0=crtsi.st7
 String.102.0=+seg .const -b 0x8080 -m 0x1ff80 -n .const -it 
@@ -246,10 +246,10 @@ Int.1=0
 
 [Root.STM8_Lib.Config.0.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=cxstm8 +mods0 -customDebCompat -customOpt-no -customC-pp -customLst -l -dDEBUG -i.. -i..\..\..\..\library\base\inc -i..\..\..\..\library\muboard\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.3.0=cxstm8 +mods0 -customDebCompat -customOpt-no -customC-pp -customLst -l -dDEBUG -i.. -i..\..\..\..\library\base\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).ls
-String.6.0=2017,12,25,22,46,17
+String.6.0=2017,12,25,23,4,47
 
 [Root.STM8_Lib.Config.0.Settings.2]
 String.2.0=Assembling $(InputFile)...
@@ -270,10 +270,10 @@ Int.1=0
 
 [Root.STM8_Lib.Config.1.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=cxstm8 +mods0 -customC-pp -i.. -i..\..\..\..\library\base\inc -i..\..\..\..\library\muboard\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.3.0=cxstm8 +mods0 -customC-pp -i.. -i..\..\..\..\library\base\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).ls
-String.6.0=2017,12,24,14,10,39
+String.6.0=2017,12,24,14,47,43
 
 [Root.STM8_Lib.Config.1.Settings.2]
 String.2.0=Assembling $(InputFile)...
@@ -295,11 +295,6 @@ Next=Root.STM8_Lib.STM8_Lib\src
 [Root.STM8_Lib.STM8_Lib\inc...\..\..\..\library\base\inc\gpio.h]
 ElemType=File
 PathName=..\..\..\..\library\base\inc\gpio.h
-Next=Root.STM8_Lib.STM8_Lib\inc...\..\..\..\library\base\inc\main_general.h
-
-[Root.STM8_Lib.STM8_Lib\inc...\..\..\..\library\base\inc\main_general.h]
-ElemType=File
-PathName=..\..\..\..\library\base\inc\main_general.h
 Next=Root.STM8_Lib.STM8_Lib\inc...\..\..\..\library\base\inc\stm8_interrupt_vector.h
 
 [Root.STM8_Lib.STM8_Lib\inc...\..\..\..\library\base\inc\stm8_interrupt_vector.h]
@@ -315,11 +310,6 @@ Next=Root.STM8_Lib.STM8_Lib\inc...\..\..\..\library\base\inc\sw_delay.h
 [Root.STM8_Lib.STM8_Lib\inc...\..\..\..\library\base\inc\sw_delay.h]
 ElemType=File
 PathName=..\..\..\..\library\base\inc\sw_delay.h
-Next=Root.STM8_Lib.STM8_Lib\inc...\..\..\..\library\base\inc\timer4.h
-
-[Root.STM8_Lib.STM8_Lib\inc...\..\..\..\library\base\inc\timer4.h]
-ElemType=File
-PathName=..\..\..\..\library\base\inc\timer4.h
 
 [Root.STM8_Lib.STM8_Lib\src]
 ElemType=Folder
@@ -329,16 +319,6 @@ Child=Root.STM8_Lib.STM8_Lib\src...\..\..\..\library\base\src\gpio.c
 [Root.STM8_Lib.STM8_Lib\src...\..\..\..\library\base\src\gpio.c]
 ElemType=File
 PathName=..\..\..\..\library\base\src\gpio.c
-Next=Root.STM8_Lib.STM8_Lib\src...\..\..\..\library\base\src\main_general.c
-
-[Root.STM8_Lib.STM8_Lib\src...\..\..\..\library\base\src\main_general.c]
-ElemType=File
-PathName=..\..\..\..\library\base\src\main_general.c
-Next=Root.STM8_Lib.STM8_Lib\src...\..\..\..\library\base\src\timer4.c
-
-[Root.STM8_Lib.STM8_Lib\src...\..\..\..\library\base\src\timer4.c]
-ElemType=File
-PathName=..\..\..\..\library\base\src\timer4.c
 
 [Root.Source Files]
 ElemType=Folder
@@ -367,10 +347,10 @@ Int.1=0
 
 [Root.Source Files.Config.0.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=cxstm8 +mods0 -customDebCompat -customOpt-no -customC-pp -customLst -l -dDEBUG -i.. -i..\..\..\..\library\base\inc -i..\..\..\..\library\muboard\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.3.0=cxstm8 +mods0 -customDebCompat -customOpt-no -customC-pp -customLst -l -dDEBUG -i.. -i..\..\..\..\library\base\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).ls
-String.6.0=2017,12,25,22,46,17
+String.6.0=2017,12,25,23,4,47
 
 [Root.Source Files.Config.0.Settings.2]
 String.2.0=Assembling $(InputFile)...
@@ -391,10 +371,10 @@ Int.1=0
 
 [Root.Source Files.Config.1.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=cxstm8 +mods0 -customC-pp -i.. -i..\..\..\..\library\base\inc -i..\..\..\..\library\muboard\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.3.0=cxstm8 +mods0 -customC-pp -i.. -i..\..\..\..\library\base\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).ls
-String.6.0=2017,12,24,14,10,39
+String.6.0=2017,12,24,14,47,43
 
 [Root.Source Files.Config.1.Settings.2]
 String.2.0=Assembling $(InputFile)...

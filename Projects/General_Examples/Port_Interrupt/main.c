@@ -1,7 +1,7 @@
 /**********************
   Arduino-like project with setup() & loop(). 
   Use EXINT port interrupt @ pin PE5 (=io_1 on muBoard)
-  (-> #define USE_PORT_ISR) to call function on falling edge. 
+  (-> #define USE_PORT*_ISR) to call function on falling edge. 
   Functionality:
   - configure 1 pins as input pull-up & 2 pins as output high
   - attach ISR to port interrupt -> background operation
@@ -30,7 +30,7 @@
 ----------------------------------------------------------*/
 
 //////////
-// toggle LED 10x, then deactivate pin ISR
+// port E interrupt: toggle LED 10x, then deactivate pin ISR
 //////////
 ISR_HANDLER(PORTE_ISR, __EXTI4_VECTOR__) {
   

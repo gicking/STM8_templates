@@ -25,14 +25,17 @@
   #include "timer4.h"
 #undef _TIM4_MAIN_
 
+
 /*-----------------------------------------------------------------------------
     DECLARATION OF MODULE VARIABLES
 -----------------------------------------------------------------------------*/
  
+#define  NUM_TIMEOUTS  4                            ///< number of user timouts
+volatile uint32_t      timeoutEnd[NUM_TIMEOUTS];    ///< end times of timeout [ms]
+
 #if defined(USE_MILLI_ISR)
   volatile void (*m_TIM4_UPD_pFct)(void) = TIM4_Default;    ///< function pointer to call in TIM4UPD ISR
 #endif
-
 
 
 /*----------------------------------------------------------
@@ -49,6 +52,8 @@
 */
 void TIM4_init(void) {
 
+  uint8_t     i;
+  
   // stop the timer
   TIM4.CR1.reg.CEN = 0;
   
@@ -56,6 +61,10 @@ void TIM4_init(void) {
   g_flagMilli = 0;
   g_millis    = 0;
   g_micros    = 0;
+  
+  // initialize module variables
+  for (i=0; i<NUM_TIMEOUTS; i++)
+    timeoutEnd[i] = 0;
   
   // reset function pointer for TIM4 ISR
   #if defined(USE_MILLI_ISR)
@@ -86,7 +95,115 @@ void TIM4_init(void) {
 } // TIM4_init
 
 
+
+/**
+  \fn void delay(uint32_t ms)
+   
+  \brief delay code execution for 'ms'
   
+  \param[in]  ms   duration[ms] to halt code
+   
+  delay code execution for 'ms'. 
+  Requires TIM4 interrupt -> is not vulnerable to 
+  interrupts (within limits).
+  Note: 
+    - for ISR-free functions use sw_delay() (uses NOPs)
+    - for high accuracy use highRez_delay() (uses HW timer 3)
+*/
+void delay(uint32_t ms) {
+
+	uint32_t start = micros();
+
+	// wait until time [us] has passed
+	ms *= 1000L;
+	while (micros() - start < ms)
+		NOP;
+	
+} // delay()
+
+
+
+/**
+  \fn void delayMicroseconds(uint32_t us)
+   
+  \brief delay code execution for 'us'
+  
+  \param[in]  us   duration[us] to halt code
+   
+  delay code execution for 'us'. 
+  Requires TIM4 interrupt -> is not vulnerable to 
+  interrupts (within limits).
+  Note: 
+    - for ISR-free functions use sw_delayMicroseconds() (uses NOPs)
+    - for high accuracy use highRez_delayMicroseconds() (uses HW timer 3)
+*/
+void delayMicroseconds(uint32_t us) {
+
+	uint32_t start = micros();
+
+	// wait until time [us] has passed
+	while (micros() - start < us)
+		NOP;
+	
+} // delayMicroseconds()
+
+
+
+/**
+  \fn void setTimeout(uint8_t N, uint32_t ms)
+   
+  \brief start timeout N (0..NUM_TIMEOUTS-1) with 'ms'
+  
+  \param[in]  N     which timeout to set (1..4)
+  \param[in]  ms    duration[us] of timeout
+   
+  start timeout N (0..NUM_TIMEOUTS-1) with 'ms'. 
+  Requires TIM4 interrupt -> is not vulnerable to 
+  interrupts (within limits).
+*/
+void setTimeout(uint8_t N, uint32_t ms) {
+
+  // range check
+  if (N >= NUM_TIMEOUTS)
+    return;
+ 
+  // set respective timeout millis. Correct for index start 
+  timeoutEnd[N-1] = millis() + ms;
+
+} // setTimeout
+
+
+
+/**
+  \fn uint8_t checkTimeout(uint8_t N)
+   
+  \brief check timeout N (0..NUM_TIMEOUTS-1)
+  
+  \param[in]  N     which timeout to check (0..NUM_TIMEOUTS-1)
+
+  \return 1 if timeout has passed, else 0
+   
+  check if timeout N (0..NUM_TIMEOUTS-1) has passed. 
+  Requires TIM4 interrupt -> is not vulnerable to 
+  interrupts (within limits).
+*/
+uint8_t checkTimeout(uint8_t N) {
+
+  // range check
+  if (N >= NUM_TIMEOUTS)
+    return(0);
+ 
+  // check respective timeout with roll-over (see https://arduino.stackexchange.com/questions/12587/how-can-i-handle-the-millis-rollover)
+  if ((int32_t)(timeoutEnd[N-1] - millis()) < 0)
+    return(1);
+  
+  // avoid compiler warning
+  return(0);
+
+} // checkTimeout
+
+
+
 #if defined(USE_MILLI_ISR)
 
   /**

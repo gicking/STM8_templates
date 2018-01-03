@@ -64,6 +64,7 @@ void loop() {
 
     // every 500ms toggle LED
     if (!(millis() % 500)) {
+    
       LED ^= 1;
       #if defined(USE_FTOA)
         printf("time is %s s\n", floatToString(str, millis()/1000.0, 3));

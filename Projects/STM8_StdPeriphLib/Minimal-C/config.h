@@ -22,8 +22,12 @@
 //#include "STM8S_Discovery_config.h"
 
 /// alternatively select STM8 device directly. For supported devices see file "stm8as.h"
-//#define STM8S208      // muBoard
-#define STM8S105      // muBoard
+#if !defined(STM8S208)
+  #define STM8S208      // muBoard
+#endif
+#if !defined(STM8S105)
+  #define STM8S105      // STM8S Discovery
+#endif
 
 
 /*-----------------------------------------------------------------------------

@@ -78,15 +78,15 @@ String.103.0=.\;..;..\..\..\..\library\base\src;..\..\..\..\library\base\inc;
 
 [Root.Config.0.Settings.2]
 String.2.0=
-String.6.0=2017,12,24,13,39,36
-String.100.0=STM8AF52AA
+String.6.0=2017,12,25,17,37,3
+String.100.0=STM8S105C6
 
 [Root.Config.0.Settings.3]
 String.2.0=Compiling $(InputFile)...
-String.3.0=cxstm8 +mods0 -customDebCompat -customOpt-no -customC-pp -customLst -l -dDEBUG -i.. -i..\..\..\..\library\base\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.3.0=cxstm8 +mods0 -customDebCompat -customOpt-no -customC-pp -customLst -l -dDEBUG -i.. -i..\..\..\..\library\base\inc -i..\..\..\..\library\stm8s_discovery\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).ls
-String.6.0=2017,12,25,23,4,47
+String.6.0=2017,12,25,23,9,31
 
 [Root.Config.0.Settings.4]
 String.2.0=Assembling $(InputFile)...
@@ -106,23 +106,23 @@ String.3.0=clnk $(ToolsetLibOpts) -o $(OutputPath)$(TargetSName).sm8 -fakeIntege
 String.3.1=cvdwarf $(OutputPath)$(TargetSName).sm8 -fakeVectAddr0x8000
 String.4.0=$(OutputPath)$(TargetFName)
 String.5.0=
-String.6.0=2017,12,24,13,41,59
+String.6.0=2017,12,25,17,37,3
 String.100.0=
 String.101.0=crtsi.st7
-String.102.0=+seg .const -b 0x8080 -m 0x1ff80 -n .const -it 
+String.102.0=+seg .const -b 0x8080 -m 0x7f80 -n .const -it 
 String.102.1=+seg .text -a .const -n .text 
-String.102.2=+seg .eeprom -b 0x4000 -m 0x800 -n .eeprom 
+String.102.2=+seg .eeprom -b 0x4000 -m 0x400 -n .eeprom 
 String.102.3=+seg .bsct -b 0x0 -m 0x100 -n .bsct 
 String.102.4=+seg .ubsct -a .bsct -n .ubsct 
 String.102.5=+seg .bit -a .ubsct -n .bit -id 
 String.102.6=+seg .share -a .bit -n .share -is 
-String.102.7=+seg .data -b 0x100 -m 0x1300 -n .data 
+String.102.7=+seg .data -b 0x100 -m 0x500 -n .data 
 String.102.8=+seg .bss -a .data -n .bss
-String.103.0=Code,Constants[0x8080-0x27fff]=.const,.text
-String.103.1=Eeprom[0x4000-0x47ff]=.eeprom
+String.103.0=Code,Constants[0x8080-0xffff]=.const,.text
+String.103.1=Eeprom[0x4000-0x43ff]=.eeprom
 String.103.2=Zero Page[0x0-0xff]=.bsct,.ubsct,.bit,.share
-String.103.3=Ram[0x100-0x13ff]=.data,.bss
-String.104.0=0x17ff
+String.103.3=Ram[0x100-0x5ff]=.data,.bss
+String.104.0=0x7ff
 String.105.0=libis0.sm8;libm0.sm8
 Int.0=0
 Int.1=0
@@ -161,15 +161,15 @@ String.103.0=.\;..;..\..\..\..\library\base\inc;..\..\..\..\library\base\src;
 
 [Root.Config.1.Settings.2]
 String.2.0=
-String.6.0=2017,12,24,13,39,36
-String.100.0=STM8AF52AA
+String.6.0=2017,12,25,17,37,3
+String.100.0=STM8S105C6
 
 [Root.Config.1.Settings.3]
 String.2.0=Compiling $(InputFile)...
-String.3.0=cxstm8 +mods0 -customC-pp -i.. -i..\..\..\..\library\base\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.3.0=cxstm8 +mods0 -customC-pp -i.. -i..\..\..\..\library\base\inc -i..\..\..\..\library\stm8s_discovery\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).ls
-String.6.0=2017,12,24,14,47,43
+String.6.0=2017,12,25,17,37,3
 
 [Root.Config.1.Settings.4]
 String.2.0=Assembling $(InputFile)...
@@ -189,23 +189,23 @@ String.3.0=clnk -fakeRunConv -fakeInteger -fakeSemiAutoGen $(ToolsetLibOpts) -o 
 String.3.1=cvdwarf $(OutputPath)$(TargetSName).sm8 -fakeVectAddr0x8000
 String.4.0=$(OutputPath)$(TargetFName)
 String.5.0=
-String.6.0=2017,12,24,13,39,36
+String.6.0=2017,12,25,17,37,3
 String.100.0=
 String.101.0=crtsi.st7
-String.102.0=+seg .const -b 0x8080 -m 0x1ff80 -n .const -it 
+String.102.0=+seg .const -b 0x8080 -m 0x7f80 -n .const -it 
 String.102.1=+seg .text -a .const -n .text 
-String.102.2=+seg .eeprom -b 0x4000 -m 0x800 -n .eeprom 
+String.102.2=+seg .eeprom -b 0x4000 -m 0x400 -n .eeprom 
 String.102.3=+seg .bsct -b 0x0 -m 0x100 -n .bsct 
 String.102.4=+seg .ubsct -a .bsct -n .ubsct 
 String.102.5=+seg .bit -a .ubsct -n .bit -id 
 String.102.6=+seg .share -a .bit -n .share -is 
-String.102.7=+seg .data -b 0x100 -m 0x1300 -n .data 
+String.102.7=+seg .data -b 0x100 -m 0x500 -n .data 
 String.102.8=+seg .bss -a .data -n .bss
-String.103.0=Code,Constants[0x8080-0x27fff]=.const,.text
-String.103.1=Eeprom[0x4000-0x47ff]=.eeprom
+String.103.0=Code,Constants[0x8080-0xffff]=.const,.text
+String.103.1=Eeprom[0x4000-0x43ff]=.eeprom
 String.103.2=Zero Page[0x0-0xff]=.bsct,.ubsct,.bit,.share
-String.103.3=Ram[0x100-0x13ff]=.data,.bss
-String.104.0=0x17ff
+String.103.3=Ram[0x100-0x5ff]=.data,.bss
+String.104.0=0x7ff
 Int.0=0
 Int.1=0
 
@@ -246,10 +246,10 @@ Int.1=0
 
 [Root.STM8_Lib.Config.0.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=cxstm8 +mods0 -customDebCompat -customOpt-no -customC-pp -customLst -l -dDEBUG -i.. -i..\..\..\..\library\base\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.3.0=cxstm8 +mods0 -customDebCompat -customOpt-no -customC-pp -customLst -l -dDEBUG -i.. -i..\..\..\..\library\base\inc -i..\..\..\..\library\stm8s_discovery\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).ls
-String.6.0=2017,12,25,23,4,47
+String.6.0=2017,12,25,23,9,31
 
 [Root.STM8_Lib.Config.0.Settings.2]
 String.2.0=Assembling $(InputFile)...
@@ -270,10 +270,10 @@ Int.1=0
 
 [Root.STM8_Lib.Config.1.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=cxstm8 +mods0 -customC-pp -i.. -i..\..\..\..\library\base\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.3.0=cxstm8 +mods0 -customC-pp -i.. -i..\..\..\..\library\base\inc -i..\..\..\..\library\stm8s_discovery\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).ls
-String.6.0=2017,12,24,14,47,43
+String.6.0=2017,12,25,17,37,3
 
 [Root.STM8_Lib.Config.1.Settings.2]
 String.2.0=Assembling $(InputFile)...
@@ -347,10 +347,10 @@ Int.1=0
 
 [Root.Source Files.Config.0.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=cxstm8 +mods0 -customDebCompat -customOpt-no -customC-pp -customLst -l -dDEBUG -i.. -i..\..\..\..\library\base\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.3.0=cxstm8 +mods0 -customDebCompat -customOpt-no -customC-pp -customLst -l -dDEBUG -i.. -i..\..\..\..\library\base\inc -i..\..\..\..\library\stm8s_discovery\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).ls
-String.6.0=2017,12,25,23,4,47
+String.6.0=2017,12,25,23,9,31
 
 [Root.Source Files.Config.0.Settings.2]
 String.2.0=Assembling $(InputFile)...
@@ -371,10 +371,10 @@ Int.1=0
 
 [Root.Source Files.Config.1.Settings.1]
 String.2.0=Compiling $(InputFile)...
-String.3.0=cxstm8 +mods0 -customC-pp -i.. -i..\..\..\..\library\base\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
+String.3.0=cxstm8 +mods0 -customC-pp -i.. -i..\..\..\..\library\base\inc -i..\..\..\..\library\stm8s_discovery\inc $(ToolsetIncOpts) -cl$(IntermPath) -co$(IntermPath) $(InputFile)
 String.4.0=$(IntermPath)$(InputName).$(ObjectExt)
 String.5.0=$(IntermPath)$(InputName).ls
-String.6.0=2017,12,24,14,47,43
+String.6.0=2017,12,25,17,37,3
 
 [Root.Source Files.Config.1.Settings.2]
 String.2.0=Assembling $(InputFile)...

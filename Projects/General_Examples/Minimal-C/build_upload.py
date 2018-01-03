@@ -31,7 +31,7 @@ else:
 
 # set general options
 MAKE_CORES    = 4
-UPLOAD        = 'BSL'  # select 'BSL' or 'SWIM'
+UPLOAD        = 'SWIM'  # select 'BSL' or 'SWIM'
 OPEN_TERMINAL = False
   
 

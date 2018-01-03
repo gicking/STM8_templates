@@ -48,9 +48,6 @@ void main(void)
   // switch to 16MHz (default is 2MHz)
   CLK.CKDIVR.byte = 0x00;  
   
-  // init timer 3 (delay* & timeout)
-  TIM3_init();
-  
   // init 1ms SW clock
   TIM4_init();
 

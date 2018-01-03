@@ -2,27 +2,28 @@
   \file timer3.c
    
   \author G. Icking-Konert
-  \date 2013-11-22
+  \date 2017-12-30
   \version 0.1
    
-  \brief implementation of timer TIM3 functions/macros for delay and timeout
+  \brief implementation of TIM3 functions/macros 
    
-  implementation of timer TIM3 functions for delay and timeout.
+  implementation of timer TIM3 functions, currently for (mutually exclusive)
+    - generating PWM signals
+    - high accuracy delay* functions
   Optional functionality via #define:
-    - USE_TIM3_UPD_ISR:    call TIM3 update ISR. Is triggered after timeout_ms() is expired
-    - USE_TIM3_CAP_ISR:    call TIM3 capcom ISR. Currently not supported
+    - USE_TIM3_UPD_ISR:    call TIM4 update/overflow ISR
+    - USE_TIM3_CAPCOM_ISR: call TIM3 capture/compare ISR
 */
 
 /*----------------------------------------------------------
     INCLUDE FILES
 ----------------------------------------------------------*/
-#include <stdint.h>
-#include <stdlib.h>
 #include "stm8as.h"
 #include "config.h"
-#define _TIM3_MAIN_          // required for globals in timer3.h
+#define _TIM3_MAIN_          // required for globals in timer4.h
   #include "timer3.h"
 #undef _TIM3_MAIN_
+#include "misc.h"
 
 
 /*----------------------------------------------------------
@@ -32,80 +33,89 @@
 /**
   \fn void TIM3_init(void)
    
-  \brief init timer 3 (delay* & timeout)
+  \brief init timer 3
    
-  init timer TIM3 (used for delay* and timeout).
+  init timer TIM3, i.e. reset to default values
 */
 void TIM3_init(void) {
 
-  // stop the timer
-  TIM3.CR1.reg.CEN = 0;
-  
-  // reset timeout flag and function pointer for TIM3UPD_ISR
-  #ifdef USE_TIM3UPD_ISR
-    g_flagTimeout = 0;
-    m_TIM3UPD_pFct = TIM3_Default;
-  #endif
+  // (mainly) stop timer
+  TIM3.CR1.byte = TIM3_CR1_RESET_VALUE;
 
-  // disable single-shot mode (causes SW stalls)
-  TIM3.CR1.reg.OPM = 0;
+  // disable TIM3 interrupts
+  TIM3.IER.byte = TIM3_IER_RESET_VALUE;
   
-  // set prescaler to fclk/2^4 -> 1MHz clock -> 1us resolution
-  TIM3.PSCR.reg.PSC = 4;
+  // reset status registers
+  TIM3.SR1.byte = TIM3_SR1_RESET_VALUE;
+  TIM3.SR2.byte = TIM3_SR2_RESET_VALUE;
+
+  // 
+  TIM3.EGR.byte = TIM3_EGR_RESET_VALUE;
+
+  // reset PWM mode
+  TIM3.CCMR1.byte = TIM3_CCMR1_RESET_VALUE;
+  TIM3.CCMR2.byte = TIM3_CCMR2_RESET_VALUE;
   
-  // init to 1ms timeout (write high byte first)
-  TIM3.ARR.byteH = 0x03;
-  TIM3.ARR.byteL = 0xE8;
+  // 
+  TIM3.CCER1.byte = TIM3_CCER1_RESET_VALUE;
 
   // reset counter register (write high byte first)
-  TIM3.CNTR.byteH = 0;
-  TIM3.CNTR.byteL = 0;
-      
-  // clear status registers
-  TIM3.SR1.byte = 0x00;
-  TIM3.SR2.byte = 0x00;
+  TIM3.CNTR.byteH = TIM3_CNTRH_RESET_VALUE;
+  TIM3.CNTR.byteL = TIM3_CNTRL_RESET_VALUE;
+  
+  // set prescaler to fclk/2^4 -> 1us resolution (not default) for delayMicroseconds()
+  TIM3.PSCR.reg.PSC = 4;
+  
+  // set max period
+  TIM3.ARR.byteH = TIM3_ARRH_RESET_VALUE;
+  TIM3.ARR.byteL = TIM3_ARRL_RESET_VALUE;
+
+  // reset duty cycles
+  TIM3.CCR1.byteH = TIM3_CCR1H_RESET_VALUE;
+  TIM3.CCR1.byteL = TIM3_CCR1L_RESET_VALUE;
+  TIM3.CCR2.byteH = TIM3_CCR2H_RESET_VALUE;
+  TIM3.CCR2.byteL = TIM3_CCR2L_RESET_VALUE;
   
   // request register update
   TIM3.EGR.reg.UG = 1;
-
-  // disable all TIM3 interrupts
-  TIM3.IER.byte = 0x00;
 
 } // TIM3_init
 
 
 
 /**
-  \fn void delay(uint16_t dt)
+  \fn void TIM3_delay(uint32_t dt)
 
-  \brief halt code execution for specified milliseconds
+  \brief delay code execution for 'ms' using timer 3
    
-  \param dt halt duration in ms
+  \param[in] ms   pause duration in ms
    
-  code execution is halted for specified number of milliseconds. 
+  code execution is halted for specified number of milliseconds
+  using timer 3 -> more accurate than sw_delay() or delay(). 
 */
-void delay(uint16_t dt) {
+void TIM3_delay(uint32_t ms) {
 
-  uint16_t  i;
-  
-  // for simplicity use delayMicroseconds()
-  for (i=0; i<dt; i++)
-    delayMicroseconds(1000);
+  // for simplicity use below TIM3_delayMicroseconds()
+  while (ms) {
+    TIM3_delayMicroseconds(1000);
+    ms--;
+  }
     
-} // delay
+} // TIM3_delay
 
 
 
 /**
-  \fn void delayMicroseconds(uint16_t dt)
+  \fn void TIM3_delayMicroseconds(uint16_t dt)
 
   \brief halt code execution for specified microseconds
    
   \param dt halt duration in us
    
-  code execution is halted for specified number of microseconds. 
+  code execution is halted for specified number of microseconds
+  using timer 3 -> more accurate than sw_delay() or delay(). 
 */
-void delayMicroseconds(uint16_t dt) {
+void TIM3_delayMicroseconds(uint16_t dt) {
   
   // correct for function latency (empirical @ 16MHz)
   dt -= 0;
@@ -139,31 +149,29 @@ void delayMicroseconds(uint16_t dt) {
   // wait for overflow (no interrupts!)
   while (!(TIM3.SR1.reg.UIF));
     
-} // delayMicroseconds
+} // TIM3_delayMicroseconds
 
 
 
 /**
-  \fn void delayNanoseconds(uint16_t dt)
+  \fn void TIM3_delayNanoseconds(uint16_t dt)
 
-  \brief halt code execution for specified 62.5ns units
+  \brief delay code execution for dt*62.5ns using timer 3
    
   \param dt halt duration in 62.5ns units
    
-  code execution is halted for specified number of 62.5ns units. 
+  code execution is halted for specified number of 62.5ns 
+  using timer 3. Note function overhead of xxx ns! 
 */
-void delayNanoseconds(uint16_t dt) {
+void TIM3_delayNanoseconds(uint16_t dt) {
   
-  // convert 250ns-->62.5ns
-  dt *= 4;
-
   // stop timer
   TIM3.CR1.reg.CEN = 0;
 
   // set prescaler to fclk -> 16MHz clock -> 62.5ns resolution
   TIM3.PSCR.reg.PSC = 0;
   
-  // set timout to dt*250ns (freq_Hz=fclk/(prescaler*ARR)) (write high byte first)
+  // set timout to dt*62.5ns (freq_Hz=fclk/(prescaler*ARR)) (write high byte first)
   TIM3.ARR.byteH = (uint8_t) (dt >> 8);
   TIM3.ARR.byteL = (uint8_t) dt;
   
@@ -186,148 +194,121 @@ void delayNanoseconds(uint16_t dt) {
   // wait for overflow (no interrupts!)
   while (!(TIM3.SR1.reg.UIF));
     
-} // delayNanoseconds
+} // TIM3_delayNanoseconds
 
 
 
 /**
-  \fn void startTimeout(uint16_t dt)
+  \fn void TIM3_setFrequency(uint32_t centHz)
 
-  \brief start timeout with specified number of ms
+  \brief set PWM frequency for all channels
    
-  \param dt timeout duration in ms (0=forever)
+  \param[in] centHz   PWM frequency [0.01Hz]
    
-  start timeout with specified number of milliseconds. To check for
-  timeout query respective timer overflow flag.
+  Set PWM frequency in 0.01Hz for all TIM3 compare channels. 
 */
-void startTimeout(uint16_t dt) {
+void TIM3_setFrequency(uint32_t centHz) {
 
-  // stop timer
-  TIM3.CR1.reg.CEN = 0;
+  uint8_t     pre;          // 16b timer prescaler
+  uint16_t    ARR;          // 16b reload value
+  uint16_t    tmp;
 
-  // set prescaler to fclk/2^14 -> ~1kHz clock 
-  TIM3.PSCR.reg.PSC = 14;
+
+  //////////////
+  // calculate timer parameter
+  //////////////
+
+	// find smallest usable prescaler
+	tmp = (uint16_t)(1600000000L / (centHz * UINT16_MAX));
+	pre = 0;
+	while (tmp > (0x0001 << pre))
+	  pre++;
+	
+  // set freq to spec. value (fPWM = fCPU/((2^pre)*(ARR+1))
+  ARR = (uint16_t) (1600000000L >> pre) / centHz - 1;
   
-  // set timout to dt ms (freq_Hz=fclk/(prescaler*ARR)) (write high byte first)
-  TIM3.ARR.byteH = (uint8_t) (dt >> 8);
-  TIM3.ARR.byteL = (uint8_t) dt;
-    
-  // reset counter register (write high byte first)
-  TIM3.CNTR.byteH = (uint8_t) 0;
-  TIM3.CNTR.byteL = (uint8_t) 0;
 
+  //////////////
+  // set PWM period
+  //////////////
+
+  // reset timer registers (just to make sure)
+  TIM3_init();
+	
+  // exit on zero or too low frequency. Above Init deactivates timer 3
+  if ((centHz == 0) || (pre > 15))
+    return;
+
+  // set TIM3 prescaler f = fcpu/2^pre with pre in [0..15]
+  TIM3.PSCR.reg.PSC = pre;
+
+  // set reload value
+  TIM3.ARR.byteH = (uint8_t) (ARR >> 8);
+  TIM3.ARR.byteL = (uint8_t) ARR;
+
+  // set PWM behavior
+  TIM3.CCMR2.regOut.OC2M  = 6;   // PWM mode 1
+  TIM3.CCMR2.regOut.OC2PE = 1;   // pre-load enable
+  TIM3.CCMR2.regOut.CC2S  = 0;   // enable output
+
+  // set active polarity and enable output
+  TIM3.CCER1.reg.CC2P = 0;    // high polarity
+  TIM3.CCER1.reg.CC1E = 1;    // output enable
+  
   // request register update
   TIM3.EGR.reg.UG = 1;
-    
-  // reset update flag
-  TIM3.SR1.reg.UIF = 0;
-    
-  // if update interrupt is configured, activate it (after register update, else ISR)
-  #if defined(USE_TIM3UPD_ISR)
-    g_flagTimeout    = 0;      ///< reset global timeout flag
-    TIM3.IER.reg.UIE = 1;
-  #else
-    TIM3.IER.reg.UIE = 0;
-  #endif
-    
-  // start the timer only if dt!=0
-  if (dt != 0)
-    TIM3.CR1.reg.CEN = 1;
-  else
-    TIM3.CR1.reg.CEN = 0;
   
-} // startTimeout
+  // activate timer
+  TIM1.CR1.reg.CEN = 1;       // start the timer
+  
+} // TIM3_setFrequency
 
 
 
-// if any TIM3 interrupt is used
-#if defined(USE_TIM3UPD_ISR) || defined(USE_TIM3CAP_ISR)
+/**
+  \fn void TIM3_setDutyCycleSingle(uint8_t channel, uint16_t deciPrc)
 
-  /**
-    \fn void TIM3_Default(void)
-     
-    \brief default dummy function for TIM3 ISR
-    
-    default dummy function for below ISRs. Is faster
-    than checking if a function pointer was given or not
-  */
-  void TIM3_Default(void)
-  {
-    return;
-    
-  } // TIM3_Default
-
-#endif // USE_TIM3UPD_ISR || USE_TIM3CAP_ISR
-
-
-
-// if TIM3 update interrupt is used
-#if defined(USE_TIM3UPD_ISR)
-
-  /**
-    \fn void TIM3UPD_attach_interrupt(void (*pFct)(void))
-     
-    \brief attach/detach function call to below UPD ISR
-    
-    \param[in]  pFct  function to call in UPD ISR, or NULL to detach
-     
-    attach/detach function which is called in TIM3 update interrupt
-    service routine. Parameter NULL detaches the function again.
-  */
-  void TIM3UPD_attach_interrupt(void (*pFct)(void)) {
-    
-    uint8_t   tmp;
-    
-    // disable interrupt while modifying
-    tmp = TIM3.IER.byte;
-    TIM3.IER.reg.UIE = 0;
-
-    // attach function to ISR. On NULL reset to default
-    if (pFct != 0)
-      m_TIM3UPD_pFct = pFct;
-    else
-      m_TIM3UPD_pFct = TIM3_Default;
-
-    // restore original interrupt setting
-    TIM3.IER.byte = tmp;
-    
-  } // TIM3UPD_attach_interrupt
-
-
-  /**
-    \fn void TIM3UPD_ISR(void)
-     
-    \brief ISR for TIM3 update
-     
-    interrupt service routine for TIM3 update.
-    Used for optional user function after timeout is expired
-  */
-  #if defined(__CSMC__)
-    @near @interrupt void TIM3UPD_ISR(void)
-  #elif defined(__SDCC)
-    void TIM3UPD_ISR() __interrupt(__TIM3UPD_VECTOR__)
-  #endif
-  {
-    // clear UPD interrupt flag
-    TIM3.SR1.reg.UIF = 0;
+  \brief set PWM duty cycle for single compare channel
    
-    // stop the timer after 1 interrupt (single shot)
-    TIM3.CR1.reg.CEN = 0;
+  \param[in] channel   compare channel
+  \param[in] deciPrc   PWM duty cycle in [0.1%]
+   
+  Set PWM duty cycle in 0.1% for single compare channel. 
+*/
+void TIM3_setDutyCycleSingle(uint8_t channel, uint16_t deciPrc) {
 
-    // disable update interrupt 
-    TIM3.IER.reg.UIE = 0;
-    
-    // set global timeout flag
-    g_flagTimeout = 1;
+  uint16_t   CCR, ARR;
+  
+  // get reload value
+  ARR = ((uint16_t) (TIM3.ARR.byteH)) << 8 + (uint16_t) (TIM3.ARR.byteL);
+  
+  // map duty cycle [0.1%] to reload period
+  CCR = map(deciPrc, 0, 1000, 0, ARR);
+  
+  // set capture/compare value (DC=CCR/ARR)
+  TIM3.CCR1.byteH = (uint8_t) (CCR >> 8);
+  TIM3.CCR1.byteL = (uint8_t) CCR;
 
-    // call external function (default function is faster than checking for NULL) 
-    (*m_TIM3UPD_pFct)();
+} // TIM3_setDutyCycleSingle
 
-    return;
 
-  } // TIM3UPD_ISR
 
-#endif // USE_TIM3UPD_ISR
+/**
+  \fn void TIM3_setDutyCycleAll(uint16_t *deciPrc)
+
+  \brief set PWM duty cycle for all compare channels
+   
+  \param[in] deciPrc   PWM duty cycle in [0.1%]
+  \param[in] channel   compare channel
+   
+  Set PWM duty cycle in 0.1% for all timer 3 compare channels. 
+*/
+void TIM3_setDutyCycleAll(uint16_t *deciPrc) {
+
+  
+
+} // TIM3_setDutyCycleAll
+
 
 /*-----------------------------------------------------------------------------
     END OF MODULE

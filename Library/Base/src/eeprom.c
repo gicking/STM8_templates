@@ -35,7 +35,7 @@
 */
 uint8_t OPT_writeByte(uint16_t addr, uint8_t byte) {
 
-  uint8_t       countTimeout=0;   // use counter rather than timer for flash timeout to avoid conflicts
+  uint8_t    countTimeout;   // use counter for timeout to minimize dependencies
 
   // check address range
   if ((addr < OPT_BaseAddress) || (addr >= OPT_BaseAddress+NUM_OPT))
@@ -64,7 +64,8 @@ uint8_t OPT_writeByte(uint16_t addr, uint8_t byte) {
     *((uint8_t*) addr) = byte;
   
     // wait until done or timeout (normal flash write measured with 0 --> 100 is more than sufficient)
-    while ((!FLASH.IAPSR.reg.EOP) && ((++countTimeout) < 100));
+    countTimeout = 100;                                // ~0.95us/inc -> ~0.1ms
+    while ((!FLASH.IAPSR.reg.EOP) && (countTimeout--));
     
     // lock EEPROM again against accidental erase/write
     FLASH.IAPSR.reg.DUL = 0;
@@ -168,12 +169,14 @@ void OPT_setBootloader(uint8_t state) {
 
 
 /**
-  \fn void flash_writeByte(MEM_POINTER_T physAddr, uint8_t data)
+  \fn uint8_t flash_writeByte(MEM_POINTER_T physAddr, uint8_t data)
   
   \brief write 1B to P-flash (physical address)
   
   \param[in] physAddr   physical address to write to
   \param[in] data       byte to program
+  
+  \return write successful(=1) or error(=0)
 
   write single byte to physical address in P-flash. 
   For memory size and address width see file stm8as.h
@@ -181,9 +184,9 @@ void OPT_setBootloader(uint8_t state) {
   Warning: for simplicity no safeguard is used to protect against
   accidental data loss or even overwriting the application -> use with care!
 */
-void flash_writeByte(MEM_POINTER_T physAddr, uint8_t data) {
+uint8_t flash_writeByte(MEM_POINTER_T physAddr, uint8_t data) {
 
-  uint8_t    countTimeout=0;   // use counter for timeout to avoid timer conflicts
+  uint8_t    countTimeout;   // use counter for timeout to minimize dependencies
   
   // address range check
   if ((physAddr < (uint32_t) (PFLASH_START)) || (physAddr > (uint32_t) (PFLASH_END)))
@@ -204,7 +207,8 @@ void flash_writeByte(MEM_POINTER_T physAddr, uint8_t data) {
     write_1B(physAddr, data);
 
     // wait until done or timeout (normal flash write measured with 0 --> 100 is more than sufficient)
-    while ((!FLASH.IAPSR.reg.EOP) && ((++countTimeout) < 100));
+    countTimeout = 100;                                // ~0.95us/inc -> ~0.1ms
+    while ((!FLASH.IAPSR.reg.EOP) && (countTimeout--));
     
     // lock P-flash again against accidental erase/write
     FLASH.IAPSR.reg.PUL = 0;  
@@ -213,24 +217,29 @@ void flash_writeByte(MEM_POINTER_T physAddr, uint8_t data) {
   // critical section (restore interrupt setting)
   CRITICAL_END;
 
+  // write successful -> return 1
+  return(countTimeout != 0);
+
 } // flash_writeByte
 
 
 
 /**
-  \fn void EEPROM_writeByte(uint16_t logAddr, uint8_t data)
+  \fn uint8_t EEPROM_writeByte(uint16_t logAddr, uint8_t data)
   
   \brief write 1B to D-flash = EEPROM (logical address)
   
   \param[in] logAddr    logical address to write to
   \param[in] data       byte to program
+  
+  \return write successful(=1) or error(=0)
 
   write single byte to physical address in D-flash = EEPROM. 
   For memory size and address width see file stm8as.h
 */
-void EEPROM_writeByte(uint16_t logAddr, uint8_t data) {
+uint8_t EEPROM_writeByte(uint16_t logAddr, uint8_t data) {
 
-  uint8_t    countTimeout=0;   // use counter for timeout to avoid timer conflicts
+  uint8_t    countTimeout;   // use counter for timeout to minimize dependencies
   uint16_t   addr = EEPROM_START+logAddr; 
   
   // address range check
@@ -252,7 +261,8 @@ void EEPROM_writeByte(uint16_t logAddr, uint8_t data) {
     write_1B(addr, data);
 
     // wait until done or timeout (normal flash write measured with 0 --> 100 is more than sufficient)
-    while ((!FLASH.IAPSR.reg.EOP) && ((++countTimeout) < 100));
+    countTimeout = 100;                                // ~0.95us/inc -> ~0.1ms
+    while ((!FLASH.IAPSR.reg.EOP) && (countTimeout--));
     
     // lock EEPROM again against accidental erase/write
     FLASH.IAPSR.reg.DUL = 0;
@@ -260,6 +270,9 @@ void EEPROM_writeByte(uint16_t logAddr, uint8_t data) {
   
   // critical section (restore interrupt setting)
   CRITICAL_END;
+
+  // write successful -> return 1
+  return(countTimeout != 0);
 
 } // EEPROM_writeByte
 
@@ -273,11 +286,13 @@ void EEPROM_writeByte(uint16_t logAddr, uint8_t data) {
   #pragma section (RAM_CODE)
   
   /**
-    \fn void flash_eraseBlock(MEM_POINTER_T addr)
+    \fn uint8_t flash_eraseBlock(MEM_POINTER_T addr)
     
     \brief erase 128B block in P-flash (must be executed from RAM)
     
     \param[in] addr   address of block to erase
+  
+    \return write successful(=1) or error(=0)
   
     erase 128B flash block which contains addr. 
     Actual code for block erase needs to be executed from RAM
@@ -286,7 +301,9 @@ void EEPROM_writeByte(uint16_t logAddr, uint8_t data) {
     Warning: for simplicity no safeguard is used to protect against
     accidental data loss or even overwriting the application -> use with care!
   */
-  void flash_eraseBlock(MEM_POINTER_T addr) {
+  uint8_t flash_eraseBlock(MEM_POINTER_T addr) {
+  
+    uint8_t    countTimeout;   // use counter for timeout to minimize dependencies
   
     // begin critical cection (disable interrupts)
     CRITICAL_START;
@@ -304,7 +321,8 @@ void EEPROM_writeByte(uint16_t logAddr, uint8_t data) {
       FLASH.NCR2.reg.ERASE  = 0;      // complementary register
   
       // wait until access granted
-      while(!FLASH.IAPSR.reg.PUL);
+      countTimeout = 100;                                // ~0.95us/inc -> ~0.1ms
+      while ((!FLASH.IAPSR.reg.PUL) && (countTimeout--));
   
       // init erwase by writing 0x00 to 4B word inside page
       write_4B(addr, 0x00000000);
@@ -318,6 +336,9 @@ void EEPROM_writeByte(uint16_t logAddr, uint8_t data) {
   
     // critical section (restore interrupt setting)
     CRITICAL_END;
+
+    // write successful -> return 1
+    return(countTimeout != 0);
 
   } // flash_eraseBlock
   
@@ -340,7 +361,8 @@ void EEPROM_writeByte(uint16_t logAddr, uint8_t data) {
   */
   void flash_writeBlock(MEM_POINTER_T addr, uint8_t buf[]) {
     
-    uint8_t   i;
+    uint8_t    i;
+    uint8_t    countTimeout;   // use counter for timeout to minimize dependencies
   
     // begin critical cection (disable interrupts)
     CRITICAL_START;
@@ -351,7 +373,8 @@ void EEPROM_writeByte(uint16_t logAddr, uint8_t data) {
       FLASH.PUKR.byte = 0xAE;
     
       // wait until access granted
-      while(!FLASH.IAPSR.reg.PUL);
+      countTimeout = 100;                                // ~0.95us/inc -> ~0.1ms
+      while ((!FLASH.IAPSR.reg.PUL) && (countTimeout--));
     
   
       /////////////// start min. code section in RAM... /////////////////
@@ -374,6 +397,9 @@ void EEPROM_writeByte(uint16_t logAddr, uint8_t data) {
   
     // critical section (restore interrupt setting)
     CRITICAL_END;
+
+    // write successful -> return 1
+    return(countTimeout != 0);
 
   } // flash_writeBlock
   

@@ -327,14 +327,14 @@ void      OPT_setDefault(void);                                  ///< revert to 
 void      OPT_setBootloader(uint8_t state);                      ///< dis-/enable ROM bootloader & reset on change
 
 // P-flash and EEPROM routines
-void      flash_writeByte(MEM_POINTER_T physAddr, uint8_t data); ///< write 1B to P-flash (physical address)
-void      EEPROM_writeByte(uint16_t logAddr, uint8_t data);      ///< write 1B to D-flash = EEPROM (logical address)
+uint8_t   flash_writeByte(MEM_POINTER_T physAddr, uint8_t data); ///< write 1B to P-flash (physical address)
+uint8_t   EEPROM_writeByte(uint16_t logAddr, uint8_t data);      ///< write 1B to D-flash = EEPROM (logical address)
 #define   EEPROM_readByte(logAddr) (*((uint8_t*) (EEPROM_START+logAddr))) ///< read 1B from D-flash = EEPROM (logical address)
 
 // flash block must be executed from RAM. Not yet supported for SDCC
 #if defined(__CSMC__)
-  void    flash_eraseBlock(MEM_POINTER_T addr);                  ///< erase 128B block in flash
-  void    flash_writeBlock(MEM_POINTER_T addr, uint8_t buf[]);   ///< write 128B block to flash
+  uint8_t   flash_eraseBlock(MEM_POINTER_T addr);                  ///< erase 128B block in flash
+  uint8_t   flash_writeBlock(MEM_POINTER_T addr, uint8_t buf[]);   ///< write 128B block to flash
 #endif
 
 /*-----------------------------------------------------------------------------

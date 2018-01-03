@@ -18,13 +18,15 @@
 #define _CONFIG_H_
 
 
-//#include "muBoard_config.h"
-//#include "STM8S_Discovery_config.h"
+// select board to set STM8 family, memory size etc. 
+#include "muBoard_config.h"
 
 /// alternatively select STM8 device directly. For supported devices see file "stm8as.h"
 //#define STM8S208      // muBoard
-#define STM8S105      // muBoard
 
+
+/// required for timekeeping (1ms interrupt)
+#define USE_TIM4_UPD_ISR
 
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION

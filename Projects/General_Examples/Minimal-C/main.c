@@ -9,13 +9,19 @@
   - toggle pin every 500ms w/o timer -> blocking
 **********************/
 
+// define if SW or high-rez delay function is used
+//#define DELAY_HIGHREZ
+
+
 /*----------------------------------------------------------
     INCLUDE FILES
 ----------------------------------------------------------*/
 #include "stm8as.h"     // STM8 peripheral registers
 #include "gpio.h"       // pin access routines
-#include "sw_delay.h"   // dummy pause without timer
-
+#include "sw_delay.h"   // SW pause without timer
+#if defined(DELAY_HIGHREZ)
+  #include "timer3.h"     // pause using TIM3
+#endif
 
 // define board LED pin
 #if defined(STM8S105)
@@ -31,6 +37,8 @@
 // main routine
 void main(void) {
   
+  uint8_t  i;
+  
   // switch to 16MHz (default is 2MHz) 
   CLK.CKDIVR.byte = 0x00;  
 
@@ -41,7 +49,11 @@ void main(void) {
     pinMode(PORT_H, pin3, OUTPUT);    // muBoard LED
   #endif
   
-
+  // initialize TIM3 for highRez_delay()
+  #if defined(DELAY_HIGHREZ)
+    TIM3_setFrequency(10000);
+  #endif
+  
   // main loop
   while (1) {
 
@@ -49,8 +61,18 @@ void main(void) {
     LED ^= 1;
     
     // wait some time
-    sw_delay(500);
 
+    // using SW delay
+    #if !defined(DELAY_HIGHREZ)
+      sw_delay(500);
+
+    // using HW-timer and ms delay
+    #else
+      highRez_delay(500);
+      //for (i=0; i<100; i++) highRez_delayMicroseconds(5000); // us delay with 5ms each
+      //for (i=0; i<200; i++) highRez_delayNanoseconds(40000); // 62.5ns delay (each 2.5ms)
+    #endif
+    
   } // main loop
 
 } // main

@@ -11,6 +11,9 @@ import platform
 import shlex
 from subprocess import Popen, PIPE
 
+# set general options
+SPL_DEVICE = 'STM8S105'     # device name for SPL (see device header in SPL library/inc)
+
 # set OS specific
 if platform.system() == 'Windows':
   PORT         = 'COM10'
@@ -129,8 +132,9 @@ TARGET   = 'main.ihx'
 
 # set command for creating dependencies and set search paths 
 CC       = 'sdcc '
-CFLAGS   = '-mstm8 --std-sdcc99 --opt-code-speed '
-#CFLAGS   = '-mstm8 --std-sdcc99 --debug -DDEBUG '
+CFLAGS   = '-mstm8 --std-sdcc99 --std-c99 --opt-code-speed -D'+SPL_DEVICE+' '
+#CFLAGS   = '-mstm8 --std-sdcc99 --std-c99 --debug -DDEBUG -D'+SPL_DEVICE+' '
+
 LFLAGS   = '-mstm8 -lstm8 --out-fmt-ihx '
 DEPEND   = '-MM '
 INCLUDE  = '-I. '

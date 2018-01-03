@@ -5,19 +5,19 @@ Keyword=ST7Project
 Number=1.3
 
 [Root.STM8_Lib.STM8_Lib\src...\..\..\..\library\base\src\gpio.c.Config.0]
-ExternDep= ..\..\..\..\library\base\src\gpio.c  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\mods0.h"  ..\..\..\..\library\base\inc\gpio.h ..\..\..\..\library\base\inc\stm8as.h  ..\..\..\..\library\base\inc\stdint.h ..\config.h  ..\..\..\..\library\base\inc\misc.h  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\ctype.h"
+ExternDep= ..\..\..\..\library\base\src\gpio.c  "C:\Program Files (x86)\COSMIC\CXSTM8_EVAL\HSTM8\mods0.h"  ..\..\..\..\library\base\inc\gpio.h ..\..\..\..\library\base\inc\stm8as.h  ..\..\..\..\library\base\inc\stdint.h ..\config.h  ..\..\..\..\library\base\inc\misc.h  "C:\Program Files (x86)\COSMIC\CXSTM8_EVAL\HSTM8\ctype.h"
 
 [Root.STM8_Lib.STM8_Lib\src...\..\..\..\library\base\src\gpio.c.Config.1]
-ExternDep= ..\..\..\..\library\base\src\gpio.c  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\mods0.h"  ..\..\..\..\library\base\inc\gpio.h ..\..\..\..\library\base\inc\stm8as.h  ..\..\..\..\library\base\inc\stdint.h ..\config.h  ..\..\..\..\library\base\inc\misc.h  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\ctype.h"
+ExternDep= ..\..\..\..\library\base\src\gpio.c  "C:\Program Files (x86)\COSMIC\CXSTM8_EVAL\HSTM8\mods0.h"  ..\..\..\..\library\base\inc\gpio.h ..\..\..\..\library\base\inc\stm8as.h  ..\..\..\..\library\base\inc\stdint.h ..\config.h  ..\..\..\..\library\base\inc\misc.h  "C:\Program Files (x86)\COSMIC\CXSTM8_EVAL\HSTM8\ctype.h"
 
 [Root.Source Files...\..\..\..\library\base\src\stm8_interrupt_vector.c.Config.0]
-ExternDep=  ..\..\..\..\library\base\src\stm8_interrupt_vector.c  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\mods0.h"  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\stdlib.h" ..\config.h  ..\..\..\..\library\base\inc\stm8_interrupt_vector.h
+ExternDep=  ..\..\..\..\library\base\src\stm8_interrupt_vector.c  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\mods0.h"  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\stdlib.h" ..\config.h  ..\..\..\..\library\muboard\inc\muBoard_config.h  ..\..\..\..\library\base\inc\stm8_interrupt_vector.h
 
 [Root.Source Files...\..\..\..\library\base\src\stm8_interrupt_vector.c.Config.1]
-ExternDep=  ..\..\..\..\library\base\src\stm8_interrupt_vector.c  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\mods0.h"  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\stdlib.h" ..\config.h  ..\..\..\..\library\base\inc\stm8_interrupt_vector.h
+ExternDep=  ..\..\..\..\library\base\src\stm8_interrupt_vector.c  "C:\Program Files (x86)\COSMIC\CXSTM8_EVAL\HSTM8\mods0.h"  "C:\Program Files (x86)\COSMIC\CXSTM8_EVAL\HSTM8\stdlib.h" ..\config.h  ..\..\..\..\library\base\inc\stm8_interrupt_vector.h
 
 [Root.Source Files...\main.c.Config.0]
-ExternDep= ..\main.c "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\mods0.h"  ..\..\..\..\library\base\inc\stm8as.h ..\..\..\..\library\base\inc\stdint.h  ..\config.h ..\..\..\..\library\base\inc\gpio.h  ..\..\..\..\library\base\inc\misc.h  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\ctype.h"  ..\..\..\..\library\base\inc\sw_delay.h
+ExternDep= ..\main.c "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\mods0.h"  ..\..\..\..\library\base\inc\main_general.h ..\config.h  ..\..\..\..\library\muboard\inc\muBoard_config.h  ..\..\..\..\library\base\inc\stm8as.h ..\..\..\..\library\base\inc\stdint.h  ..\..\..\..\library\base\inc\binary.h ..\..\..\..\library\base\inc\gpio.h  ..\..\..\..\library\base\inc\misc.h  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\ctype.h"  ..\..\..\..\library\base\inc\timer3.h ..\..\..\..\library\base\inc\timer4.h  ..\..\..\..\library\base\inc\sw_delay.h  ..\..\..\..\library\base\inc\stm8_interrupt_vector.h  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\float.h"  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\math.h"  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\stdio.h"  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\stdlib.h"  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\string.h"
 
 [Root.Source Files...\main.c.Config.1]
-ExternDep= ..\main.c "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\mods0.h"  ..\..\..\..\library\base\inc\stm8as.h ..\..\..\..\library\base\inc\stdint.h  ..\config.h ..\..\..\..\library\base\inc\gpio.h  ..\..\..\..\library\base\inc\misc.h  "C:\Program Files\COSMIC\CXSTM8_EVAL\Hstm8\ctype.h"  ..\..\..\..\library\base\inc\sw_delay.h
+ExternDep= ..\main.c  "C:\Program Files (x86)\COSMIC\CXSTM8_EVAL\HSTM8\mods0.h"  ..\..\..\..\library\base\inc\stm8as.h ..\..\..\..\library\base\inc\stdint.h  ..\config.h ..\..\..\..\library\base\inc\gpio.h  ..\..\..\..\library\base\inc\misc.h  "C:\Program Files (x86)\COSMIC\CXSTM8_EVAL\HSTM8\ctype.h"  ..\..\..\..\library\base\inc\sw_delay.h

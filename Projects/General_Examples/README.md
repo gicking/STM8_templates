@@ -27,6 +27,15 @@ Basic_Project:
   - poll SW clock and toggle pin every 500ms -> non-blocking
 
 
+Timeout_Scheduler:
+----------
+  Arduino-like project with setup() & loop(). Use several timeouts
+  to execute periodic tasks in loop(). 
+  Functionality:
+  - configure 2 (LED-)pins as output
+  - toggle 2 pins at different intervals
+
+
 Attach_1ms_Interrupt: 
 ----------
   Arduino-like project with setup() & loop(). Dynamically attach 
@@ -35,6 +44,7 @@ Attach_1ms_Interrupt:
   Functionality:
   - configure 2 pins as output high
   - attach pin toggle function to 1ms interrupt -> background operation
+  - use timeouts to periodically perform tasks in ISR
   - after 10 cycles swap user function
   - after 20 cycles detach user function
 

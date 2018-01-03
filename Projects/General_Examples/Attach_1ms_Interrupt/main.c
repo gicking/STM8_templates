@@ -5,6 +5,7 @@
   Functionality:
   - configure 2 pins as output high
   - attach pin toggle function to 1ms interrupt -> background operation
+  - use timeouts to periodically perform tasks in ISR
   - after 10 cycles swap user function
   - after 20 cycles detach user function
 **********************/
@@ -27,6 +28,9 @@ void toggle_green(void);
 #define LED_GREEN  pinSet(PORT_H, pin2)
 #define LED_RED    pinSet(PORT_H, pin3)
 
+// blink delay [ms]
+#define BLINK_DELAY   500
+
 
 /*----------------------------------------------------------
     FUNCTIONS
@@ -37,12 +41,14 @@ void toggle_green(void);
 //////////
 void toggle_red(void) {
   
-  static uint16_t  count1ms = 0;
   static uint8_t   numToggle = 0;
 
-  if (++count1ms == 500) {
-    count1ms = 0;
-
+  // check if timeout 0 has passed
+  if (checkTimeout(0)) {
+  
+    // restart timeout 0
+    setTimeout(0, BLINK_DELAY);
+    
     // toggle LED state
     LED_RED ^= 1;
 
@@ -50,7 +56,7 @@ void toggle_red(void) {
     if (++numToggle == 10)
       attachInterruptMillis(toggle_green);
 
-  } // 500ms
+  } // timout passed
 
 } // toggle_red
 
@@ -60,12 +66,14 @@ void toggle_red(void) {
 //////////
 void toggle_green(void) {
   
-  static uint16_t  count1ms = 0;
   static uint8_t   numToggle = 0;
 
-  if (++count1ms == 500) {
-    count1ms = 0;
-
+  // check if timeout 0 has passed
+  if (checkTimeout(0)) {
+  
+    // restart timeout 0
+    setTimeout(0, BLINK_DELAY);
+    
     // toggle LED state
     LED_GREEN ^= 1;
 
@@ -87,10 +95,13 @@ void setup() {
   // configure LED pins and init to off(=1)
   pinMode(PORT_H, pin2, OUTPUT);
   pinMode(PORT_H, pin3, OUTPUT);
-  portSet(PORT_H) = B00001100;
+  portSet(PORT_H) = 0b00001100;
   
   // attach user function to 1ms interrupt
   attachInterruptMillis(toggle_red);
+
+  // set initial timeout 0
+  setTimeout(0, BLINK_DELAY);
 
 } // setup
 

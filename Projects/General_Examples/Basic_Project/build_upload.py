@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 '''
  Script for making and uploading a STM8 project with dependency auto-detection
@@ -31,7 +31,7 @@ else:
 
 # set general options
 MAKE_CORES    = 4
-UPLOAD        = 'BSL'  # select 'BSL' or 'SWIM'
+UPLOAD        = 'SWIM'  # select 'BSL' or 'SWIM'
 OPEN_TERMINAL = False
   
 
@@ -91,19 +91,7 @@ def listSubdirs( start='.' ):
 
 
 #########
-def get_exitcode_stdout_stderr(cmd):
-  """
-   execute the external command and get its exitcode, stdout and stderr.
-  """
-  args = shlex.split(cmd)
-  proc = Popen(args, stdout=PIPE, stderr=PIPE)
-  out, err = proc.communicate()
-  exitcode = proc.returncode
-  return exitcode, out, err
-
-
-#########
-def get_swim_device(start='.'):
+def executeWithOutput(cmd):
   """
    execute the external command and get its exitcode, stdout and stderr.
   """
@@ -129,8 +117,8 @@ TARGET   = 'main.ihx'
 
 # set command for creating dependencies and set search paths 
 CC       = 'sdcc '
-CFLAGS   = '-mstm8 --std-sdcc99 --std-c99 --opt-code-speed '
-#CFLAGS   = '-mstm8 --std-sdcc99 --std-c99 --debug -DDEBUG '
+CFLAGS   = '-mstm8 --std-sdcc99 --opt-code-speed '
+#CFLAGS   = '-mstm8 --std-sdcc99 --debug -DDEBUG '
 LFLAGS   = '-mstm8 -lstm8 --out-fmt-ihx '
 DEPEND   = '-MM '
 INCLUDE  = '-I. '
@@ -146,7 +134,7 @@ header_done = set()
 object_done = set()
 
 # generate generic Makefile header
-Makefile = open('Makefile', 'wb')
+Makefile = open('Makefile', 'w')
 Makefile.write('OBJDIR   = '+OBJDIR+'\n')
 Makefile.write('TARGET   = '+TARGET+'\n\n')
 Makefile.write('.PHONY: clean all default objects\n\n')
@@ -174,40 +162,40 @@ while (len(source_todo) > 0):
     source = source.replace('\\','/')
 
   # use compiler generate dependency list
-  cmd = CC+DEPEND+CFLAGS+INCLUDE+source
-  #print cmd
-  exitcode, out, err = get_exitcode_stdout_stderr(cmd)
+  cmd = CC+DEPEND+CFLAGS+INCLUDE+str(source)
+  #print(cmd)
+  exitcode, out, err = executeWithOutput(cmd)
   if (exitcode != 0):
-    print 'error: ' + err
+    print('error: ' + str(err))
     getchar()
     exit()
   
   # append .c file with dependency and compile instruction to Makefile
-  Makefile.write('$(OBJDIR)/'+out)
+  Makefile.write('$(OBJDIR)/'+str(out))
   #print(out)
   Makefile.write('\t'+CC+CFLAGS+INCLUDE+'-c $< -o $@\n\n')
   
   # extract file list including object[0], source[1] and headers[2..N]
-  out = out.replace(':', '')
-  out = out.replace('\\', '')
-  out = out.replace('\n', '')
+  out = out.replace(b':',  b'')
+  out = out.replace(b'\\', b'')
+  out = out.replace(b'\n', b'')
   out = out.split()
-  #print out
+  #print(out)
 
   # for all files returned by compiler...
   for next in out:
     
     # append object files for linker
-    if next.endswith('.rel'):
+    if next.endswith(b'.rel'):
       object_done.add(next)
 
     # if corresponding source to header exists, add to pending sources
-    if next.endswith('.h'):
+    if next.endswith(b'.h'):
       if next not in header_done:           # not yet in list
         header_done.add(next)                 # add to treated headers
-        next = (next[::-1].replace("/inc/"[::-1], "/src/"[::-1], 1))[::-1]  # replace last /inc/ by /src/ (see https://stackoverflow.com/questions/2556108/rreplace-how-to-replace-the-last-occurrence-of-an-expression-in-a-string)        
-        if (os.path.isfile(next[:-1]+'c')):   # if corresponding .c exists, add to todo list
-          source_todo.add(next[:-1]+'c')
+        next = (next[::-1].replace(b"/inc/"[::-1], b"/src/"[::-1], 1))[::-1]  # replace last /inc/ by /src/ (see https://stackoverflow.com/questions/2556108/rreplace-how-to-replace-the-last-occurrence-of-an-expression-in-a-string)        
+        if (os.path.isfile(next[:-1]+b'c')):   # if corresponding .c exists, add to todo list
+          source_todo.add(next[:-1]+b'c')
 
 
 # link project object files
@@ -229,7 +217,7 @@ Makefile.close()
 print("")
 sys.stdout.write('building target ... ')
 sys.stdout.flush()
-exitcode, out, err = get_exitcode_stdout_stderr(MAKE_TOOL+' -j'+str(MAKE_CORES))
+exitcode, out, err = executeWithOutput(MAKE_TOOL+' -j'+str(MAKE_CORES))
 if (exitcode != 0):
   sys.stderr.write(err+'\n')
   getchar()
@@ -247,8 +235,8 @@ if UPLOAD == 'BSL':
   cmd = TOOL_DIR+BSL_FLASHER+' -p '+PORT+' -w '+OBJDIR+'/'+TARGET+' -v' 
   if platform.system() == 'Windows':
     cmd = cmd.replace('/','\\')
-  #print cmd
-  #exitcode, out, err = get_exitcode_stdout_stderr(cmd)
+  #print(cmd)
+  #exitcode, out, err = executeWithOutput(cmd)
   exitcode = os.system(cmd)
   if (exitcode != 0):
     #sys.stderr.write(err+'\n')
@@ -264,8 +252,8 @@ if UPLOAD == 'SWIM':
     cmd = cmd.replace('/','\\')
   else:                                 # POSIX: use stm8flash, see https://github.com/vdudouyt/stm8flash 
     cmd = TOOL_DIR+SWIM_FLASHER+' -c '+SWIM_TOOL+' -w '+OBJDIR+'/'+TARGET+' -p '+SWIM_NAME 
-  #print cmd
-  #exitcode, out, err = get_exitcode_stdout_stderr(cmd)
+  #print(cmd)
+  #exitcode, out, err = executeWithOutput(cmd)
   exitcode = os.system(cmd)
   if (exitcode != 0):
     #sys.stderr.write(err+'\n')

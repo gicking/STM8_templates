@@ -58,7 +58,7 @@ void setup() {
   
   // configure LED pins and init to off(=1)
   pinMode(PORT_D, pin0, OUTPUT);
-  portSet(PORT_D) |= B00000001;
+  portSet(PORT_D) |= 0b00000001;
   
   // attach user function to 1ms interrupt
   attachInterruptMillis(toggle_LED);

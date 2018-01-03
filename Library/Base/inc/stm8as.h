@@ -37,6 +37,13 @@
  STM8S007     value line high density device
 */
 
+// check if device is supported
+#if !defined (STM8S103) && !defined (STM8S903) && !defined (STM8S105) && !defined (STM8S208) \
+    && !defined (STM8S207) && !defined (STM8AF622x) && !defined (STM8AF626x) && !defined (STM8AF52Ax) \
+    && !defined (STM8AF62Ax) && !defined (STM8S003) && !defined (STM8S005) && !defined (STM8S007) 
+  #error "select supported STM8S/A device. For a list, see file 'stm8as.h'"
+#endif
+
 // availability of peripherals (partially device dependent)
 #define HAS_PORTA
 #define HAS_PORTB
@@ -44,8 +51,8 @@
 #define HAS_PORTD
 #define HAS_PORTE
 #define HAS_PORTF
-#if defined(STM8S207) || defined (STM8S007) || defined(STM8S208) || defined(STM8S105) || defined(STM8S005) || defined (STM8AF52Ax) || \
-    defined (STM8AF62Ax) || defined (STM8AF626x)
+#if defined(STM8S207) || defined (STM8S007) || defined(STM8S208) || defined(STM8S105) || \
+    defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
   #define HAS_PORTG
 #endif
 #if defined(STM8S207) || defined (STM8S007) || defined(STM8S208) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
@@ -67,8 +74,8 @@
 #if defined (STM8S208) || defined (STM8AF52Ax)
   #define HAS_CAN
 #endif
-#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || defined(STM8S003) || defined(STM8S903) || \
-    defined (STM8AF52Ax) || defined (STM8AF62Ax)
+#if defined(STM8S208) ||defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || \
+    defined(STM8S003) ||defined(STM8S903) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
   #define HAS_UART1
 #endif
 #if defined (STM8S105) || defined (STM8S005) || defined (STM8AF626x)
@@ -80,24 +87,24 @@
 #if defined(STM8AF622x)
   #define HAS_UART4
 #endif
-#if defined(STM8S105) || defined(STM8S005) || defined(STM8S103) || defined(STM8S003) || defined(STM8S903) || defined(STM8AF626x) || \
-    defined(STM8AF622x)
+#if defined(STM8S105) || defined(STM8S005) || defined(STM8S103) || defined(STM8S003) || \
+    defined(STM8S903) || defined(STM8AF626x) || defined(STM8AF622x)
   #define HAS_ADC1
 #endif
 #if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
   #define HAS_ADC2
 #endif
 #define HAS_TIM1
-#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || defined(STM8S003) || defined(STM8S105) || \
-    defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
+#if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || defined(STM8S003) || \
+    defined(STM8S105) || defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
   #define HAS_TIM2
 #endif
 #if defined(STM8S208) || defined(STM8S207) || defined (STM8S007) || defined(STM8S105) || \
     defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
   #define HAS_TIM3
 #endif
-#if defined(STM8S208) ||defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || defined(STM8S003) || defined(STM8S105) || \
-    defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
+#if defined(STM8S208) ||defined(STM8S207) || defined (STM8S007) || defined(STM8S103) || defined(STM8S003) || \
+    defined(STM8S105) || defined(STM8S005) || defined (STM8AF52Ax) || defined (STM8AF62Ax) || defined (STM8AF626x)
   #define HAS_TIM4
 #endif
 #if defined (STM8S903) || defined (STM8AF622x)
@@ -3850,20 +3857,20 @@ typedef struct {
     } RCR;
 
 
-    /** TIM1 16-bit capture/compare value 1 (TIM1_CC1R) */
-    word_t        CC1R;
+    /** TIM1 16-bit capture/compare value 1 (TIM1_CCR1) */
+    word_t        CCR1;
 
 
-    /** TIM1 16-bit capture/compare value 2 (TIM1_CC2R) */
-    word_t        CC2R;
+    /** TIM1 16-bit capture/compare value 2 (TIM1_CCR2) */
+    word_t        CCR2;
 
 
-    /** TIM1 16-bit capture/compare value 3 (TIM1_CC3R) */
-    word_t        CC3R;
+    /** TIM1 16-bit capture/compare value 3 (TIM1_CCR3) */
+    word_t        CCR3;
 
 
-    /** TIM1 16-bit capture/compare value 4 (TIM1_CC4R) */
-    word_t        CC4R;
+    /** TIM1 16-bit capture/compare value 4 (TIM1_CCR4) */
+    word_t        CCR4;
     
     
     /** TIM1 Break register (TIM1_BKR) */
@@ -4203,16 +4210,16 @@ typedef struct {
     word_t        ARR;
 
 
-    /** TIM2 16-bit capture/compare value 1 (TIM2_CC1R) */
-    word_t        CC1R;
+    /** TIM2 16-bit capture/compare value 1 (TIM2_CCR1) */
+    word_t        CCR1;
 
 
     /** TIM2 16-bit capture/compare value 2 (TIM2_CC2R) */
-    word_t        CC2R;
+    word_t        CCR2;
 
 
     /** TIM2 16-bit capture/compare value 3 (TIM2_CC3R) */
-    word_t        CC3R;
+    word_t        CCR3;
 
   } TIM2_t;
 
@@ -4435,12 +4442,12 @@ typedef struct {
     word_t        ARR;
 
 
-    /** TIM3 16-bit capture/compare value 1 (TIM3_CC1R) */
-    word_t        CC1R;
+    /** TIM3 16-bit capture/compare value 1 (TIM3_CCR1) */
+    word_t        CCR1;
 
 
-    /** TIM3 16-bit capture/compare value 2 (TIM3_CC2R) */
-    word_t        CC2R;
+    /** TIM3 16-bit capture/compare value 2 (TIM3_CCR2) */
+    word_t        CCR2;
 
   } TIM3_t;
 
@@ -4866,16 +4873,16 @@ typedef struct {
     word_t        ARR;
 
 
-    /** TIM5 16-bit capture/compare value 1 (TIM5_CC1R) */
-    word_t        CC1R;
+    /** TIM5 16-bit capture/compare value 1 (TIM5_CCR1) */
+    word_t        CCR1;
 
 
-    /** TIM5 16-bit capture/compare value 2 (TIM5_CC2R) */
-    word_t        CC2R;
+    /** TIM5 16-bit capture/compare value 2 (TIM5_CCR2) */
+    word_t        CCR2;
 
 
-    /** TIM5 16-bit capture/compare value 3 (TIM5_CC3R) */
-    word_t        CC3R;
+    /** TIM5 16-bit capture/compare value 3 (TIM5_CCR3) */
+    word_t        CCR3;
 
   } TIM5_t;
 

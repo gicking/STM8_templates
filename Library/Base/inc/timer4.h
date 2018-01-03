@@ -66,6 +66,19 @@
 /// init timer 4 (1ms master clock)
 void TIM4_init(void);
 
+/// delay code execution for 'ms'
+void delay(uint32_t ms);
+
+/// delay code execution for 'us'
+void delayMicroseconds(uint32_t us);
+
+/// start timeout N (0..NUM_TIMEOUTS-1) with 'ms'
+void setTimeout(uint8_t N, uint32_t ms);
+
+/// check timeout N (0..NUM_TIMEOUTS-1)
+uint8_t checkTimeout(uint8_t N);
+
+
 // with optional call to user function in 1ms ISR
 #if defined(USE_MILLI_ISR)
   

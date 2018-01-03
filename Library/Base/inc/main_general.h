@@ -23,9 +23,7 @@
 -----------------------------------------------------------------------------*/
 #include "config.h"                 // for optional features
 #include "stm8as.h"                 // STM8 registers etc.
-#include "binary.h"                 // binary literals
 #include "gpio.h"                   // every embedded SW uses pins somehow...
-#include "timer3.h"                 // for (accurate) delay* functions
 #include "timer4.h"                 // required for SW clock
 #include "misc.h"                   // no code overhead, only inline functions
 #include "sw_delay.h"               // no code overhead, only inline functions
