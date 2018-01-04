@@ -28,3 +28,7 @@ doxygen/html
 /Docu/Obsolete
 /Docu/PiAndMore_2017
 /Docu/.~lock.*
+/Tools/__pycache__/misc.cpython-35.pyc
+/Tools/misc.pyc
+/Tools/uploadHex.pyc
+/Tools/buildProject.pyc
