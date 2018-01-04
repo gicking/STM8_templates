@@ -1,7 +1,7 @@
 muBoard Projects
 =================
 
-This folder contains some muBoard specific example projects for
+This folder contains some [muBoard](https://frosch.piandmore.de//de/pam9/call/public-media/event_media/160611_Vortrag_Interpreter.pdf) specific example projects for
 the STM8 template library. The functionality (loosely sorted by 
 rising complexity) is as follows:
 
@@ -16,7 +16,4 @@ I2C_LCD-Display:
  - initialize and reset LCD display
  - periodically print time to LCD  
 
-
-xxx: 
-----------
 
