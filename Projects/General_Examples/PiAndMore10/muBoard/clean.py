@@ -29,7 +29,6 @@ def removeFolder(foldername):
     
     # delete folder itself
     os.rmdir(foldername) 
- 
   # end removeFolder()
 
 
@@ -38,10 +37,11 @@ def removeFile(path=os.curdir, pattern='XYX'):
   """
    delete file ending with pattern
   """
-  for filename in os.listdir(path):
-    if filename.endswith(pattern):
-      os.remove(os.path.join(path, filename)) 
-      #print(filename)    
+  if os.path.exists(path):
+    for filename in os.listdir(path):
+      if filename.endswith(pattern):
+        os.remove(os.path.join(path, filename)) 
+        #print(filename)    
   # end removeFile()
 
 
@@ -52,9 +52,18 @@ def removeFile(path=os.curdir, pattern='XYX'):
    
 removeFile('.','Makefile')
 removeFile('.','.DS_Store')
+removeFile('./STVD_Cosmic','.DS_Store')
 removeFile('.','*.TMP')
+removeFile('./STVD_Cosmic','.TMP')
+removeFile('./STVD_Cosmic','.spy')
+#removeFile('./STVD_Cosmic','.dep')
+removeFile('./STVD_Cosmic','.pdb')
+removeFile('./STVD_Cosmic','.wdb')
+#removeFile('./STVD_Cosmic','.wed')
 removeFolder('./-p')
 removeFolder('./output')
+removeFolder('./STVD_Cosmic/Release')
+removeFolder('./STVD_Cosmic/Debug')
   
 # END OF MODULE
 

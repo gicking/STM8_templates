@@ -29,7 +29,6 @@ def removeFolder(foldername):
     
     # delete folder itself
     os.rmdir(foldername) 
- 
   # end removeFolder()
 
 
@@ -38,10 +37,11 @@ def removeFile(path=os.curdir, pattern='XYX'):
   """
    delete file ending with pattern
   """
-  for filename in os.listdir(path):
-    if filename.endswith(pattern):
-      os.remove(os.path.join(path, filename)) 
-      #print(filename)    
+  if os.path.exists(path):
+    for filename in os.listdir(path):
+      if filename.endswith(pattern):
+        os.remove(os.path.join(path, filename)) 
+        #print(filename)    
   # end removeFile()
 
 

@@ -31,7 +31,6 @@
 /// allow attaching user function to 1ms interrupt
 #define USE_MILLI_ISR
 
-
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION
 -----------------------------------------------------------------------------*/

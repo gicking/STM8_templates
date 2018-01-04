@@ -48,9 +48,9 @@
     DECLARATION OF GLOBAL MACROS
 -----------------------------------------------------------------------------*/
 
-#define flagMilli()           g_flagMilli      ///< 1ms flag. Set in 1ms ISR
-#define clearFlagMilli()      g_flagMilli=0    ///< clear 1ms flag
-#define millis()              g_millis         ///< get milliseconds since start of program
+#define flagMilli()           g_flagMilli                   ///< 1ms flag. Set in 1ms ISR
+#define clearFlagMilli()      g_flagMilli=0                 ///< clear 1ms flag
+#define millis()              g_millis                      ///< get milliseconds since start of program
 
 // with attachable user functions 
 #if defined(USE_MILLI_ISR)
@@ -123,11 +123,17 @@ INLINE uint32_t micros(void) {
   
   // calculate current time [us], including global variable (1000us steps) and counter value (4us steps)
   us  = g_micros;
-  //us += ((uint16_t) cnt) << 2;    // avoid due to re-entrance bug in Cosmic compiler!
-  us += cnt;
-  us += cnt;
-  us += cnt;
-  us += cnt;
+  #if defined(__CSMC__)     // Cosmic compiler has a re-entrance bug with bitshift
+    us += 4 * (uint16_t) cnt;
+    /*
+    us += cnt;
+    us += cnt;
+    us += cnt;
+    us += cnt;
+    */
+  #else
+    us += ((uint16_t) cnt) << 2;
+  #endif
   
   // account for possible overflow of TIM4 --> check UIF (= bit 0)
   if ((uif & 0x01) && (cnt != 250))

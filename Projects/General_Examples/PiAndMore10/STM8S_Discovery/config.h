@@ -22,9 +22,11 @@
 #include "STM8S_Discovery_config.h"
 
 
+/// required for timekeeping (1ms interrupt)
+#define USE_TIM4_UPD_ISR
+
 /// allow attaching user function to 1ms interrupt
 #define USE_MILLI_ISR
-
 
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION

@@ -13,8 +13,6 @@
     INCLUDE FILES
 ----------------------------------------------------------*/
 #include "main_general.h"    // board-independent main
-#include "uart1_blocking.h"  // minimal UART1 communication
-#include "putchar.h"         // for printf()
 #include "i2c.h"
 #include "i2c_lcd.h"
 

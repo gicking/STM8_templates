@@ -169,11 +169,7 @@ Auto-Wakeup:
 ----------
   Arduino-like project with setup() & loop().
   Periodically enter STOP mode with auto-wake.
-  Send Status via UART1 to PC
   Functionality:
-  - configure UART1 for PC in-/output
-  - use UART1 send for putchar() output
   - attach ISR to AWU interrupt
-  - periodically enter STOP mode
-  - in AWU interrupt print status
+  - periodically enter STOP mode with auto-wake
 

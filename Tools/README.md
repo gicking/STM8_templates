@@ -23,12 +23,12 @@ terminal.py (provided):
   Simple serial terminal in Python. Requires [Python](https://www.python.org/) installation with additional package `pySerial`
 
 
-create_makefile.py (provided):
+buildProject.py (provided):
 ----------------------------------
-  Helper script to generate a Makefile for SDCC with automatic dependency checking. Is called by project build script
+  Routines for generate Makefile and build project. Is called by project build script
 
 
-build_project.py (provided):
+misc.py (provided):
 ----------------------------------
-  Helper script to build a SDCC project using above Makefile. Is called by project build script
+  Gereric helper routines
 

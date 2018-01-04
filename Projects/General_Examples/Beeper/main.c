@@ -52,6 +52,8 @@ void loop() {
     tone(freq,0);
     sw_delay(75);
   }
+  tone(0,0);
+  sw_delay(1500);
 
 } // loop
 

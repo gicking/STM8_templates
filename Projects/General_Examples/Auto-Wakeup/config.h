@@ -24,7 +24,6 @@
  
 /// select STM8 device (no default). For supported devices see file "stm8as.h"
 #define STM8S208      // muBoard
-//#define STM8S105      // STM8S Discovery
 
 
 /*-----------------------------------------------------------------------------

@@ -32,7 +32,7 @@
    
   \brief enter CPU halt mode with auto-wake after N milliseconds
   
-  \param[in]  ms    sleep duration [ms] within [1;30720]
+  \param[in]  ms    sleep duration [ms] within [1;30000]
   
   enter HALT mode with auto-wake after specified number of milliseconds.
 
@@ -46,7 +46,7 @@ void AWU_HaltMode(uint16_t ms) {
   // skip optional measurement of LSI with fCPU
 
   // clip to valid AWU range
-  ms = constrain(ms, 1, 30720);
+  ms = constrain(ms, 1, 30000);
 
   // calculate AWU parameters
   if (ms>=5120) {
