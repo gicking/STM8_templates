@@ -86,6 +86,21 @@ Printf_UART:
   - every 500ms send current time via printf()
 
 
+Dhrystone: 
+----------
+  STM8 port of Dhrystone benchmark test without Arduino-like 
+  initialization and setup()/loop(), but with interrupts and
+  UART output.
+  Functionality (see "portme.c"):
+  - init FCPU to 16MHz
+  - init 1ms TIM4 interrupt (for measuring times)
+  - configure UART1 for output via UART1
+  - run benchmark test and print result
+  Note:
+  - SDCC requires ISRs declared in source containing main(), here "dhry_1.c"
+  - template based on: http://www.colecovision.eu/stm8/dhrystone-stm8af5288-usart3-sdcc-3.6.0.tar.gz
+
+
 Gets_Printf_UART:
 ----------
   Arduino-like project with setup() & loop(). Read number

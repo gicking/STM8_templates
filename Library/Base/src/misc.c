@@ -70,12 +70,12 @@ uint8_t log2(uint32_t arg) {
 */
 #if defined(USE_FTOA)
   char *floatToString(char *buf, float f, uint8_t digits) {
-
+  
     uint8_t   i;
     int32_t   scale;
     int32_t   pre, post;
     char      fmt[15];
-
+  
     // clip digits to 6
     if (digits > 6)
       digits = 6;

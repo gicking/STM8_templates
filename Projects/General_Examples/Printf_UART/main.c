@@ -34,8 +34,6 @@
 //////////
 void setup() {
 
-  char    str[20];
-  
   // configure LED pin
   pinMode(PORT_H, pin3, OUTPUT);
 

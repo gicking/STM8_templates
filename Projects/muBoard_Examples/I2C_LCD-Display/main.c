@@ -35,8 +35,8 @@ void setup() {
   lcd_init();
 
   // print to LCD
-  sprintf(str, "hello user...");
-  lcd_print(1, 1, str);
+  //sprintf(str, );
+  lcd_print(1, 1, "hello user...");
   
 } // setup
 

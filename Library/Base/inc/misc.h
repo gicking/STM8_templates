@@ -60,7 +60,7 @@
 #ifndef boolean
   #define  boolean                (uint8_t)
 #endif
-/* collide with stm8as.h
+/* collides with definitions in stm8as.h -> skip
 #ifndef byte
   #define  byte                   (uint8_t)
 #endif
@@ -169,8 +169,8 @@
 /// simple calculation of log2(x)
 uint8_t log2(uint32_t arg);
 
-/// convert float to ascii string for printf() output
 #if defined(USE_FTOA)
+  /// convert float to ascii string for printf() output. Adds ~3.3kB -> require USE_FTOA
   char *floatToString(char *buf, float f, uint8_t digits);
 #endif
 
