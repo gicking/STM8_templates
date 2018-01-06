@@ -1,3 +1,6 @@
+back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
+
+
 muBoard Examples
 =================
 
@@ -16,4 +19,6 @@ I2C_LCD-Display:
  - initialize and reset LCD display
  - periodically print time to LCD  
 
+
+back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
 

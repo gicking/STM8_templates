@@ -1,3 +1,6 @@
+back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
+
+
 Standard Peripheral Library Examples
 =================
 
@@ -54,4 +57,7 @@ Basic_Project:
   Functionality:
   - use SPL to configure LED pin as output
   - toggle LED via SPL every 500ms
+
+
+back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
 

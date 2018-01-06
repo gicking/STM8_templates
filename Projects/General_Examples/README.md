@@ -1,3 +1,6 @@
+back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
+
+
 General Examples
 =================
 
@@ -200,4 +203,7 @@ Auto-Wakeup:
   Functionality:
   - attach ISR to AWU interrupt
   - periodically enter STOP mode with auto-wake
+
+
+back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
 

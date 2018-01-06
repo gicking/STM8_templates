@@ -1,3 +1,6 @@
+back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
+
+
 STM8S Discovery Examples
 =================
 
@@ -35,4 +38,7 @@ Attach_1ms_Interrupt:
   - configure LED pin as output
   - attach LED toggle function to 1ms interrupt -> background operation
   - after 20 cycles detach user function
+
+
+back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
 
