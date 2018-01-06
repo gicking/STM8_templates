@@ -18,6 +18,19 @@ Minimal-C:
   - optionally use delay via SW (less overhead & latency) or timer 3 (robust against high ISR load)
 
 
+Minimal-C_with_ISR
+----------
+  simple C-project without Arduino-like initialization and 
+  setup()/loop(), but with interrupt.
+  Functionality (see "portme.c"):
+  - init FCPU to 16MHz
+  - configure pin as output
+  - init 1ms TIM4 interrupt (for measuring times)
+  - toggle pin every 500ms based on SW clock (->non-blocking)
+  Note:
+  - SDCC requires ISRs declared in source containing main()
+
+
 Basic_Project: 
 ----------
   Arduino-like project with setup() & loop(). Only 1ms interrupts
