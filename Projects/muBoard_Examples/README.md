@@ -1,4 +1,4 @@
-muBoard Projects
+muBoard Examples
 =================
 
 This folder contains some [muBoard](https://frosch.piandmore.de//de/pam9/call/public-media/event_media/160611_Vortrag_Interpreter.pdf) specific example projects for

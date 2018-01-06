@@ -1,4 +1,4 @@
-Introduction
+Standard Peripheral Library Examples
 =================
 
 This folder contains some examples for mixing "STM8_templates"

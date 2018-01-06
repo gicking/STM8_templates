@@ -1,4 +1,4 @@
-Example Projects
+General Examples
 =================
 
 This folder contains some general, board independent examples for
