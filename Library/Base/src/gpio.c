@@ -28,7 +28,7 @@
     defined(USE_PORTE_ISR) || defined(USE_PORTF_ISR) || defined(USE_PORT_ISR)
 
   /**
-    \fn void configExintEdge(PORT_t *addrPort, uint8_t edge)
+    \fn void mConfigExintEdge(PORT_t *addrPort, uint8_t edge)
      
     \brief configure edge sensitivity for EXINT
     
@@ -46,7 +46,7 @@
     \note
       pin interrupts are not en-/disabled by this routine. Use pinMode() in module gpio instead  
   */
-  void configExintEdge(PORT_t *addrPort, uint8_t edge) {
+  void mConfigExintEdge(PORT_t *addrPort, uint8_t edge) {
     
     uint8_t   tmp;
     
@@ -155,7 +155,7 @@
     // restore original port interrupt setting
     addrPort->CR2.byte = tmp;   
     
-  } // configExintEdge
+  } // mConfigExintEdge
 
 #endif // USE_PORT_ISR
 

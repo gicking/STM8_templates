@@ -89,8 +89,8 @@
 
 /// irq3 - External interrupt 0 (GPIOA)
 #if defined(USE_PORTA_ISR)
-  #define __EXTI0_VECTOR__          3
-  ISR_HANDLER(PORTA_ISR, __EXTI0_VECTOR__);
+  #define __EXTIA_VECTOR__          3
+  ISR_HANDLER(PORTA_ISR, __EXTIA_VECTOR__);
 #else
   #define PORTA_ISR                 NonHandledInterrupt              
 #endif
@@ -98,8 +98,8 @@
 
 /// irq4 - External interrupt 1 (GPIOB)
 #if defined(USE_PORTB_ISR)
-  #define __EXTI1_VECTOR__          4
-  ISR_HANDLER(PORTB_ISR, __EXTI1_VECTOR__);
+  #define __EXTIB_VECTOR__          4
+  ISR_HANDLER(PORTB_ISR, __EXTIB_VECTOR__);
 #else
   #define PORTB_ISR                 NonHandledInterrupt              
 #endif
@@ -107,8 +107,8 @@
 
 /// irq5 - External interrupt 2 (GPIOC)
 #if defined(USE_PORTC_ISR)
-  #define __EXTI2_VECTOR__          5
-  ISR_HANDLER(PORTC_ISR, __EXTI2_VECTOR__);
+  #define __EXTIC_VECTOR__          5
+  ISR_HANDLER(PORTC_ISR, __EXTIC_VECTOR__);
 #else
   #define PORTC_ISR                 NonHandledInterrupt              
 #endif
@@ -116,8 +116,8 @@
 
 /// irq6 - External interrupt 3 (GPIOD)
 #if defined(USE_PORTD_ISR)
-  #define __EXTI3_VECTOR__          6
-  ISR_HANDLER(PORTD_ISR, __EXTI3_VECTOR__);
+  #define __EXTID_VECTOR__          6
+  ISR_HANDLER(PORTD_ISR, __EXTID_VECTOR__);
 #else
   #define PORTD_ISR                 NonHandledInterrupt              
 #endif
@@ -125,8 +125,8 @@
 
 /// irq7 - External interrupt 4 (GPIOE)
 #if defined(USE_PORTE_ISR)
-  #define __EXTI4_VECTOR__          7
-  ISR_HANDLER(PORTE_ISR, __EXTI4_VECTOR__);
+  #define __EXTIE_VECTOR__          7
+  ISR_HANDLER(PORTE_ISR, __EXTIE_VECTOR__);
 #else
   #define PORTE_ISR                 NonHandledInterrupt              
 #endif
@@ -135,8 +135,8 @@
 /// irq8 - External interrupt 5 (GPIOF) or CAN receive interrupt -- device dependent
 #ifdef STM8S903
   #if defined(USE_PORTF_ISR)
-    #define __EXTI5_VECTOR__        8
-    ISR_HANDLER(PORTF_ISR, __EXTI5_VECTOR__);
+    #define __EXTIF_VECTOR__        8
+    ISR_HANDLER(PORTF_ISR, __EXTIF_VECTOR__);
   #else
     #define PORTF_ISR               NonHandledInterrupt              
   #endif

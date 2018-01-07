@@ -68,7 +68,7 @@
 -----------------------------------------------------------------------------*/
 
 /// init timer 3
-void TIM1_init(void);
+void TIM3_init(void);
 
 /// delay code execution for 'ms' using timer 3
 void TIM3_delay(uint32_t ms);
@@ -83,7 +83,7 @@ void TIM3_delayNanoseconds(uint16_t dt);
 void TIM3_setFrequency(uint32_t centHz);
 
 /// set PWM duty cycle [0.1%] for single compare channel
-void TIM3_setDutyCycleSingle(uint8_t channel, uint16_t deciPrc);
+void TIM3_setDutyCycle(uint8_t channel, uint16_t deciPrc);
 
 /// set PWM duty cycle [0.1%] for all compare channels
 void TIM3_setDutyCycleAll(uint16_t *deciPrc);

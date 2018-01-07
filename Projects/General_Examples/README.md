@@ -34,6 +34,16 @@ Minimal-C_with_ISR
   - SDCC requires ISRs declared in source containing main()
 
 
+Pin_Read_Write:
+----------
+  Arduino-like project with setup() & loop(). Mirror switch 
+  input state to LED (i.e. pin read and write)
+  Functionality:
+  - configure pin as input with pull-up
+  - configure other pin as output
+  - mirror input to output 
+
+
 Basic_Project: 
 ----------
   Arduino-like project with setup() & loop(). Only 1ms interrupts
@@ -51,6 +61,16 @@ Timeout_Scheduler:
   Functionality:
   - configure 2 (LED-)pins as output
   - toggle 2 pins at different intervals
+
+
+TIM3_PWM_generate:
+----------
+  Arduino-like project with setup() & loop(). Use
+  16-bit timer 3 to generate PWM with variable
+  frequency and duty cycle. 
+  Functionality:
+  - use timeout to create periodic task
+  - in task ramp LED brightness using TIM3
 
 
 Attach_1ms_Interrupt: 

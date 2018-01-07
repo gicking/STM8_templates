@@ -51,24 +51,32 @@
 #define  INPUT_INTERRUPT          0x01     ///< configure pin as: input, float, with port interrupt
 #define  INPUT_PULLUP             0x02     ///< configure pin as: input, pull-up, no port interrupt
 #define  INPUT_PULLUP_INTERRUPT   0x03     ///< configure pin as: input, pull-up, with port interrupt
-//#define  OUTPUT_OPENDRAIN_SLOW    0x04     ///< configure pin as: output, open-drain, slow (2MHz)
+#define  OUTPUT_OPENDRAIN_SLOW    0x04     ///< configure pin as: output, open-drain, slow (2MHz)
 #define  OUTPUT_OPENDRAIN         0x05     ///< configure pin as: output, open-drain, fast (10MHz)
-//#define  OUTPUT_SLOW              0x06     ///< configure pin as: output, push-pull, slow (2MHz)
+#define  OUTPUT_SLOW              0x06     ///< configure pin as: output, push-pull, slow (2MHz)
 #define  OUTPUT                   0x07     ///< configure pin as: output, push-pull, fast (10MHz)
 
 // edge sensitivities for port/EXINT and pin/TLI interrupts
-//#define  LOW                      0        ///< interrupt on low level (EXINT). Warning: may stall device!
-#define  CHANGE                   1        ///< interrupt on both edges (EXINT)
-#define  RISING                   2        ///< interrupt on rising edge (EXINT & TLI)
-#define  FALLING                  3        ///< interrupt on falling edge (EXINT & TLI)
-#define  PREV_SETTING             4        ///< keep current sensitivity (EXINT & TLI)
+#define  LOW                      0        ///< EXINT on low level (EXINT). Warning: may stall device!
+#define  CHANGE                   1        ///< EXINT on both edges (EXINT)
+#define  RISING                   2        ///< EXINT on rising edge (EXINT & TLI)
+#define  FALLING                  3        ///< EXINT on falling edge (EXINT & TLI)
+#define  TLI       ((PORT_t*) NULL)        ///< TLI pin indicator (for configExintEdge())
 
 /// set pin mode
 #define pinMode(port,pin,mode)  { \
-   port.DDR.bit.pin = ((mode & 0x04) >> 2); \
-   port.CR1.bit.pin = ((mode & 0x02) >> 1); \
-   port.CR2.bit.pin = ((mode & 0x01) >> 0); \
+   port.DDR.bit.pin = ((mode & 0x04) >> 2); /* input(=0) or output(=1) */ \
+   port.CR1.bit.pin = ((mode & 0x02) >> 1); /* input: 0=float, 1=pull-up; output: 0=open-drain, 1=push-pull */ \
+   port.CR2.bit.pin = ((mode & 0x01) >> 0); /* input: 0=no exint, 1=exint; output: 0=2MHz slope, 1=10MHz slope */ \
 }
+
+/// set port mode
+#define portMode(port,dir,cr1, cr2)  { \
+   port.DDR.byte = dir;                     /* input(=0) or output(=1) */ \
+   port.CR1.byte = cr1;                     /* input: 0=float, 1=pull-up; output: 0=open-drain, 1=push-pull */ \
+   port.CR2.byte = cr2;                     /* input: 0=no exint, 1=exint; output: 0=2MHz slope, 1=10MHz slope */ \
+}
+
 
 // access port pins directly (for speed)
 #define pinSet(port,pin)    (port.ODR.bit.pin)    ///< pin output state (1 pin)
@@ -82,10 +90,13 @@
 -----------------------------------------------------------------------------*/
 
 #if defined(USE_PORTA_ISR) || defined(USE_PORTB_ISR) || defined(USE_PORTC_ISR) || defined(USE_PORTD_ISR) || \
-    defined(USE_PORTE_ISR) || defined(USE_PORTF_ISR) || defined(USE_PORT_ISR)
+    defined(USE_PORTE_ISR) || defined(USE_PORTF_ISR) || defined(USE_PORT_ISR) || defined(USE_TLI_ISR)
 
+  /// auxiliary macro which allows using port as function argument (else pointer)
+  #define configExintEdge(port,edge)    mConfigExintEdge(&port, edge)    
+  
   /// configure edge sensitivity for EXINT
-  void configExintEdge(PORT_t *addrPort, uint8_t edge);
+  void    mConfigExintEdge(PORT_t *addrPort, uint8_t edge);
 
 #endif
 

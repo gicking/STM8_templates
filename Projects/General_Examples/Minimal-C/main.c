@@ -13,7 +13,6 @@
 // define if SW or high-rez delay function is used
 //#define DELAY_HIGHREZ
 
-
 /*----------------------------------------------------------
     INCLUDE FILES
 ----------------------------------------------------------*/
@@ -30,7 +29,6 @@
 #else
   #define LED   pinSet(PORT_H, pin3)   // muBoard LED
 #endif
-
 
 
 // main routine
@@ -50,7 +48,7 @@ void main(void) {
   
   // initialize TIM3 for highRez_delay()
   #if defined(DELAY_HIGHREZ)
-    TIM3_setFrequency(10000);
+    TIM3_init();
   #endif
   
   // main loop

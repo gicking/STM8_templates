@@ -32,7 +32,7 @@
 //////////
 // port E interrupt: toggle LED 10x, then deactivate pin ISR
 //////////
-ISR_HANDLER(PORTE_ISR, __EXTI4_VECTOR__) {
+ISR_HANDLER(PORTE_ISR, __EXTIE_VECTOR__) {
   
   static uint8_t   numToggle = 0;
 
@@ -65,7 +65,7 @@ void setup() {
   LED_RED   = 1;
   
   // configure edge sensitivity for port E (all 8 pins!) 
-  configExintEdge(&PORT_E, FALLING);
+  configExintEdge(PORT_E, FALLING);
 
 } // setup
 

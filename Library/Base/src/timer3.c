@@ -49,14 +49,14 @@ void TIM3_init(void) {
   TIM3.SR1.byte = TIM3_SR1_RESET_VALUE;
   TIM3.SR2.byte = TIM3_SR2_RESET_VALUE;
 
-  // 
+  // reset event generation register
   TIM3.EGR.byte = TIM3_EGR_RESET_VALUE;
 
   // reset PWM mode
   TIM3.CCMR1.byte = TIM3_CCMR1_RESET_VALUE;
   TIM3.CCMR2.byte = TIM3_CCMR2_RESET_VALUE;
   
-  // 
+  // reset capture/compare enable register
   TIM3.CCER1.byte = TIM3_CCER1_RESET_VALUE;
 
   // reset counter register (write high byte first)
@@ -228,12 +228,12 @@ void TIM3_setFrequency(uint32_t centHz) {
 	// find smallest usable prescaler
 	tmp = (uint16_t)(1600000000L / (centHz * UINT16_MAX));
 	pre = 0;
-	while (tmp > (0x0001 << pre))
+	while (tmp >= (0x0001 << pre))
 	  pre++;
 	
-  // set freq to spec. value (fPWM = fCPU/((2^pre)*(ARR+1))
-  ARR = (uint16_t) (1600000000L >> pre) / centHz - 1;
-  
+  // set period to spec. value (fPWM = fCPU/((2^pre)*(ARR+1))
+  ARR = (uint16_t) ((1600000000L >> pre) / (uint32_t) centHz) - 1;
+
 
   //////////////
   // set PWM period
@@ -242,38 +242,72 @@ void TIM3_setFrequency(uint32_t centHz) {
   // reset timer registers (just to make sure)
   TIM3_init();
 	
-  // exit on zero or too low frequency. Above Init deactivates timer 3
+  // exit on zero or too low frequency. Above init already resets timer
   if ((centHz == 0) || (pre > 15))
     return;
+   
+    
+  ////
+  // all channels
+  ////
 
-  // set TIM3 prescaler f = fcpu/2^pre with pre in [0..15]
+  // use buffered period register to avoid glitches
+  TIM3.CR1.reg.ARPE = 1;
+  
+  // set TIM3 prescaler fTim = fcpu/2^pre with pre in [0..15]
   TIM3.PSCR.reg.PSC = pre;
 
-  // set reload value
+  // set reload period = (ARR+1)/fTim
   TIM3.ARR.byteH = (uint8_t) (ARR >> 8);
   TIM3.ARR.byteL = (uint8_t) ARR;
-
-  // set PWM behavior
-  TIM3.CCMR2.regOut.OC2M  = 6;   // PWM mode 1
-  TIM3.CCMR2.regOut.OC2PE = 1;   // pre-load enable
-  TIM3.CCMR2.regOut.CC2S  = 0;   // enable output
-
-  // set active polarity and enable output
-  TIM3.CCER1.reg.CC2P = 0;    // high polarity
-  TIM3.CCER1.reg.CC1E = 1;    // output enable
   
+
+  ////
+  // channel 1
+  ////
+
+  // use timer in output compare mode
+  TIM3.CCMR1.regOut.CC1S  = 0;
+
+  // set PWM mode 1
+  TIM3.CCMR1.regOut.OC1M  = 6;
+
+  // use buffered compare register to avoid glitches
+  TIM3.CCMR1.regOut.OC1PE = 1;
+  
+  // set active polarity to high
+  TIM3.CCER1.reg.CC2P     = 0;
+  
+
+  ////
+  // channel 2
+  ////
+
+  // use timer in output compare mode
+  TIM3.CCMR2.regOut.CC2S  = 0;
+
+  // set PWM mode 1
+  TIM3.CCMR2.regOut.OC2M  = 6;
+
+  // use buffered compare register to avoid glitches
+  TIM3.CCMR2.regOut.OC2PE = 1;
+  
+  // set active polarity to high
+  TIM3.CCER1.reg.CC2P     = 0;
+
+
   // request register update
   TIM3.EGR.reg.UG = 1;
   
   // activate timer
-  TIM1.CR1.reg.CEN = 1;       // start the timer
-  
+  TIM3.CR1.reg.CEN = 1;
+
 } // TIM3_setFrequency
 
 
 
 /**
-  \fn void TIM3_setDutyCycleSingle(uint8_t channel, uint16_t deciPrc)
+  \fn void TIM3_setDutyCycle(uint8_t channel, uint16_t deciPrc)
 
   \brief set PWM duty cycle for single compare channel
    
@@ -282,37 +316,65 @@ void TIM3_setFrequency(uint32_t centHz) {
    
   Set PWM duty cycle in 0.1% for single compare channel. 
 */
-void TIM3_setDutyCycleSingle(uint8_t channel, uint16_t deciPrc) {
+void TIM3_setDutyCycle(uint8_t channel, uint16_t deciPrc) {
 
   uint16_t   CCR, ARR;
   
-  // get reload value
-  ARR = ((uint16_t) (TIM3.ARR.byteH)) << 8 + (uint16_t) (TIM3.ARR.byteL);
+  // get reload value (=PWM period)
+  ARR = ((uint16_t) (TIM3.ARR.byteH)) << 8 | (uint16_t) (TIM3.ARR.byteL);
   
   // map duty cycle [0.1%] to reload period
-  CCR = map(deciPrc, 0, 1000, 0, ARR);
+  CCR = scale(deciPrc, 1000, ARR);
   
-  // set capture/compare value (DC=CCR/ARR)
-  TIM3.CCR1.byteH = (uint8_t) (CCR >> 8);
-  TIM3.CCR1.byteL = (uint8_t) CCR;
-
-} // TIM3_setDutyCycleSingle
+  // set capture/compare value (DC=CCR/ARR) and enable output
+  if (channel == 1) {
+    TIM3.CCR1.byteH = (uint8_t) (CCR >> 8);
+    TIM3.CCR1.byteL = (uint8_t) CCR;
+    TIM3.CCER1.reg.CC1E = 1;
+  }
+  else if (channel == 2) {
+    TIM3.CCR2.byteH = (uint8_t) (CCR >> 8);
+    TIM3.CCR2.byteL = (uint8_t) CCR;
+    TIM3.CCER1.reg.CC2E = 1;
+  }
+  
+} // TIM3_setDutyCycle
 
 
 
 /**
   \fn void TIM3_setDutyCycleAll(uint16_t *deciPrc)
 
-  \brief set PWM duty cycle for all compare channels
+  \brief set PWM duty cycle for both compare channels
    
-  \param[in] deciPrc   PWM duty cycle in [0.1%]
-  \param[in] channel   compare channel
+  \param[in] deciPrc   array with PWM duty cycles in [0.1%]
    
-  Set PWM duty cycle in 0.1% for all timer 3 compare channels. 
+  Set PWM duty cycle in 0.1% for both timer compare channels. 
 */
 void TIM3_setDutyCycleAll(uint16_t *deciPrc) {
 
+  uint16_t   CCR, ARR;
   
+  // get reload value (=PWM period)
+  ARR = ((uint16_t) (TIM3.ARR.byteH)) << 8 | (uint16_t) (TIM3.ARR.byteL);
+
+  
+  // map duty cycle 1 [0.1%] to reload period
+  CCR = scale(deciPrc[0], 1000, ARR);
+  
+  // set capture/compare value (DC=CCR/ARR) and enable output
+  TIM3.CCR1.byteH = (uint8_t) (CCR >> 8);
+  TIM3.CCR1.byteL = (uint8_t) CCR;
+  TIM3.CCER1.reg.CC1E = 1;
+
+  
+  // map duty cycle 2 [0.1%] to reload period
+  CCR = scale(deciPrc[1], 1000, ARR);
+  
+  // set capture/compare value (DC=CCR/ARR) and enable output
+  TIM3.CCR2.byteH = (uint8_t) (CCR >> 8);
+  TIM3.CCR2.byteL = (uint8_t) CCR;
+  TIM3.CCER1.reg.CC2E = 1;
 
 } // TIM3_setDutyCycleAll
 
