@@ -41,7 +41,7 @@ void setup() {
 
   // set initial timeout 0
   setTimeout(0, updatePeriod);
-
+  
 } // setup
 
 
@@ -55,7 +55,7 @@ void loop() {
   
   // after timeout 0 has expired
   if (checkTimeout(0)) {
-
+  
     // restart timeout 0
     setTimeout(0, updatePeriod);
 
@@ -66,8 +66,8 @@ void loop() {
       
     // update PWM brightness (=duty cycle)
     TIM3_setDutyCycle(channelLED, brightness);
-      
-  } // if flagMilli
+    
+  } // timeout 0 expired
     
 } // loop
 

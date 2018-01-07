@@ -324,7 +324,10 @@ void TIM3_setDutyCycle(uint8_t channel, uint16_t deciPrc) {
   ARR = ((uint16_t) (TIM3.ARR.byteH)) << 8 | (uint16_t) (TIM3.ARR.byteL);
   
   // map duty cycle [0.1%] to reload period
-  CCR = scale(deciPrc, 1000, ARR);
+  if (deciPrc >= 1000)
+    CCR = ARR+1;
+  else
+    CCR = scale(deciPrc, 1000, ARR);
   
   // set capture/compare value (DC=CCR/ARR) and enable output
   if (channel == 1) {
