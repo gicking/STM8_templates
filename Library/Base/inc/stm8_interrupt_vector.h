@@ -317,7 +317,7 @@
 /// irq23 - TIM4 or TIM6 Update/Overflow interrupt
 #if defined(STM8S903) || defined(STM8AF622x)
   #if defined(USE_TIM6_UPD_ISR)
-    #define __TIM6:UPD_VECTOR__     23
+    #define __TIM6_UPD_VECTOR__     23
     ISR_HANDLER(TIM6_UPD_ISR, __TIM6_UPD_VECTOR__);
   #else
     #define TIM6_UPD_ISR            NonHandledInterrupt
