@@ -28,11 +28,11 @@ void setup() {
 
   char              str[20];    // string buffer for LCD output
 
-  // init I2C bus for LCD
+  // init LCD. Use default I2C address
   i2c_init();
   
   // init and reset LCD display
-  lcd_init();
+  lcd_init(0x00);
 
   // print to LCD
   //sprintf(str, );

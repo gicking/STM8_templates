@@ -29,19 +29,11 @@
 
 
 /*-----------------------------------------------------------------------------
-    DEFINITION OF GLOBAL MACROS/#DEFINES
------------------------------------------------------------------------------*/
-
-// I2C addresses of LCD display
-#define LCD_ADDR_I2C  59
-
-
-/*-----------------------------------------------------------------------------
     DECLARATION OF GLOBAL FUNCTIONS
 -----------------------------------------------------------------------------*/
 
-/// initialize I2C, and reset LCD
-uint8_t   lcd_init(void);
+/// initialize LCD for output
+uint8_t   lcd_init(uint8_t addr);
 
 /// clear LCD
 void      lcd_clear(void);

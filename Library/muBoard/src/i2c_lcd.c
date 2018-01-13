@@ -20,10 +20,20 @@
 #include <string.h>
 #include <stdint.h>
 #include "stm8as.h"
-#include "i2c_lcd.h"
+#define _I2CLCD_MAIN_          // required for globals in i2c_lcd.h
+  #include "i2c_lcd.h"
+#undef _I2CLCD_MAIN_
 #include "i2c.h"
 #include "gpio.h"
 #include "sw_delay.h"
+
+
+/*-----------------------------------------------------------------------------
+    DECLARATION OF MODULE VARIABLES
+-----------------------------------------------------------------------------*/
+ 
+#define LCD_ADDR_I2C  59                            ///< default I2C addresses of LCD display
+volatile uint8_t   lcd_addr_i2c = LCD_ADDR_I2C;     ///< I2C address of LCD display
 
 
 /*----------------------------------------------------------
@@ -31,16 +41,18 @@
 ----------------------------------------------------------*/
 
 /**
-  \fn uint8_t lcd_init(void)
+  \fn uint8_t lcd_init(uint8_t addr)
    
   \brief initialize LCD for output
   
+  \param[in]  addr   I2C address to use (or '0' for default)
+
   \return is an LCD attached?
 
-  initialize LCD for LCD output.
+  reset LCD and initialize for output.
   Also check if LCD display is attached via bus timeout 
 */
-uint8_t lcd_init() {
+uint8_t lcd_init(uint8_t addr) {
 
   uint8_t   status;
   
@@ -59,11 +71,15 @@ uint8_t lcd_init() {
   // check if LCD present by sending a dummy frame
   ////
   
+  // if specified, change I2C address for display
+  if (addr != 0)
+    lcd_addr_i2c = addr;
+  
   // generate start condition
   i2c_start();
   
   // send dummy frame (with timeout)
-  status = (uint8_t) (i2c_send(LCD_ADDR_I2C, 0, NULL));
+  status = (uint8_t) (i2c_send(lcd_addr_i2c, 0, NULL));
 
   // generate stop condition
   i2c_stop();
@@ -105,9 +121,9 @@ void lcd_clear() {
    
   \brief print to LCD display
   
-  \param  line    line to print to (1 or 2)
-  \param  col     column to start at
-  \param  s       string to print
+  \param[in]  line    line to print to (1 or 2)
+  \param[in]  col     column to start at
+  \param[in]  s       string to print
 
   print up to 16 chars to line in LCD display
   
@@ -140,7 +156,7 @@ void lcd_print(uint8_t line, uint8_t col, char *s) {
   i2c_start();
 
   // send data (with timeout)
-  i2c_send(LCD_ADDR_I2C, i, s2);
+  i2c_send(lcd_addr_i2c, i, s2);
   
 
   //////
@@ -172,7 +188,7 @@ void lcd_print(uint8_t line, uint8_t col, char *s) {
   i2c_start();
 
   // send to LCD (with timeout)
-  i2c_send(LCD_ADDR_I2C, 17, s2);
+  i2c_send(lcd_addr_i2c, 17, s2);
 
   // generate stop condition
   i2c_stop();
