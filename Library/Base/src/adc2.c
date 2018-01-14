@@ -27,26 +27,22 @@
 ----------------------------------------------------------*/
 
 /**
-  \fn void ADC2_init(ADC2_Mode mode, uint8_t ch)
+  \fn void ADC2_init(ADC2_Mode mode)
    
   \brief initialize ADC2
    
   \param[in] mode       ADC2 conversion mode (see adc2.h)
-  \param[in] ch         ADC2 channel to measure
 
   initialize ADC2 for single-shot or continuous mode and select channel.
   For accuracy configure for slowest conversion speed (16µs) 
 */
-void ADC2_init(ADC2_Mode mode, uint8_t ch) {
+void ADC2_init(ADC2_Mode mode) {
   
   // reset registers
   ADC2.CSR.byte = ADC2_CSR_RESET_VALUE;
   ADC2.CR1.byte = ADC2_CR1_RESET_VALUE;
   ADC2.CR2.byte = ADC2_CR2_RESET_VALUE;
 
-  // switch to selected ADC channel 
-  ADC2_set_channel(ch);
-  
   // keep single shot or set continuous mode
   if (mode == ADC_CONTINUOUS)
     ADC2.CR1.reg.CONT = 1;

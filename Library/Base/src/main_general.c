@@ -51,6 +51,9 @@ void main(void)
   // init 1ms SW clock
   TIM4_init();
 
+  // set default seed for random()
+  randomSeed(1);
+  
   // call user setup function
   setup();
 

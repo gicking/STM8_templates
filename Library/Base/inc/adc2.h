@@ -76,7 +76,7 @@ typedef enum {
 -----------------------------------------------------------------------------*/
 
 /// initialize ADC2 for single shot mode or continuous mode
-void      ADC2_init(ADC2_Mode mode, uint8_t ch);
+void      ADC2_init(ADC2_Mode mode);
 
 /// measure ADC2 channel once
 uint16_t  ADC2_measure_single(uint8_t ch);

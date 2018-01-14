@@ -47,10 +47,10 @@
 #ifdef USE_TIM3_UPD_ISR
 
   /// enable TIM3UPD interrupt
-  #define enable_TIM3_UPD_interrupt()  TIM3.IER.reg.UIE = 1;
+  #define TIM3_enable_UPD_interrupt()  TIM3.IER.reg.UIE = 1;
 
   /// disable TIM3UPD interrupt
-  #define disable_TIM3_UPD_interrupt() TIM3.IER.reg.UIE = 0;
+  #define TIM3_disable_UPD_interrupt() TIM3.IER.reg.UIE = 0;
 
 #endif // USE_TIM3UPD_ISR
 

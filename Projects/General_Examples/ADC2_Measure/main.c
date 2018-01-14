@@ -45,7 +45,7 @@ void setup() {
 
 
   // init ADC2 for measuring poti 
-  ADC2_init(ADC_SINGLE_SHOT, ADC_CH);
+  ADC2_init(ADC_SINGLE_SHOT);
 
   
   // init UART1 to 115.2kBaud, 8N1, full duplex

@@ -58,6 +58,19 @@
   #define detachInterruptMillis()      TIM4_UPD_AttachInterrupt(TIM4_Default)   ///< detach user function from 1ms ISR
 #endif
 
+// only with TIM3 update/overflow interrupt
+#ifdef USE_TIM4_UPD_ISR
+
+  // for convenience
+  #define startClock()     TIM4.IER.reg.UIE = 1;                ///< disable 1ms interrupt
+  #define stopClock(fct)   TIM4.IER.reg.UIE = 0;                ///< enable 1ms interrupt
+
+  // for consistency with other timers (same as above)
+  #define TIM4_enable_UPD_interrupt()  TIM4.IER.reg.UIE = 1;    ///< enable TIM4UPD interrupt
+  #define TIM4_disable_UPD_interrupt() TIM4.IER.reg.UIE = 0;    ///< disable TIM4UPD interrupt
+
+#endif // USE_TIM4_UPD_ISR
+
 
 /*-----------------------------------------------------------------------------
     DECLARATION OF GLOBAL FUNCTIONS
