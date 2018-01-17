@@ -53,12 +53,12 @@ void main(void)
 
   // set default seed for random()
   randomSeed(1);
-  
-  // call user setup function
-  setup();
 
   // globally enable interrupts
   ENABLE_INTERRUPTS;   
+  
+  // call user setup function
+  setup();
 
 
   /////////////////
