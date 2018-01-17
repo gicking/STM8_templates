@@ -14,6 +14,7 @@
     INCLUDE FILES
 ----------------------------------------------------------*/
 #include "main_general.h"   // board-independent main
+#include "timeout.h"        // user timeout clocks
 
 
 // declare for toggle_red()

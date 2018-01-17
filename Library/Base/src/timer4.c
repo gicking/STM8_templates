@@ -30,9 +30,6 @@
     DECLARATION OF MODULE VARIABLES
 -----------------------------------------------------------------------------*/
  
-#define  NUM_TIMEOUTS  4                            ///< number of user timouts
-volatile uint32_t      timeoutEnd[NUM_TIMEOUTS];    ///< end times of timeout [ms]
-
 #if defined(USE_MILLI_ISR)
   volatile void (*m_TIM4_UPD_pFct)(void) = TIM4_Default;    ///< function pointer to call in TIM4UPD ISR
 #endif
@@ -52,8 +49,6 @@ volatile uint32_t      timeoutEnd[NUM_TIMEOUTS];    ///< end times of timeout [m
 */
 void TIM4_init(void) {
 
-  uint8_t     i;
-  
   // stop the timer
   TIM4.CR1.reg.CEN = 0;
   
@@ -61,10 +56,6 @@ void TIM4_init(void) {
   g_flagMilli = 0;
   g_millis    = 0;
   g_micros    = 0;
-  
-  // initialize module variables
-  for (i=0; i<NUM_TIMEOUTS; i++)
-    timeoutEnd[i] = 0;
   
   // reset function pointer for TIM4 ISR
   #if defined(USE_MILLI_ISR)
@@ -146,61 +137,6 @@ void delayMicroseconds(uint32_t us) {
 		NOP;
 	
 } // delayMicroseconds()
-
-
-
-/**
-  \fn void setTimeout(uint8_t N, uint32_t ms)
-   
-  \brief start timeout N (0..NUM_TIMEOUTS-1) with 'ms'
-  
-  \param[in]  N     which timeout to set (1..4)
-  \param[in]  ms    duration[us] of timeout
-   
-  start timeout N (0..NUM_TIMEOUTS-1) with 'ms'. 
-  Requires TIM4 interrupt -> is not vulnerable to 
-  interrupts (within limits).
-*/
-void setTimeout(uint8_t N, uint32_t ms) {
-
-  // range check
-  if (N >= NUM_TIMEOUTS)
-    return;
- 
-  // set respective timeout millis. Correct for index start 
-  timeoutEnd[N-1] = millis() + ms;
-
-} // setTimeout
-
-
-
-/**
-  \fn uint8_t checkTimeout(uint8_t N)
-   
-  \brief check timeout N (0..NUM_TIMEOUTS-1)
-  
-  \param[in]  N     which timeout to check (0..NUM_TIMEOUTS-1)
-
-  \return 1 if timeout has passed, else 0
-   
-  check if timeout N (0..NUM_TIMEOUTS-1) has passed. 
-  Requires TIM4 interrupt -> is not vulnerable to 
-  interrupts (within limits).
-*/
-uint8_t checkTimeout(uint8_t N) {
-
-  // range check
-  if (N >= NUM_TIMEOUTS)
-    return(0);
- 
-  // check respective timeout with roll-over (see https://arduino.stackexchange.com/questions/12587/how-can-i-handle-the-millis-rollover)
-  if ((int32_t)(timeoutEnd[N-1] - millis()) < 0)
-    return(1);
-  
-  // avoid compiler warning
-  return(0);
-
-} // checkTimeout
 
 
 

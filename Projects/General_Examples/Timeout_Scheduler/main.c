@@ -1,6 +1,6 @@
 /**********************
-  Arduino-like project with setup() & loop(). Use several timeouts
-  to execute periodic tasks in loop(). 
+  Arduino-like project with setup() & loop(). Use several 
+  stopwatches to execute periodic tasks in loop(). 
   Functionality:
   - configure 2 (LED-)pins as output
   - toggle 2 pins at different intervals
@@ -10,6 +10,7 @@
     INCLUDE FILES
 ----------------------------------------------------------*/
 #include "main_general.h"   // board-independent main
+#include "timeout.h"        // multiple timeouts 
 
 
 /*----------------------------------------------------------

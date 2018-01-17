@@ -11,6 +11,7 @@
     INCLUDE FILES
 ----------------------------------------------------------*/
 #include "main_general.h"    // board-independent main
+#include "timeout.h"         // for timeout clocks
 #include "timer3.h"          // for PWM
 
 

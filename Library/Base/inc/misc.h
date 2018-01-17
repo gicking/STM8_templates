@@ -79,7 +79,6 @@
 #define byte(a)                   ((uint8_t)(a))
 #define int(a)                    ((int)(a))
 #define word(a)                   ((uint16_t)(a))
-#define wordConcat(hb,lb)         ((((uint16_t)hb) << 8) | ((uint16_t)lb))
 #define long(a)                   ((int32_t)(a))
 #define float(a)                  ((float)(a))
 
@@ -103,6 +102,8 @@
 #define sin(x)                     sinf(x)
 #define cos(x)                     cosf(x)
 #define tan(x)                     tanf(x)
+#define deg2rad(x)                 (x * 0.017453293)                           ///< convert degrees to radians (=x*pi/180)
+#define rad2deg(x)                 (x * 57.29577952)                           ///< convert radians to degrees (=x*180/pi)
 
 /*---
  characters
@@ -131,14 +132,16 @@
 /*---
  bits and bytes
 ---*/
+#define bit(n)                     (1 << n)                                    ///< get bit value 2^n
+#define bitClear(b,n)              (b &= ~(1 << n))                            ///< clear single bit in data to '0'
+#define bitRead(b,n)               ((b & (1 << n)) >> n)                       ///< read single bit position in byte
+#define bitSet(b,n)                (b |= (1 << n))                             ///< set single bit in data to '1'
+#define bitToggle(b,n)             (b ^= (1 << n))                             ///< toggle single bit state in byte
+#define bitWrite(b,n,value)        (value?(b|=(1<<n)):(b&=~(1<<n)))            ///< set single bit value in byte to value
 #define lowByte(x)                 ((uint8_t) x)                               ///< get low (=rightmost) byte from x
 #define highByte(x)                ((uint8_t) (((uint16_t) x) >> 8))           ///< get high (=2nd) byte from a word
-#define bitRead(b,n)               ((b & (1 << n)) >> n)                       ///< read single bit position in byte
-#define bitWrite(b,n,value)        (value?(b|=(1<<n)):(b&=~(1<<n)))            ///< set single bit value in byte to value
-#define bitSet(b,n)                (b |= (1 << n))                             ///< set single bit in data to '1'
-#define bitClear(b,n)              (b &= ~(1 << n))                            ///< clear single bit in data to '0'
-#define bitToggle(b,n)             (b ^= (1 << n))                             ///< toggle single bit state in byte
-#define bit(n)                     (1 << n)                                    ///< get bit value 2^n
+#define concatBytes(hb,lb)         ((((uint16_t)hb) << 8) | ((uint16_t)lb))    ///< concat 2 bytes to a 16bit word 
+
 
 /*---
  interrupts
@@ -164,6 +167,16 @@
 #define toASCII(a)                 toascii(a)
 #define toUpperCase(a)             toupper(a)
 #define toLowerCase(a)             tolower(a)
+
+
+/*----------------
+ pre-defined values
+----------------*/
+
+#define PI                          3.141592653                       ///< Archimedes' constant 
+#define EUL                         2.718281828                       ///< Euler number
+#define SQRT2                       1.414213562                       ///< square root of two
+#define SQRT3                       1.732050807                       ///< square root of three
 
 
 /*-----------------------------------------------------------------------------

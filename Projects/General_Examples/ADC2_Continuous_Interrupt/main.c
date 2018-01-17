@@ -89,7 +89,8 @@ void setup() {
   pinMode(PORT_F, pin6, INPUT);
 
   // init ADC2 for continuously measuring poti 
-  ADC2_init(ADC_CONTINUOUS, ADC_CH_1);
+  ADC2_init(ADC_CONTINUOUS);
+  ADC2_set_channel(ADC_CH_1);
   
   // enable ADC2 conversion complete interrupt
   ADC2_enable_interrupt();

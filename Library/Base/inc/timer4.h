@@ -34,13 +34,13 @@
 
 // declare or reference to global variables, depending on '_TIM4_MAIN_'
 #if defined(_TIM4_MAIN_)
-  volatile uint8_t            g_flagMilli;     ///< flag for 1ms timer interrupt. Set in TIM4 ISR
-  volatile uint32_t           g_millis;        ///< 1ms counter. Increased in TIM4 ISR
-  volatile uint32_t           g_micros;        ///< 1000us counter. Increased in TIM4 ISR
+  volatile uint8_t            g_flagMilli;                 ///< flag for 1ms timer interrupt. Set in TIM4 ISR
+  volatile uint32_t           g_millis;                    ///< 1ms counter. Increased in TIM4 ISR
+  volatile uint32_t           g_micros;                    ///< 1000us counter. Increased in TIM4 ISR
 #else // _TIM4_MAIN_
-  extern volatile uint8_t     g_flagMilli;     ///< flag for 1ms timer interrupt. Set in TIM4 ISR
-  extern volatile uint32_t    g_millis;        ///< 1ms counter. Increased in TIM4 ISR
-  extern volatile uint32_t    g_micros;        ///< 1000us counter. Increased in TIM4 ISR
+  extern volatile uint8_t     g_flagMilli;
+  extern volatile uint32_t    g_millis;
+  extern volatile uint32_t    g_micros;
 #endif // _TIM4_MAIN_
 
 
@@ -84,12 +84,6 @@ void delay(uint32_t ms);
 
 /// delay code execution for 'us'
 void delayMicroseconds(uint32_t us);
-
-/// start timeout N (0..NUM_TIMEOUTS-1) with 'ms'
-void setTimeout(uint8_t N, uint32_t ms);
-
-/// check timeout N (0..NUM_TIMEOUTS-1)
-uint8_t checkTimeout(uint8_t N);
 
 
 // with optional call to user function in 1ms ISR
