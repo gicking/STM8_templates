@@ -42,15 +42,12 @@ void setup() {
 //////////
 void loop() {
 
-  // poll 1ms flag
-  if (flagMilli()) {
-    clearFlagMilli();    // reset 1ms flag
+  // toggle LED
+  LED ^= 1;
 
-    // every 500ms toggle LED
-    if (!(millis() % 500))
-      LED ^= 1;
-
-  } // if flagMilli
+  // wait 500ms
+  delay(500);
+  //delayMicroseconds(500000L);
 
 } // loop
 

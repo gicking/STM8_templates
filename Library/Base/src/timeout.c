@@ -10,6 +10,7 @@
   implementation of timeouts based on 1ms clock (TIM4 ISR)
   Optional functionality via #define:
     - USE_TIM4_UPD_ISR: required for TIM4 ISR
+	- NUM_TIMEOUTS: custom number of timeouts (default=5)
 */
 
 /*----------------------------------------------------------
@@ -42,7 +43,7 @@ volatile uint32_t      timeoutEnd[NUM_TIMEOUTS];
    
   \brief start timeout N (0..NUM_TIMEOUTS-1) with 'ms'
   
-  \param[in]  N     which timeout to set (1..4)
+  \param[in]  N     which timeout to set (0..NUM_TIMEOUTS-1)
   \param[in]  ms    duration[us] of timeout
    
   start timeout N (0..NUM_TIMEOUTS-1) with 'ms'. 
@@ -51,12 +52,12 @@ volatile uint32_t      timeoutEnd[NUM_TIMEOUTS];
 */
 void setTimeout(uint8_t N, uint32_t ms) {
 
-  // range check
+  // index check
   if (N >= NUM_TIMEOUTS)
     return;
  
-  // set respective timeout millis. Correct for index start 
-  timeoutEnd[N-1] = millis() + ms;
+  // set respective timeout from millis 
+  timeoutEnd[N] = millis() + ms;
 
 } // setTimeout
 
@@ -77,12 +78,12 @@ void setTimeout(uint8_t N, uint32_t ms) {
 */
 uint8_t checkTimeout(uint8_t N) {
 
-  // range check
+  // index check
   if (N >= NUM_TIMEOUTS)
     return(0);
  
   // check respective timeout with roll-over (see https://arduino.stackexchange.com/questions/12587/how-can-i-handle-the-millis-rollover)
-  if ((int32_t)(timeoutEnd[N-1] - millis()) < 0)
+  if ((int32_t)(timeoutEnd[N] - millis()) < 0)
     return(1);
   
   // avoid compiler warning

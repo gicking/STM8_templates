@@ -1,37 +1,37 @@
 /**
-  \file timeout.h
+  \file stopwatch.h
    
   \author G. Icking-Konert
-  \date 2013-11-22
+  \date 2018-01-18
   \version 0.1
    
-  \brief declaration of timeouts based on 1ms clock
+  \brief declaration of stopwatches based on 1ms clock
    
-  declaration of timeouts based on 1ms clock (TIM4 ISR)
+  declaration of stopwatches based on 1ms clock (TIM4 ISR)
   Optional functionality via #define:
     - USE_TIM4_UPD_ISR: required for TIM4 ISR
-	- NUM_TIMEOUTS: custom number of timeouts (default=5)
+	- NUM_STOPWATCH: custom number of stopwatches (default=5)
 */
 
 /*-----------------------------------------------------------------------------
     MODULE DEFINITION FOR MULTIPLE INCLUSION
 -----------------------------------------------------------------------------*/
-#ifndef _TIMEOUT_H_
-#define _TIMEOUT_H_
+#ifndef _STOPWATCH_H_
+#define _STOPWATCH_H_
 
 
 /*-----------------------------------------------------------------------------
     DECLARATION OF GLOBAL FUNCTIONS
 -----------------------------------------------------------------------------*/
 
-/// start timeout N (0..NUM_TIMEOUTS-1) with 'ms'
-void setTimeout(uint8_t N, uint32_t ms);
+/// start stopwatch N (0..NUM_STOPWATCH-1)
+void    startStopwatch(uint8_t N);
 
-/// check timeout N (0..NUM_TIMEOUTS-1)
-uint8_t checkTimeout(uint8_t N);
+/// read stopwatch N (0..NUM_STOPWATCH-1)
+uint32_t getStopwatch(uint8_t N);
 
 
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION
 -----------------------------------------------------------------------------*/
-#endif // _TIMEOUT_H_
+#endif // _STOPWATCH_H_
