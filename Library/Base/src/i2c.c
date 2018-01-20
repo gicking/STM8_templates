@@ -63,7 +63,7 @@ void i2c_init() {
    
   \brief wait until bus is free
 
-  \return error code (1=ok; 0=timeout)
+  \return error code (0=ok; 1=timeout)
 
   wait until bus is free with timeout
 */
@@ -76,11 +76,13 @@ uint8_t i2c_waitFree() {
   while ((I2C_BUSY) && (countTimeout--));
  
   // on I2C timeout return error
-  if (I2C_BUSY)
-    return(0);
-
+  if (I2C_BUSY) {
+    i2c_init();
+    return(1);
+  }
+  
   // return success
-  return(1);
+  return(0);
 
 } // i2c_waitFree
 
@@ -91,7 +93,7 @@ uint8_t i2c_waitFree() {
    
   \brief generate I2C start condition
 
-  \return error code (1=ok; 0=timeout)
+  \return error code (0=ok; 1=timeout)
 
   generate I2C start condition with timeout
 */
@@ -105,11 +107,13 @@ uint8_t i2c_start() {
   while ((!I2C.SR1.reg.SB) && (countTimeout--));
  
   // on I2C timeout return error
-  if (!I2C.SR1.reg.SB)
-    return(0);
+  if (!I2C.SR1.reg.SB) {
+    i2c_init();
+    return(1);
+  }
 
   // return success
-  return(1);
+  return(0);
 
 } // i2c_start
 
@@ -120,7 +124,7 @@ uint8_t i2c_start() {
    
   \brief generate I2C stop condition
 
-  \return error code (1=ok; 0=timeout)
+  \return error code (0=ok; 1=timeout)
 
   generate I2C stop condition with timeout 
 */
@@ -134,11 +138,13 @@ uint8_t i2c_stop() {
   while ((I2C.SR3.reg.MSL) && (countTimeout--));
  
   // on I2C timeout set error flag
-  if (I2C.SR3.reg.MSL)
-    return(0);
+  if (I2C.SR3.reg.MSL) {
+    i2c_init();
+    return(1);
+  }
   
   // return success
-  return(1);
+  return(0);
 
 } // i2c_stop
 
@@ -153,7 +159,7 @@ uint8_t i2c_stop() {
   \param[in]  numTx       number of bytes to send
   \param[in]  bufTx       send buffer
 
-  \return error code (1=ok; 0=timeout)
+  \return error code (0=ok; 1=timeout)
 
   write data to I2C slave with frame timeout. Note that no start or 
   stop condition is generated.
@@ -180,11 +186,13 @@ uint8_t i2c_send(uint8_t addr, uint8_t numTx, uint8_t *bufTx) {
   }
  
   // on I2C timeout return error
-  else
-    return(0);
+  else {
+    i2c_init();
+    return(1);
+  }
 
   // return success
-  return(1);
+  return(0);
 
 } // i2c_send
 
@@ -199,7 +207,7 @@ uint8_t i2c_send(uint8_t addr, uint8_t numTx, uint8_t *bufTx) {
   \param[in]  numRx       number of bytes to receive
   \param[out] bufRx       receive buffer
 
-  \return error code (1=ok; 0=timeout)
+  \return error code (0=ok; 1=timeout)
 
   request data from I2C slave with frame timeout. Note that no start or 
   stop condition is generated.
@@ -227,11 +235,13 @@ uint8_t i2c_request(uint8_t slaveAddr, uint8_t numRx, uint8_t *bufRx) {
   }
  
   // on I2C timeout return error
-  if (!countTimeout)
-    return(0);
+  if (!countTimeout) {
+    i2c_init();
+    return(1);
+  }
 
   // return success
-  return(1);
+  return(0);
  
 } // i2c_request
 

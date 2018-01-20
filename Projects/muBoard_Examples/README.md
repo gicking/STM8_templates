@@ -20,5 +20,29 @@ I2C_LCD-Display:
  - periodically print time to LCD  
 
 
+I2C_potentiometer
+----------
+  Arduino-like project with setup() & loop().
+  Periodically ramp potentiometer resistance attached to I2C (muBoard).
+  Used 20kR potentiometer: Analog Devices AD5280BRUZ20 (Farnell 1438441).
+  Connected via I2C pins PE1/SCL and PE2/SDA
+  Functionality:
+ - initialize I2C bus
+ - periodically ramp resistance
+ - print current value via UART1  
+
+
+I2C_read (**not yet functional!**)
+----------
+  Arduino-like project with setup() & loop().
+  Periodically request data from an Arduino configured as I2C slave.
+  Arduino slave from example "Wire/slave sender".
+  Connected via I2C pins PE1/SCL and PE2/SDA
+  Functionality:
+ - initialize I2C bus
+ - periodically read data from Arduino ("hello ")
+ - print data via UART1  
+
+
 back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
 
