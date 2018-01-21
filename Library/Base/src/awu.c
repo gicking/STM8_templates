@@ -28,18 +28,19 @@
 ----------------------------------------------------------*/
 
 /**
-  \fn void AWU_HaltMode(uint16_t ms)
+  \fn void AWU_setTime(uint16_t ms)
    
-  \brief enter CPU halt mode with auto-wake after N milliseconds
+  \brief configure auto-wake after N milliseconds
   
   \param[in]  ms    sleep duration [ms] within [1;30000]
   
-  enter HALT mode with auto-wake after specified number of milliseconds.
+  configure auto-wake after specified number of milliseconds.
+  Do not enter HALT mode here.
 
   \note the LSI low speed clock is quite inaccurate, and the granularity
         of the AWU is coarse -> don't use for time-critical tasks!
 */
-void AWU_HaltMode(uint16_t ms) {
+void AWU_setTime(uint16_t ms) {
 
   uint8_t    APR, AWUTB;
 
@@ -73,10 +74,7 @@ void AWU_HaltMode(uint16_t ms) {
   // enable wake and enable AWU interrupt
   AWU.CSR.reg.AWUEN = 1;
   
-  // enter HALT mode and start AWU timer
-  ENTER_HALT;
-    
-} // AWU_HaltMode
+} // AWU_setTime
      
 
 /*-----------------------------------------------------------------------------

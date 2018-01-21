@@ -1,28 +1,31 @@
 /**********************
   Arduino-like project with setup() & loop(). 
+  Enter power-saving modes with auto-wake via 
+    - any interrupt (lowPower_Wait)
+    - external interrupt or auto-wake (lowPower_HaltAWU)  
+    - external interrupt (lowPower_Halt)
   Use EXINT port interrupt @ pin PE5 (=io_1 on muBoard)
-  (-> #define USE_PORT*_ISR) to call function on falling edge. 
+  (-> #define USE_PORTE_ISR) and AWU (-> #define USE_AWU_ISR)
   Functionality:
-  - configure 1 pins as input pull-up & 2 pins as output high
-  - attach ISR to port interrupt -> background operation
-  - after 10 ISR calls disable ISR
-  - poll button and mirror to LED
+  - configure wake pin as input pull-up with interrupt on falling edge
+  - configure LED output pin
+  - enter power-down mode
 **********************/
 
 /*----------------------------------------------------------
     INCLUDE FILES
 ----------------------------------------------------------*/
 #include "main_general.h"   // board-independent main
+#include "low-power.h"      // low-power mode functions
 
 
 /*----------------------------------------------------------
     MACROS
 ----------------------------------------------------------*/
 
-// access button(=PE5=io_1) and LEDs(green=PH2, red=PH3) pins. See gpio.h
+// access button(=PE5=io_1) and LED(green=PH2) pins. See gpio.h
 #define BUTTON     pinRead(PORT_E, pin5)
-#define LED_GREEN  pinSet(PORT_H, pin2)
-#define LED_RED    pinSet(PORT_H, pin3)
+#define LED        pinSet(PORT_H, pin2)
 
 
 /*----------------------------------------------------------
@@ -30,23 +33,20 @@
 ----------------------------------------------------------*/
 
 //////////
-// port E interrupt: toggle LED 10x, then deactivate pin ISR
+// AWU interrupt: AWU flag (is mandatory!)
+//////////
+ISR_HANDLER(AWU_ISR, __AWU_VECTOR__) {
+
+  // reset wakeup flag (mandatory)
+  AWU_resetFlag();
+  
+} // AWU_ISR
+
+
+//////////
+// port E interrupt: dummy
 //////////
 ISR_HANDLER(PORTE_ISR, __PORTE_VECTOR__) {
-  
-  static uint8_t   numToggle = 0;
-
-  // toggle LED state
-  LED_RED ^= 1;
-
-  // wait a while for debouncing
-  sw_delay(50);
-
-  // after 10 cycles disable ISR
-  /*
-  if (++numToggle == 10)
-    pinMode(PORT_E, pin5, INPUT_PULLUP);
-  */
   
 } // PORTE_ISR
 
@@ -68,14 +68,12 @@ void setup() {
   
   // re-enable interrupts
   interrupts();
-  
 
+  
   // configure LED pins as output high
   pinMode(PORT_H, pin2, OUTPUT);
-  pinMode(PORT_H, pin3, OUTPUT);
-  LED_GREEN = 1;
-  LED_RED   = 1;
-
+  LED = 1;
+  
 } // setup
 
 
@@ -85,8 +83,17 @@ void setup() {
 //////////
 void loop() {
 
-  // also mirror button state to green LED
-  LED_GREEN = BUTTON;
+  // indicate that STM8 is awake
+  uint8_t  i;
+  for (i=0; i<6; i++) {
+    LED ^= 1;
+    delay(100);
+  }
+  
+  // enter power saving mode (sorted by decreasing power consumption)
+  //lowPower_Wait();          // enter WAIT mode, wake via button
+  lowPower_HaltAWU(2000);   // enter active HALT mode, wake via button, or latest after 2s
+  //lowPower_Halt();          // enter HALT mode, wake via button
 
 } // loop
 

@@ -86,8 +86,8 @@
     {0x82, (interrupt_handler_t) I2C_ISR},                    /* irq19 - I2C interrupt */
     #if defined(STM8S105) || defined(STM8S005) ||  defined (STM8AF626x) || defined(STM8S207) || \
         defined(STM8S007) || defined(STM8S208) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
-      {0x82, (interrupt_handler_t) UART2_3_4_TXE_ISR},        /* irq20 - UART2/3/4 Tx interrupt */
-      {0x82, (interrupt_handler_t) UART2_3_4_RXF_ISR},        /* irq21 - UART2/3/4 Rx interrupt */
+      {0x82, (interrupt_handler_t) UART234_TXE_ISR},          /* irq20 - UART2/3/4 Tx interrupt */
+      {0x82, (interrupt_handler_t) UART234_RXF_ISR},          /* irq21 - UART2/3/4 Rx interrupt */
     #else
       {0x82, (interrupt_handler_t) NonHandledInterrupt},      /* irq20 - reserved */
       {0x82, (interrupt_handler_t) NonHandledInterrupt},      /* irq21 - reserved */

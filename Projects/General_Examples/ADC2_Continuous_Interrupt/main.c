@@ -92,8 +92,14 @@ void setup() {
   ADC2_init(ADC_CONTINUOUS);
   ADC2_set_channel(ADC_CH_1);
   
+  // avoid spurious interrupts...
+  noInterrupts();
+
   // enable ADC2 conversion complete interrupt
   ADC2_enable_interrupt();
+  
+  // re-enable interrupts
+  interrupts();
     
   // start continuous ADC conversion
   ADC2_start_conversion();

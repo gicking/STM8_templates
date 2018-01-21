@@ -8,7 +8,7 @@
   \brief project specific settings
    
   project specific configuration header file
-  Select STM8 device and project options as required
+  Select STM8 device and activate optional options
 */
 
 /*-----------------------------------------------------------------------------
@@ -18,23 +18,17 @@
 #define _CONFIG_H_
 
 
-/*-----------------------------------------------------------------------------
-    GENERAL PROJECT SETTINGS
------------------------------------------------------------------------------*/
- 
-/// select STM8 device (no default). For supported devices see file "stm8as.h"
-#define STM8S208      // muBoard
-
-
-/*-----------------------------------------------------------------------------
-    TIM3 SETTINGS
------------------------------------------------------------------------------*/
+/// alternatively select STM8 device directly. For supported devices see file "stm8as.h"
+#define STM8S208   // muBoard
 
 /// required for timekeeping (1ms interrupt)
 #define USE_TIM4_UPD_ISR
 
 /// use AWU interrupt
 #define USE_AWU_ISR
+
+/// use EXINT interrupt for port E
+#define USE_PORTE_ISR
 
 
 /*-----------------------------------------------------------------------------

@@ -22,6 +22,19 @@
 #include "config.h"
 
 
+/* Check the used compiler */
+#if defined(__CSMC__)
+ #define _COSMIC_
+#elif defined(__SDCC)
+ #define _SDCC_
+ #define SDCC_VERSION (__SDCC_VERSION_MAJOR * 10000 \
+                     + __SDCC_VERSION_MINOR * 100 \
+                     + __SDCC_VERSION_PATCH)
+#else
+ #error "Unsupported Compiler!"
+#endif
+
+
 /* Supported STM8 devices. Define respective device in Makefile
  STM8S103     standard line low density device
  STM8S903     standard line low density device

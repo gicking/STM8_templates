@@ -23,6 +23,7 @@
     INCLUDE FILES
 -----------------------------------------------------------------------------*/
 #include "config.h"
+#include "stm8as.h"
 
 
 /*-----------------------------------------------------------------------------
@@ -89,8 +90,8 @@
 
 /// irq3 - External interrupt 0 (GPIOA)
 #if defined(USE_PORTA_ISR)
-  #define __EXTIA_VECTOR__          3
-  ISR_HANDLER(PORTA_ISR, __EXTIA_VECTOR__);
+  #define __PORTA_VECTOR__          3
+  ISR_HANDLER(PORTA_ISR, __PORTA_VECTOR__);
 #else
   #define PORTA_ISR                 NonHandledInterrupt              
 #endif
@@ -98,8 +99,8 @@
 
 /// irq4 - External interrupt 1 (GPIOB)
 #if defined(USE_PORTB_ISR)
-  #define __EXTIB_VECTOR__          4
-  ISR_HANDLER(PORTB_ISR, __EXTIB_VECTOR__);
+  #define __PORTB_VECTOR__          4
+  ISR_HANDLER(PORTB_ISR, __PORTB_VECTOR__);
 #else
   #define PORTB_ISR                 NonHandledInterrupt              
 #endif
@@ -107,8 +108,8 @@
 
 /// irq5 - External interrupt 2 (GPIOC)
 #if defined(USE_PORTC_ISR)
-  #define __EXTIC_VECTOR__          5
-  ISR_HANDLER(PORTC_ISR, __EXTIC_VECTOR__);
+  #define __PORTC_VECTOR__          5
+  ISR_HANDLER(PORTC_ISR, __PORTC_VECTOR__);
 #else
   #define PORTC_ISR                 NonHandledInterrupt              
 #endif
@@ -116,8 +117,8 @@
 
 /// irq6 - External interrupt 3 (GPIOD)
 #if defined(USE_PORTD_ISR)
-  #define __EXTID_VECTOR__          6
-  ISR_HANDLER(PORTD_ISR, __EXTID_VECTOR__);
+  #define __PORTD_VECTOR__          6
+  ISR_HANDLER(PORTD_ISR, __PORTD_VECTOR__);
 #else
   #define PORTD_ISR                 NonHandledInterrupt              
 #endif
@@ -125,8 +126,8 @@
 
 /// irq7 - External interrupt 4 (GPIOE)
 #if defined(USE_PORTE_ISR)
-  #define __EXTIE_VECTOR__          7
-  ISR_HANDLER(PORTE_ISR, __EXTIE_VECTOR__);
+  #define __PORTE_VECTOR__          7
+  ISR_HANDLER(PORTE_ISR, __PORTE_VECTOR__);
 #else
   #define PORTE_ISR                 NonHandledInterrupt              
 #endif
@@ -135,8 +136,8 @@
 /// irq8 - External interrupt 5 (GPIOF) or CAN receive interrupt -- device dependent
 #ifdef STM8S903
   #if defined(USE_PORTF_ISR)
-    #define __EXTIF_VECTOR__        8
-    ISR_HANDLER(PORTF_ISR, __EXTIF_VECTOR__);
+    #define __PORTF_VECTOR__        8
+    ISR_HANDLER(PORTF_ISR, __PORTF_VECTOR__);
   #else
     #define PORTF_ISR               NonHandledInterrupt              
   #endif
@@ -285,10 +286,10 @@
 #if defined(STM8S105) || defined(STM8S005) ||  defined (STM8AF626x) || defined(STM8S207) || \
     defined(STM8S007) || defined(STM8S208) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
   #if defined(USE_UART234_TXE_ISR)
-    #define __UART2_3_4_TXE_VECTOR__ 20
-    ISR_HANDLER(UART2_3_4_TXE_ISR, __UART2_3_4_TXE_VECTOR__);
+    #define __UART234_TXE_VECTOR__ 20
+    ISR_HANDLER(UART234_TXE_ISR, __UART234_TXE_VECTOR__);
   #else
-    #define UART2_3_4_TXE_ISR       NonHandledInterrupt
+    #define UART234_TXE_ISR       NonHandledInterrupt
   #endif
 #endif
 
@@ -297,10 +298,10 @@
 #if defined(STM8S105) || defined(STM8S005) ||  defined (STM8AF626x) || defined(STM8S207) || \
     defined(STM8S007) || defined(STM8S208) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
   #if defined(USE_UART234_RXF_ISR)
-    #define __UART2_3_4_RXF_VECTOR__ 21
-    ISR_HANDLER(UART2_3_4_RXF_ISR, __UART2_3_4_RXF_VECTOR__);
+    #define __UART234_RXF_VECTOR__ 21
+    ISR_HANDLER(UART234_RXF_ISR, __UART234_RXF_VECTOR__);
   #else
-    #define UART2_3_4_RXF_ISR       NonHandledInterrupt
+    #define UART234_RXF_ISR       NonHandledInterrupt
   #endif
 #endif
  

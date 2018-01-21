@@ -40,12 +40,12 @@ ISR_HANDLER(TLI_ISR, __TLI_VECTOR__) {
   LED_RED ^= 1;
 
   // wait a while for debouncing
-  sw_delay(50);
+  sw_delay(100);
 
   // after 10 cycles disable ISR
   if (++numToggle == 10)
     pinMode(PORT_D, pin7, INPUT_PULLUP);
-
+  
 } // TLI_ISR
 
 
@@ -55,9 +55,16 @@ ISR_HANDLER(TLI_ISR, __TLI_VECTOR__) {
 //////////
 void setup() {
   
+  // avoid spurious interrupts...
+  noInterrupts();
+  
   // configure TLI pin PD7 as input pull-up with interrupt
   pinMode(PORT_D, pin7, INPUT_PULLUP_INTERRUPT);
   
+  // re-enable interrupts
+  interrupts();
+  
+    
   // configure LED pins as output high
   pinMode(PORT_H, pin2, OUTPUT);
   pinMode(PORT_H, pin3, OUTPUT);
