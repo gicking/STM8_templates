@@ -1,5 +1,5 @@
 /**
-  \file low-power.h
+  \file power-saving.h
    
   \author G. Icking-Konert
   \date 2018-01-20
@@ -15,8 +15,8 @@
 /*-----------------------------------------------------------------------------
     MODULE DEFINITION FOR MULTIPLE INCLUSION
 -----------------------------------------------------------------------------*/
-#ifndef _LOW_POWER_H_
-#define _LOW_POWER_H_
+#ifndef _POWER_SAVING_H_
+#define _POWER_SAVING_H_
 
 /*-----------------------------------------------------------------------------
     INCLUDE FILES
@@ -45,4 +45,4 @@ void lowPower_HaltAWU(uint16_t ms);
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION
 -----------------------------------------------------------------------------*/
-#endif // _LOW_POWER_H_
+#endif // _POWER_SAVING_H_

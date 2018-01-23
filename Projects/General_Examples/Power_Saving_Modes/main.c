@@ -16,7 +16,7 @@
     INCLUDE FILES
 ----------------------------------------------------------*/
 #include "main_general.h"   // board-independent main
-#include "low-power.h"      // low-power mode functions
+#include "power-saving.h"   // low-power mode functions
 
 
 /*----------------------------------------------------------

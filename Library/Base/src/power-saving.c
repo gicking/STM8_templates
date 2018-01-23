@@ -1,5 +1,5 @@
 /**
-  \file low-power.h
+  \file power-saving.h
    
   \author G. Icking-Konert
   \date 2018-01-20
@@ -18,9 +18,9 @@
 #include <stdint.h>
 #include "stm8as.h"
 #include "misc.h"
-#define _LOW_POWER_MAIN_
-  #include "low-power.h"
-#undef _LOW_POWER_MAIN_
+#define _POWER_SAVING_MAIN_
+  #include "power-saving.h"
+#undef _POWER_SAVING_MAIN_
 #include "awu.h"
 
 
