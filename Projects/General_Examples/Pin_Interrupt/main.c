@@ -58,6 +58,8 @@ void setup() {
   // avoid spurious interrupts...
   noInterrupts();
   
+  configEdgeTLI(FALLING);
+  
   // configure TLI pin PD7 as input pull-up with interrupt
   pinMode(PORT_D, pin7, INPUT_PULLUP_INTERRUPT);
   

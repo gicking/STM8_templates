@@ -61,7 +61,6 @@
 #define  CHANGE                   1        ///< EXINT on both edges (EXINT)
 #define  RISING                   2        ///< EXINT on rising edge (EXINT & TLI)
 #define  FALLING                  3        ///< EXINT on falling edge (EXINT & TLI)
-#define  TLI       ((PORT_t*) NULL)        ///< TLI pin indicator (for configExintEdge())
 
 /// set pin mode
 #define pinMode(port,pin,mode)  { \
@@ -89,14 +88,24 @@
     DECLARATION OF GLOBAL FUNCTIONS
 -----------------------------------------------------------------------------*/
 
+// for expernal port interrupts
 #if defined(USE_PORTA_ISR) || defined(USE_PORTB_ISR) || defined(USE_PORTC_ISR) || defined(USE_PORTD_ISR) || \
-    defined(USE_PORTE_ISR) || defined(USE_PORTF_ISR) || defined(USE_PORT_ISR) || defined(USE_TLI_ISR)
+    defined(USE_PORTE_ISR) || defined(USE_PORTF_ISR) || defined(USE_PORT_ISR)
 
   /// auxiliary macro which allows using port as function argument (else pointer)
-  #define configExintEdge(port,edge)    mConfigExintEdge(&port, edge)    
+  #define configEdgeExint(port,edge)    mConfigEdgeExint(&port, edge)
   
   /// configure edge sensitivity for EXINT
-  void    mConfigExintEdge(PORT_t *addrPort, uint8_t edge);
+  void    mConfigEdgeExint(PORT_t *addrPort, uint8_t edge);
+
+#endif
+
+
+// for top level interrupt (=pin interrupt)
+#if defined(USE_TLI_ISR)
+
+  /// configure edge sensitivity for TLI
+  void    configEdgeTLI(uint8_t edge);
 
 #endif
 

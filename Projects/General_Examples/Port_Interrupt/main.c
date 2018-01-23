@@ -64,7 +64,7 @@ void setup() {
   pinMode(PORT_E, pin5, INPUT_PULLUP_INTERRUPT);
   
   // configure edge sensitivity for port E (all 8 pins!) 
-  configExintEdge(PORT_E, FALLING);
+  configEdgeExint(PORT_E, FALLING);
   
   // re-enable interrupts
   interrupts();

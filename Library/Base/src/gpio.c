@@ -28,7 +28,7 @@
     defined(USE_PORTE_ISR) || defined(USE_PORTF_ISR) || defined(USE_PORT_ISR)
 
   /**
-    \fn void mConfigExintEdge(PORT_t *addrPort, uint8_t edge)
+    \fn void mConfigEdgeExint(PORT_t *addrPort, uint8_t edge)
      
     \brief configure edge sensitivity for EXINT
     
@@ -46,7 +46,7 @@
     \note
       pin interrupts are not en-/disabled by this routine. Use pinMode() in module gpio instead  
   */
-  void mConfigExintEdge(PORT_t *addrPort, uint8_t edge) {
+  void mConfigEdgeExint(PORT_t *addrPort, uint8_t edge) {
     
     uint8_t   tmp;
     
@@ -155,9 +155,49 @@
     // restore original port interrupt setting
     addrPort->CR2.byte = tmp;   
     
-  } // mConfigExintEdge
+  } // mConfigEdgeExint
 
 #endif // USE_PORT_ISR
+
+
+
+#if defined(USE_TLI_ISR)
+
+  /**
+    \fn void configEdgeTLI(uint8_t edge)
+     
+    \brief configure edge sensitivity for TLI
+    
+    \param[in]  edge      edge sensitivity. Supported sensitivities are
+      - RISING      interrupt on rising edge
+      - FALLING     interrupt on falling edge
+     
+    configure edge sensitivity for pin interrupt (TLI) service routine.
+    For available pins see datasheet of device.
+
+    \note
+      pin interrupts are not en-/disabled by this routine. Use pinMode() in module gpio instead  
+  */
+  void configEdgeTLI(uint8_t edge) {
+    
+    uint8_t   tmp;
+    
+    // disable port D interrupts (TLI=PD7) while modifying
+    // for output pins slope is modified temporarily, which is uncritical
+    tmp = PORT_D.CR2.byte;
+    
+    // set TLI edge sensitivity (only rising and falling)
+    if (edge == RISING)
+      EXTI.CR2.reg.TLIS = 1;
+    else
+      EXTI.CR2.reg.TLIS = 0;
+        
+    // restore original port interrupt setting
+    PORT_D.CR2.byte = tmp;   
+      
+  } // configEdgeTLI
+
+#endif // USE_TLI_ISR
 
 /*-----------------------------------------------------------------------------
     END OF MODULE
