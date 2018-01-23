@@ -4,9 +4,10 @@
   Arduino slave from example "Wire/slave sender".
   Connected via I2C pins PE1/SCL and PE2/SDA
   Functionality:
- - initialize I2C bus
- - periodically read data from Arduino ("hello ")
- - print data via UART1  
+  - initialize I2C bus
+  - periodically read data from Arduino ("hello ")
+  - print data via UART1  
+  Note: **Not yet functional!!!**
 **********************/
 
 /*----------------------------------------------------------

@@ -4,9 +4,9 @@
   Used display: Batron BTHQ21605V-COG-FSRE-I2C 2X16 (Farnell 1220409)
   connected via I2C pins PE1/SCL, PE2/SDA, and GPIO PE3 for LCD reset (see i2c_lcd.c)
   Functionality:
- - initialize I2C bus
- - initialize and reset LCD display
- - periodically print time to LCD  
+  - initialize I2C bus
+  - initialize and reset LCD display
+  - periodically print time to LCD  
 **********************/
 
 /*----------------------------------------------------------

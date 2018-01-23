@@ -5,7 +5,7 @@
   Functionality:
   - configure 1 pins as input pull-up & 2 pins as output high
   - attach ISR to port interrupt -> background operation
-  - after 10 ISR calls disable ISR
+  - after N ISR calls disable ISR
   - poll button and mirror to LED
 **********************/
 
@@ -43,10 +43,8 @@ ISR_HANDLER(PORTE_ISR, __PORTE_VECTOR__) {
   sw_delay(50);
 
   // after 10 cycles disable ISR
-  /*
   if (++numToggle == 10)
     pinMode(PORT_E, pin5, INPUT_PULLUP);
-  */
   
 } // PORTE_ISR
 

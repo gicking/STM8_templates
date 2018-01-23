@@ -4,34 +4,32 @@ back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
 General Examples
 =================
 
-This folder contains some general, board independent examples for
-the STM8 template library. The functionality (loosely sorted by 
-rising complexity) is as follows:
+This folder contains board independent examples for the STM8 template library. 
+The functionality is (loosely) sorted by rising complexity.
 
 Minimal-C: 
 ----------
-  simple C-project without Arduino-like initialization and 
-  setup()/loop(). No assumption is made, no interrupts used.
-  Can be used as starting point for projects with extreme
-  memory limitations.
+  simple C-project without Arduino-like initialization and setup()/loop(). 
+  No assumption is made, no interrupts used. Can be used as starting point 
+  for projects with extreme memory limitations.
   Functionality:
   - init FCPU to 16MHz
   - configure pin as output
   - toggle pin every 500ms with delay (->blocking)
-  - optionally use delay via SW (less overhead & latency) or timer 3 (robust against high ISR load)
 
 
 Minimal-C_with_ISR
 ----------
-  simple C-project without Arduino-like initialization and 
-  setup()/loop(), but with interrupt.
-  Functionality (see "portme.c"):
+  simple C-project without Arduino-like initialization and setup()/loop(), 
+  but with interrupt.
+  Functionality:
   - init FCPU to 16MHz
   - configure pin as output
   - init 1ms TIM4 interrupt (for measuring times)
   - toggle pin every 500ms based on SW clock (->non-blocking)
   Note:
-  - SDCC requires ISRs declared in source containing main()
+    - define "USE_TIM4_UPD_ISR" in "config.h" for 1ms interrupt (TIM4_UPD)
+    - include "stm8_interrupt_vector.h" here, because SDCC needs ISR declaration in file containing main()
 
 
 Pin_Read_Write:
@@ -56,10 +54,11 @@ Basic_Project:
 
 Timeout_Scheduler:
 ----------
-  Arduino-like project with setup() & loop(). Use several timeouts
-  to execute periodic tasks in loop(). 
+  Arduino-like project with setup() & loop(). Use several 
+  timeouts to execute periodic tasks in loop(). 
   Functionality:
   - configure 2 (LED-)pins as output
+  - configure timeouts for periodic tasks
   - toggle 2 pins at different intervals
 
 
@@ -69,8 +68,8 @@ TIM3_PWM_generate:
   16-bit timer 3 to generate PWM with variable
   frequency and duty cycle. 
   Functionality:
-  - use timeout to create periodic task
-  - in task ramp LED brightness using TIM3
+  - ramp LED brightness using TIM3 PWM
+  - use timeout periodically update brightness
 
 
 Attach_1ms_Interrupt: 
@@ -82,8 +81,8 @@ Attach_1ms_Interrupt:
   - configure 2 pins as output high
   - attach pin toggle function to 1ms interrupt -> background operation
   - use timeouts to periodically perform tasks in ISR
-  - after 10 cycles swap user function
-  - after 20 cycles detach user function
+  - after N cycles swap user function
+  - after M cycles detach user function
 
 
 Pin_Interrupt: 
@@ -92,9 +91,10 @@ Pin_Interrupt:
   Use TLI interrupt @ pin PD7 (=automode on muBoard)
   (-> #define USE_TLI_ISR) to call function on falling edge. 
   Functionality:
-  - configure 1 pins as input pull-up & 2 pins as output high
+  - configure TLI pins as input pull-up w/ interrupt
+  - configure 2 pins as output high
   - attach ISR to TLI interrupt -> background operation
-  - after 10 ISR calls disable ISR
+  - after N ISR calls disable ISR
   - poll TLI pin and mirror to LED
 
 
@@ -102,11 +102,11 @@ Port_Interrupt:
 ----------
   Arduino-like project with setup() & loop(). 
   Use EXINT port interrupt @ pin PE5 (=io_1 on muBoard)
-  (-> #define USE_PORT_ISR) to call function on falling edge. 
+  (-> #define USE_PORT*_ISR) to call function on falling edge. 
   Functionality:
   - configure 1 pins as input pull-up & 2 pins as output high
   - attach ISR to port interrupt -> background operation
-  - after 10 ISR calls disable ISR
+  - after N ISR calls disable ISR
   - poll button and mirror to LED
 
 
@@ -122,6 +122,17 @@ Printf_UART:
   - every 500ms send current time via printf()
 
 
+Gets_Printf_UART:
+----------
+  Arduino-like project with setup() & loop(). Read number
+  as string via UART from PC terminal and echo value back.
+  Functionality:
+  - configure UART1 for PC in-/output
+  - use UART1 send for putchar() output
+  - use UART1 receive for gets() input
+  - read string from PC, convert to number and send value to PC
+
+
 Dhrystone: 
 ----------
   STM8 port of Dhrystone benchmark test without Arduino-like 
@@ -135,17 +146,6 @@ Dhrystone:
   Note:
   - SDCC requires ISRs declared in source containing main(), here "dhry_1.c"
   - template based on: http://www.colecovision.eu/stm8/dhrystone-stm8af5288-usart3-sdcc-3.6.0.tar.gz
-
-
-Gets_Printf_UART:
-----------
-  Arduino-like project with setup() & loop(). Read number
-  as string via UART from PC terminal and echo value back.
-  Functionality:
-  - configure UART1 for PC in-/output
-  - use UART1 send for putchar() output
-  - use UART1 receive for gets() input
-  - read string from PC, convert to number and send value to PC
 
 
 Beeper:
@@ -216,13 +216,19 @@ ADC2_Continuous_Interrupt:
   - in ADC ISR send every Nth result via UART1 and blink LED
 
 
-Auto-Wakeup:
+Power_Saving_Modes:
 ----------
-  Arduino-like project with setup() & loop().
-  Periodically enter STOP mode with auto-wake.
+  Arduino-like project with setup() & loop(). 
+  Enter power-saving modes with auto-wake via 
+    - any interrupt (lowPower_Wait)
+    - external interrupt or auto-wake (lowPower_HaltAWU)  
+    - external interrupt (lowPower_Halt)
+  Use EXINT port interrupt @ pin PE5 (=io_1 on muBoard)
+  (-> #define USE_PORTE_ISR) and AWU (-> #define USE_AWU_ISR)
   Functionality:
-  - attach ISR to AWU interrupt
-  - periodically enter STOP mode with auto-wake
+  - configure wake pin as input pull-up with interrupt on falling edge
+  - configure LED output pin
+  - enter power-down mode
 
 
 back to [Wiki](https://github.com/gicking/STM8_templates/wiki)

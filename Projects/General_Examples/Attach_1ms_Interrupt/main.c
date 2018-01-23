@@ -6,8 +6,8 @@
   - configure 2 pins as output high
   - attach pin toggle function to 1ms interrupt -> background operation
   - use timeouts to periodically perform tasks in ISR
-  - after 10 cycles swap user function
-  - after 20 cycles detach user function
+  - after N cycles swap user function
+  - after M cycles detach user function
 **********************/
 
 /*----------------------------------------------------------

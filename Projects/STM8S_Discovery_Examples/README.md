@@ -32,12 +32,12 @@ Basic_Project:
 Attach_1ms_Interrupt: 
 ----------
   Arduino-like project with setup() & loop(). Dynamically attach 
-  user functions to 1ms interrupt (-> #define USE_CLK_ISR) to 
+  user functions to 1ms interrupt (-> #define USE_MILLI_ISR) to 
   automatically call function every 1ms. 
   Functionality:
   - configure LED pin as output
-  - attach LED toggle function to 1ms interrupt -> background operation
-  - after 20 cycles detach user function
+  - attach pin toggle function to 1ms interrupt -> background operation
+  - after N cycles detach user function
 
 
 back to [Wiki](https://github.com/gicking/STM8_templates/wiki)

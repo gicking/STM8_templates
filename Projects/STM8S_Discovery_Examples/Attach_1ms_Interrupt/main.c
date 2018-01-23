@@ -5,7 +5,7 @@
   Functionality:
   - configure LED pin as output
   - attach pin toggle function to 1ms interrupt -> background operation
-  - after 20 cycles detach user function
+  - after N cycles detach user function
 **********************/
 
 /*----------------------------------------------------------

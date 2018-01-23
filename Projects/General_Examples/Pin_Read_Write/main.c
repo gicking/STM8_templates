@@ -46,8 +46,8 @@ void setup() {
 void loop() {
 
   // mirror pin PE5 to pin PH3
-  pinSet(PORT_H, pin3) = pinRead(PORT_E, pin5);
-  //LED = BUTTON;
+  LED = BUTTON;
+  //pinSet(PORT_H, pin3) = pinRead(PORT_E, pin5);
     
 } // loop
 

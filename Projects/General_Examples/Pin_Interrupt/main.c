@@ -3,9 +3,10 @@
   Use TLI interrupt @ pin PD7 (=automode on muBoard)
   (-> #define USE_TLI_ISR) to call function on falling edge. 
   Functionality:
-  - configure 1 pins as input pull-up & 2 pins as output high
+  - configure TLI pins as input pull-up w/ interrupt
+  - configure 2 pins as output high
   - attach ISR to TLI interrupt -> background operation
-  - after 10 ISR calls disable ISR
+  - after N ISR calls disable ISR
   - poll TLI pin and mirror to LED
 **********************/
 
@@ -40,7 +41,7 @@ ISR_HANDLER(TLI_ISR, __TLI_VECTOR__) {
   LED_RED ^= 1;
 
   // wait a while for debouncing
-  sw_delay(100);
+  sw_delay(50);
 
   // after 10 cycles disable ISR
   if (++numToggle == 10)
@@ -58,6 +59,7 @@ void setup() {
   // avoid spurious interrupts...
   noInterrupts();
   
+  // set edge sensitivity of TLI pin
   configEdgeTLI(FALLING);
   
   // configure TLI pin PD7 as input pull-up with interrupt

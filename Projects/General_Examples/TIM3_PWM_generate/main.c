@@ -3,8 +3,8 @@
   16-bit timer 3 to generate PWM with variable
   frequency and duty cycle. 
   Functionality:
-  - use timeout to create periodic task
-  - in task ramp LED brightness using TIM3
+  - ramp LED brightness using TIM3 PWM
+  - use timeout periodically update brightness
 **********************/
 
 /*----------------------------------------------------------

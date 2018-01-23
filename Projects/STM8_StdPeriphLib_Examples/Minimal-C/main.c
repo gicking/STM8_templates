@@ -1,10 +1,9 @@
 /**********************
-  simple C-project without Arduino-like initialization and 
-  with calls to the STM8 Standard Peripheral Library
+  simple C-project without Arduino-like initialization and with calls to the 
+  STM8 Standard Peripheral Library (SPL)
   (SDCC patch available from https://github.com/gicking/STM8-SPL_SDCC_patch)
   No further assumption is made, no interrupts are used.
-  Can be used as starting point for SPL projects with extreme
-  memory limitations.
+  Can be used as starting point for SPL projects with extreme memory limitations.
   Note that device headers from STM8_templates and SPL are incompatible ->
   need to create separate SPL.c file in project folder and use interface
   functions (here simply 'SPL_init()' and 'SPL_setPin()').

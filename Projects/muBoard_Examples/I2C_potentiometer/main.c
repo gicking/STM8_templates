@@ -4,9 +4,9 @@
   Used 20kR potentiometer: Analog Devices AD5280BRUZ20 (Farnell 1438441).
   Connected via I2C pins PE1/SCL and PE2/SDA
   Functionality:
- - initialize I2C bus
- - periodically ramp resistance
- - print current value via UART1  
+  - initialize I2C bus
+  - periodically ramp resistance
+  - print current value via UART1  
 **********************/
 
 /*----------------------------------------------------------

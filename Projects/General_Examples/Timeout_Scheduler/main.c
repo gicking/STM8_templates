@@ -1,8 +1,9 @@
 /**********************
   Arduino-like project with setup() & loop(). Use several 
-  stopwatches to execute periodic tasks in loop(). 
+  timeouts to execute periodic tasks in loop(). 
   Functionality:
   - configure 2 (LED-)pins as output
+  - configure timeouts for periodic tasks
   - toggle 2 pins at different intervals
 **********************/
 

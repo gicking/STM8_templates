@@ -24,7 +24,7 @@ Some [STM8L Discovery Examples](http://www.st.com/en/evaluation-tools/stm8l-disc
 
 [muBoard Examples](muBoard_Examples)
 ----------------------------------
-muBoard v2.3 specific routines and macros. This board was developed for IC validation and testing at [Robert Bosch GmbH](http://www.bosch.com). For an overview of board functions see [here](https://frosch.piandmore.de//de/pam9/call/public-media/event_media/160611_Vortrag_Interpreter.pdf) (in German).
+[muBoard](https://frosch.piandmore.de//de/pam9/call/public-media/event_media/160611_Vortrag_Interpreter.pdf) specific routines and macros. This board was developed for IC validation and testing at [Robert Bosch GmbH](http://www.bosch.com).
 
 
 back to [Wiki](https://github.com/gicking/STM8_templates/wiki)

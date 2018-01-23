@@ -1,13 +1,14 @@
 /**********************
-  simple C-project without Arduino-like initialization and 
-  setup()/loop(), but with interrupt.
-  Functionality (see "portme.c"):
+  simple C-project without Arduino-like initialization and setup()/loop(), 
+  but with interrupt.
+  Functionality:
   - init FCPU to 16MHz
   - configure pin as output
   - init 1ms TIM4 interrupt (for measuring times)
   - toggle pin every 500ms based on SW clock (->non-blocking)
   Note:
-  - SDCC requires ISRs declared in source containing main()
+    - define "USE_TIM4_UPD_ISR" in "config.h" for 1ms interrupt (TIM4_UPD)
+    - include "stm8_interrupt_vector.h" here, because SDCC needs ISR declaration in file containing main()
 **********************/
 
 /*----------------------------------------------------------

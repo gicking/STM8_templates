@@ -26,11 +26,10 @@ Notes:
   - the SPL license is not free (as in OSS), 
   as [pointed out by spth](https://github.com/gicking/STM8-SPL_SDCC_patch/issues/1). 
   **Make sure to respect the SPL license conditions** 
-  - the original SPL is not (quite) compatible with the SDCC compiler. However, a 
-  patch is available on [Github](https://github.com/gicking/STM8-SPL_SDCC_patch).
+  - the original SPL is not (quite) compatible with the SDCC compiler. A patch is 
+  available on [Github](https://github.com/gicking/STM8-SPL_SDCC_patch).
   - the device headers from "STM8_templates" and "SPL" are incompatible. To mix them, 
-  create separate SPL.c file in project folder and use interface
-  functions (see example projects).
+  create separate SPL.c file in project folder and use interface functions (see examples).
 
 
 Example Projects
@@ -38,12 +37,16 @@ Example Projects
 
 Minimal-C: 
 ----------
-  simple C-project without Arduino-like initialization and 
-  with calls to the STM8 Standard Peripheral Library
+  simple C-project without Arduino-like initialization and with calls to the 
+  STM8 Standard Peripheral Library (SPL)
   (SDCC patch available from https://github.com/gicking/STM8-SPL_SDCC_patch)
   No further assumption is made, no interrupts are used.
-  Can be used as starting point for SPL projects with extreme
-  memory limitations.
+  Can be used as starting point for SPL projects with extreme memory limitations.
+  Note that device headers from STM8_templates and SPL are incompatible ->
+  need to create separate SPL.c file in project folder and use interface
+  functions (here simply 'SPL_init()' and 'SPL_setPin()').
+  Advantage is transparent mixing of STM8_templates (simple) with STM8
+  SPL library (powerful) and examples by STM.
   Functionality:
   - init FCPU to 16MHz
   - configure pin as output
@@ -54,6 +57,11 @@ Basic_Project:
 ----------
   Arduino-like project with calls to the STM8 Standard Peripheral Library
   (SDCC patch available from https://github.com/gicking/STM8-SPL_SDCC_patch). 
+  Note that device headers from STM8_templates and SPL are incompatible ->
+  need to create separate SPL.c file in project folder and use interface
+  functions (here simply 'SPL_setup()' and 'SPL_loop()').
+  Advantage is transparent mixing of STM8_templates (simple) with STM8
+  SPL library (powerful) and examples by STM.
   Functionality:
   - use SPL to configure LED pin as output
   - toggle LED via SPL every 500ms
