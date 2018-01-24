@@ -20,9 +20,9 @@
 ----------------------------------------------------------*/
 
 // access button(=PE5=io_1) and LEDs(green=PH2, red=PH3) pins. See gpio.h
-#define BUTTON     pinRead(PORT_E, pin5)
-#define LED_GREEN  pinSet(PORT_H, pin2)
-#define LED_RED    pinSet(PORT_H, pin3)
+#define BUTTON     pinInputReg(PORT_E, pin5)
+#define LED_GREEN  pinOutputReg(PORT_H, pin2)
+#define LED_RED    pinOutputReg(PORT_H, pin3)
 
 
 /*----------------------------------------------------------
@@ -42,9 +42,9 @@ ISR_HANDLER(PORTE_ISR, __PORTE_VECTOR__) {
   // wait a while for debouncing
   sw_delay(50);
 
-  // after 10 cycles disable ISR
-  if (++numToggle == 10)
-    pinMode(PORT_E, pin5, INPUT_PULLUP);
+  // after N cycles disable ISR
+  if (++numToggle >= 20)
+    pinMode(PORT_E, 5, INPUT_PULLUP);
   
 } // PORTE_ISR
 
@@ -58,19 +58,19 @@ void setup() {
   // avoid spurious interrupts...
   noInterrupts();
   
-  // configure button pin PE5 as input pull-up with interrupt
-  pinMode(PORT_E, pin5, INPUT_PULLUP_INTERRUPT);
-  
   // configure edge sensitivity for port E (all 8 pins!) 
   configEdgeExint(PORT_E, FALLING);
+  
+  // configure button pin PE5 as input pull-up with interrupt
+  pinMode(PORT_E, 5, INPUT_PULLUP_INTERRUPT);
   
   // re-enable interrupts
   interrupts();
   
 
   // configure LED pins as output high
-  pinMode(PORT_H, pin2, OUTPUT);
-  pinMode(PORT_H, pin3, OUTPUT);
+  pinMode(PORT_H, 2, OUTPUT);
+  pinMode(PORT_H, 3, OUTPUT);
   LED_GREEN = 1;
   LED_RED   = 1;
 

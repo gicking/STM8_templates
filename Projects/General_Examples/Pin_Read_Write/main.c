@@ -13,8 +13,8 @@
 #include "main_general.h"   // board-independent main
 
 // access button(=PE5=io_1) and LEDs(=PH3) pins. See gpio.h
-#define BUTTON  pinRead(PORT_E, pin5)
-#define LED     pinSet(PORT_H, pin3)
+#define BUTTON  pinInputReg(PORT_E, pin5)
+#define LED     pinOutputReg(PORT_H, pin3)
 
 
 /*----------------------------------------------------------
@@ -31,10 +31,10 @@
 void setup() {
   
   // configure PE5 (=io_1 on muBoard) as input with pull-up
-  pinMode(PORT_E, pin5, INPUT_PULLUP);
+  pinMode(PORT_E, 5, INPUT_PULLUP);
       
   // configure PH3 (=red LED on muBoard) as output
-  pinMode(PORT_H, pin3, OUTPUT);
+  pinMode(PORT_H, 3, OUTPUT);
 
 } // setup
 
@@ -46,8 +46,8 @@ void setup() {
 void loop() {
 
   // mirror pin PE5 to pin PH3
-  LED = BUTTON;
-  //pinSet(PORT_H, pin3) = pinRead(PORT_E, pin5);
-    
+  //LED = BUTTON;                           // via direct (bitwise) access
+  pinSet(PORT_H,3, pinRead(PORT_E,5));    // via "normal" pin access
+
 } // loop
 

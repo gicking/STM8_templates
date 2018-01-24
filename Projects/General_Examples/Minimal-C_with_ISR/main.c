@@ -21,7 +21,7 @@
 
 
 // define board LED pin for STM8S Discovery Board
-#define LED   pinSet(PORT_D, pin0)
+#define LED   pinOutputReg(PORT_D, pin0)
 
 // main routine
 void main(void) {
@@ -36,7 +36,7 @@ void main(void) {
   TIM4_init();
 
   // configure LED pin as output
-  pinMode(PORT_D, pin0, OUTPUT);
+  pinMode(PORT_D, 0, OUTPUT);
 
   // globally enable interrupts
   ENABLE_INTERRUPTS;

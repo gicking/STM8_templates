@@ -36,8 +36,8 @@
 void i2c_init() {
 
   // configure I2C pins PE1(=SCL) and PE2(=SDA)
-  pinMode(PORT_E, pin1, OUTPUT_OPENDRAIN);
-  pinMode(PORT_E, pin2, OUTPUT_OPENDRAIN);
+  pinMode(PORT_E, 1, OUTPUT_OPENDRAIN);
+  pinMode(PORT_E, 2, OUTPUT_OPENDRAIN);
 
   // init I2C bus
   I2C.CR1.byte          = 0x00;     // disable I2C, no clock stretching

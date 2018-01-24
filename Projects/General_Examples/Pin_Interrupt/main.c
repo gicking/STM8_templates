@@ -21,9 +21,9 @@
 ----------------------------------------------------------*/
 
 // access TLI(=PD7=ModeSelect) and LEDs(green=PH2, red=PH3) pins. See gpio.h
-#define PIN_TLI    pinRead(PORT_D, pin7)
-#define LED_GREEN  pinSet(PORT_H, pin2)
-#define LED_RED    pinSet(PORT_H, pin3)
+#define PIN_TLI    pinInputReg(PORT_D, pin7)
+#define LED_GREEN  pinOutputReg(PORT_H, pin2)
+#define LED_RED    pinOutputReg(PORT_H, pin3)
 
 
 /*----------------------------------------------------------
@@ -45,7 +45,7 @@ ISR_HANDLER(TLI_ISR, __TLI_VECTOR__) {
 
   // after 10 cycles disable ISR
   if (++numToggle == 10)
-    pinMode(PORT_D, pin7, INPUT_PULLUP);
+    pinMode(PORT_D, 7, INPUT_PULLUP);
   
 } // TLI_ISR
 
@@ -63,15 +63,15 @@ void setup() {
   configEdgeTLI(FALLING);
   
   // configure TLI pin PD7 as input pull-up with interrupt
-  pinMode(PORT_D, pin7, INPUT_PULLUP_INTERRUPT);
+  pinMode(PORT_D, 7, INPUT_PULLUP_INTERRUPT);
   
   // re-enable interrupts
   interrupts();
   
     
   // configure LED pins as output high
-  pinMode(PORT_H, pin2, OUTPUT);
-  pinMode(PORT_H, pin3, OUTPUT);
+  pinMode(PORT_H, 2, OUTPUT);
+  pinMode(PORT_H, 3, OUTPUT);
   LED_GREEN = 1;
   LED_RED   = 1;
   

@@ -132,12 +132,12 @@
 /*---
  bits and bytes
 ---*/
-#define bit(n)                     (1 << n)                                    ///< get bit value 2^n
-#define bitClear(b,n)              (b &= ~(1 << n))                            ///< clear single bit in data to '0'
-#define bitRead(b,n)               ((b & (1 << n)) >> n)                       ///< read single bit position in byte
-#define bitSet(b,n)                (b |= (1 << n))                             ///< set single bit in data to '1'
-#define bitToggle(b,n)             (b ^= (1 << n))                             ///< toggle single bit state in byte
-#define bitWrite(b,n,value)        (value?(b|=(1<<n)):(b&=~(1<<n)))            ///< set single bit value in byte to value
+#define bit(n)                     (0x01 << n)                                 ///< get bit value 2^n
+#define bitClear(b,n)              (b &= ~(0x01 << n))                         ///< clear single bit in data to '0'
+#define bitRead(b,n)               ((b & (0x01 << n)) >> n)                    ///< read single bit position in byte
+#define bitSet(b,n)                (b |= (0x01 << n))                          ///< set single bit in data to '1'
+#define bitToggle(b,n)             (b ^= (0x01 << n))                          ///< toggle single bit state in byte
+#define bitWrite(b,n,value)        (value?(b|=(0x01<<n)):(b&=~(0x01<<n)))      ///< set single bit value in byte to value
 #define lowByte(x)                 ((uint8_t) x)                               ///< get low (=rightmost) byte from x
 #define highByte(x)                ((uint8_t) (((uint16_t) x) >> 8))           ///< get high (=2nd) byte from a word
 #define concatBytes(hb,lb)         ((((uint16_t)hb) << 8) | ((uint16_t)lb))    ///< concat 2 bytes to a 16bit word 

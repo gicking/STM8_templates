@@ -24,8 +24,8 @@
 ----------------------------------------------------------*/
 
 // access button(=PE5=io_1) and LED(green=PH2) pins. See gpio.h
-#define BUTTON     pinRead(PORT_E, pin5)
-#define LED        pinSet(PORT_H, pin2)
+#define BUTTON     pinInputReg(PORT_E, pin5)
+#define LED        pinOutputReg(PORT_H, pin2)
 
 
 /*----------------------------------------------------------
@@ -61,7 +61,7 @@ void setup() {
   noInterrupts();
   
   // configure button pin PE5 as input pull-up with interrupt
-  pinMode(PORT_E, pin5, INPUT_PULLUP_INTERRUPT);
+  pinMode(PORT_E, 5, INPUT_PULLUP_INTERRUPT);
   
   // configure edge sensitivity for port E (all 8 pins!) 
   configEdgeExint(PORT_E, FALLING);
@@ -71,7 +71,7 @@ void setup() {
 
   
   // configure LED pins as output high
-  pinMode(PORT_H, pin2, OUTPUT);
+  pinMode(PORT_H, 2, OUTPUT);
   LED = 1;
   
 } // setup

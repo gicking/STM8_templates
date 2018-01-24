@@ -57,13 +57,13 @@ uint8_t lcd_init(uint8_t addr) {
   uint8_t   status;
   
   // configure PE3 as reset pin (active high)
-  pinMode(PORT_E, pin3, OUTPUT);
+  pinMode(PORT_E, 3, OUTPUT);
   
   // reset LCD display
   sw_delay(10);
-  pinSet(PORT_E, pin3) = 1;
+  pinOutputReg(PORT_E, pin3) = 1;
   sw_delay(10);
-  pinSet(PORT_E, pin3) = 0;
+  pinOutputReg(PORT_E, pin3) = 0;
   sw_delay(10);
   
   

@@ -6,13 +6,13 @@
 void toggle_LED(void);
 
 // LED pin write
-#define LED   pinSet(PORT_H, pin3)   // muBoard LED
+#define LED   pinOutputReg(PORT_H, pin3)   // muBoard LED
 
 
 // called once after reset
 void setup() {
 
-  pinMode(PORT_H, pin3, OUTPUT);	// configure LED pin
+  pinMode(PORT_H, 3, OUTPUT);	// configure LED pin
   attachInterruptMillis(toggle_LED);	// attach toggle function to 1ms interrupt
   
   UART1_begin(115200);			// init UART1 to 115.2kBaud

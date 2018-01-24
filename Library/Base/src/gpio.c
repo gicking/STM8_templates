@@ -28,11 +28,11 @@
     defined(USE_PORTE_ISR) || defined(USE_PORTF_ISR) || defined(USE_PORT_ISR)
 
   /**
-    \fn void mConfigEdgeExint(PORT_t *addrPort, uint8_t edge)
+    \fn void configEdgeExint(void *addrPort, uint8_t edge)
      
     \brief configure edge sensitivity for EXINT
     
-    \param[in]  addrPort  address of port to configure, e.g. &PORT_A (see stm8as.h)
+    \param[in]  addrPort  address of port to configure, e.g. PORT_A (see stm8as.h)
     \param[in]  edge      edge sensitivity. Supported sensitivities are
       - LOW         interrupt on low level. Warning: may stall device!
       - CHANGE      interrupt on both edges
@@ -46,17 +46,17 @@
     \note
       pin interrupts are not en-/disabled by this routine. Use pinMode() in module gpio instead  
   */
-  void mConfigEdgeExint(PORT_t *addrPort, uint8_t edge) {
+  void configEdgeExint(void *addrPort, uint8_t edge) {
     
     uint8_t   tmp;
     
     // disable port interrupts for input pins while modifying
     // for output pins slope is modified temporarily, which is uncritical
-    tmp = addrPort->CR2.byte;
-    addrPort->CR2.byte = addrPort->DDR.byte;
+    tmp = ((PORT_t*) addrPort)->CR2.byte;
+    ((PORT_t*) addrPort)->CR2.byte = ((PORT_t*) addrPort)->DDR.byte;
     
     // configure port A ISR
-    if (addrPort == &PORT_A) {
+    if (addrPort == PORT_A) {
 
       // set new edge sensitivity
       if (edge == LOW)
@@ -72,7 +72,7 @@
 
     
     // configure port B ISR
-    else if (addrPort == &PORT_B) {
+    else if (addrPort == PORT_B) {
       
       // set new edge sensitivity
       if (edge == LOW)
@@ -88,7 +88,7 @@
 
     
     // configure port C ISR
-    else if (addrPort == &PORT_C) {
+    else if (addrPort == PORT_C) {
       
       // set new edge sensitivity
       if (edge == LOW)
@@ -104,7 +104,7 @@
 
     
     // configure port D ISR
-    else if (addrPort == &PORT_D) {
+    else if (addrPort == PORT_D) {
       
       // set new edge sensitivity
       if (edge == LOW)
@@ -120,7 +120,7 @@
 
     
     // configure port E ISR
-    else if (addrPort == &PORT_E) {
+    else if (addrPort == PORT_E) {
       
       // set new edge sensitivity
       if (edge == LOW)
@@ -137,7 +137,7 @@
 
     // configure port F ISR (device dependent)
     #ifdef STM8S903
-      else if (addrPort == &PORT_F) {
+      else if (addrPort == PORT_F) {
         
         // set new edge sensitivity
         if (edge == LOW)
@@ -153,9 +153,9 @@
     #endif // STM8S903
       
     // restore original port interrupt setting
-    addrPort->CR2.byte = tmp;   
+    ((PORT_t*) addrPort)->CR2.byte = tmp;   
     
-  } // mConfigEdgeExint
+  } // configEdgeExint
 
 #endif // USE_PORT_ISR
 
@@ -184,7 +184,7 @@
     
     // disable port D interrupts (TLI=PD7) while modifying
     // for output pins slope is modified temporarily, which is uncritical
-    tmp = PORT_D.CR2.byte;
+    tmp = ((PORT_t*) &PORT_D)->CR2.byte;
     
     // set TLI edge sensitivity (only rising and falling)
     if (edge == RISING)
@@ -193,7 +193,7 @@
       EXTI.CR2.reg.TLIS = 0;
         
     // restore original port interrupt setting
-    PORT_D.CR2.byte = tmp;   
+    ((PORT_t*) &PORT_D)->CR2.byte = tmp;   
       
   } // configEdgeTLI
 

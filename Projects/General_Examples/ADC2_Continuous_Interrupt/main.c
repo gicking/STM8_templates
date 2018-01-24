@@ -20,10 +20,10 @@
 
 
 // misc defines
-#define ADC_CH_1    5                   ///< ADC channel to measure (=PB5=AIN5=poti)
-#define ADC_CH_2    14                  ///< ADC channel to measure (=PF6=AIN14=io7)
-#define LED_GREEN   PORT_H.ODR.bit.b2	  ///< green LED control (0=on)
-#define LED_RED     PORT_H.ODR.bit.b3	  ///< red LED control (0=on)
+#define ADC_CH_1    5                             // ADC channel to measure (=PB5=AIN5=poti)
+#define ADC_CH_2    14                            // ADC channel to measure (=PF6=AIN14=io7)
+#define LED_GREEN   pinOutputReg(PORT_H, pin2)	  // green LED control (0=on)
+#define LED_RED     pinOutputReg(PORT_H, pin3)	  // red LED control (0=on)
 
 
 /*----------------------------------------------------------
@@ -78,15 +78,15 @@ ISR_HANDLER(ADC_ISR, __ADC_VECTOR__) {
 void setup() {
 
   // configure pins for LEDs (red=PH3 / green=PH2)
-  pinMode(PORT_H, pin2, OUTPUT);
-  pinMode(PORT_H, pin3, OUTPUT);
+  pinMode(PORT_H, 2, OUTPUT);
+  pinMode(PORT_H, 3, OUTPUT);
   LED_GREEN = 1;
   LED_RED   = 1;
 
 
   // configure ADC poti(=PB5) and io_7(=PF6) as input float
-  pinMode(PORT_B, pin5, INPUT);
-  pinMode(PORT_F, pin6, INPUT);
+  pinMode(PORT_B, 5, INPUT);
+  pinMode(PORT_F, 6, INPUT);
 
   // init ADC2 for continuously measuring poti 
   ADC2_init(ADC_CONTINUOUS);

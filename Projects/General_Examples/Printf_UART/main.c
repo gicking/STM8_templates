@@ -23,7 +23,7 @@
 ----------------------------------------------------------*/
 
 // access LED pin (=PH3). See gpio.h
-#define LED   pinSet(PORT_H, pin3)
+#define LED   pinOutputReg(PORT_H, pin3)
 
 
 /*----------------------------------------------------------
@@ -36,7 +36,7 @@
 void setup() {
 
   // configure LED pin
-  pinMode(PORT_H, pin3, OUTPUT);
+  pinMode(PORT_H, 3, OUTPUT);
 
   // init UART1 to 115.2kBaud, 8N1, full duplex
   UART1_begin(115200);

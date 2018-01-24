@@ -15,13 +15,6 @@
 #include "gpio.h"       // pin access routines
 #include "sw_delay.h"   // SW pause without timer
 
-// define board LED pin
-#if defined(STM8S105)
-  #define LED   pinSet(PORT_D, pin0)   // STM8S Discovery Board
-#else
-  #define LED   pinSet(PORT_H, pin3)   // muBoard LED
-#endif
-
 
 // main routine
 void main(void) {
@@ -31,22 +24,24 @@ void main(void) {
   // switch to 16MHz (default is 2MHz) 
   CLK.CKDIVR.byte = 0x00;  
 
-  // configure LED pin as output
-  #if defined(STM8S105)
-    pinMode(PORT_D, pin0, OUTPUT);    // STM8S Discovery Board
-  #else
-    pinMode(PORT_H, pin3, OUTPUT);    // muBoard LED
-  #endif
+  // configure LED pin as output (STM8S Discovery Board)
+  pinMode(PORT_D, 0, OUTPUT);
   
   // main loop
   while (1) {
 
-    // toggle LED
-    LED ^= 1;
-    
-    // wait some time
+    // toggle LED state
+    /*
+    pinHigh(PORT_D, 0);
     sw_delay(500);
+    pinLow(PORT_D, 0);
+    sw_delay(500);
+    */
     
+    // toggle LED state
+    pinToggle(PORT_D, 0);
+    sw_delay(500);
+
   } // main loop
 
 } // main
