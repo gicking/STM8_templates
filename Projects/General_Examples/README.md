@@ -85,6 +85,18 @@ Attach_1ms_Interrupt:
   - after M cycles detach user function
 
 
+Measure_PWM: 
+----------
+  Arduino-like project with setup() & loop(). 
+  Measure a PWM and print frequency and duty cycle 
+  via UART to PC terminal. 
+  Functionality:
+  - configure UART1
+  - configure putchar() for PC output via UART1
+  - measure PWM frequency and duty cylce (blocking)
+  - print via UART
+
+
 Pin_Interrupt: 
 ----------
   Arduino-like project with setup() & loop(). 
@@ -148,16 +160,6 @@ Dhrystone:
   - template based on: http://www.colecovision.eu/stm8/dhrystone-stm8af5288-usart3-sdcc-3.6.0.tar.gz
 
 
-Beeper:
-----------
-  Arduino-like project with setup() & loop(). 
-  Demonstrate tone output via beeper module.
-  Beeper requires option byte AFR7=1 for alternate usage of BEEP pin 
-  Functionality:
-  - assert option byte setting for beeper output 
-  - play tones with different pitch
-
-  
 Bootloader_Activation
 ----------
   Arduino-like project with setup() & loop(). 
@@ -214,21 +216,6 @@ ADC2_Continuous_Interrupt:
   - initialize ADC2 for continuous mode
   - attach ISR to ADC2_EOC interrupt
   - in ADC ISR send every Nth result via UART1 and blink LED
-
-
-Power_Saving_Modes:
-----------
-  Arduino-like project with setup() & loop(). 
-  Enter power-saving modes with auto-wake via 
-    - any interrupt (lowPower_Wait)
-    - external interrupt or auto-wake (lowPower_HaltAWU)  
-    - external interrupt (lowPower_Halt)
-  Use EXINT port interrupt @ pin PE5 (=io_1 on muBoard)
-  (-> #define USE_PORTE_ISR) and AWU (-> #define USE_AWU_ISR)
-  Functionality:
-  - configure wake pin as input pull-up with interrupt on falling edge
-  - configure LED output pin
-  - enter power-down mode
 
 
 back to [Wiki](https://github.com/gicking/STM8_templates/wiki)

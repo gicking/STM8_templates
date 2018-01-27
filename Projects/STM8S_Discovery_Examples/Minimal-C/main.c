@@ -18,7 +18,7 @@
 
 
 // define board LED pin for STM8S Discovery Board
-#define LED   pinOutputReg(PORT_D, pin0)
+#define LED   pinOutputReg(&PORT_D, pin0)
 
 // main routine
 void main(void) {
@@ -27,14 +27,14 @@ void main(void) {
   CLK.CKDIVR.byte = 0x00;  
 
   // configure LED pin as output
-  pinMode(PORT_D, 0, OUTPUT);
+  pinMode(&PORT_D, 0, OUTPUT);
 
   // main loop
   while (1) {
 
     // toggle LED
     //LED ^= 1;               // direct (bitwise) pin access
-    pinToggle(PORT_D, 0);   // "normal" access via pin number
+    pinToggle(&PORT_D, 0);   // "normal" access via pin number
     
     // wait some time
     sw_delay(500);

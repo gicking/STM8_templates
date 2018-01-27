@@ -86,7 +86,7 @@ void putcharAttach(void (*pFct)(uint8_t)) {
 #if defined(__CSMC__)
   char putchar(char byte) {
 #elif defined(__SDCC)
-  #if SDCC_VERSION >= 30600  // declaration changed after sdcc 3.6.0
+  #if SDCC_VERSION >= 30605  // declaration changed in sdcc 3.6.5 (officially with 3.7.0)
     int putchar(int byte) {
   #else
     void putchar(char byte) {

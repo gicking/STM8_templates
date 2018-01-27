@@ -330,33 +330,33 @@ typedef struct {
 
   // port A..F implemented on all devices
   #if defined(HAS_PORTA)
-    reg(PORTA_BaseAddress, void, *PORT_A);   ///< registers for port A access. Use *void for function arguments
+    reg(PORTA_BaseAddress, PORT_t, PORT_A);   ///< registers for port A access
   #endif
   #if defined(HAS_PORTB)
-    reg(PORTB_BaseAddress, void, *PORT_B);   ///< registers for port B access
+    reg(PORTB_BaseAddress, PORT_t, PORT_B);   ///< registers for port B access
   #endif
   #if defined(HAS_PORTC)
-    reg(PORTC_BaseAddress, void, *PORT_C);   ///< registers for port C access
+    reg(PORTC_BaseAddress, PORT_t, PORT_C);   ///< registers for port C access
   #endif
   #if defined(HAS_PORTD)
-    reg(PORTD_BaseAddress, void, *PORT_D);   ///< registers for port D access
+    reg(PORTD_BaseAddress, PORT_t, PORT_D);   ///< registers for port D access
   #endif
   #if defined(HAS_PORTE)
-    reg(PORTE_BaseAddress, void, *PORT_E);   ///< registers for port E access
+    reg(PORTE_BaseAddress, PORT_t, PORT_E);   ///< registers for port E access
   #endif
   #if defined(HAS_PORTF)
-    reg(PORTF_BaseAddress, void, *PORT_F);   ///< registers for port F access
+    reg(PORTF_BaseAddress, PORT_t, PORT_F);   ///< registers for port F access
   #endif
 
   // port G+H+I implemented on selected devices
   #if defined(HAS_PORTG)
-    reg(PORTG_BaseAddress, void, *PORT_G);   ///< registers for port G access
+    reg(PORTG_BaseAddress, PORT_t, PORT_G);   ///< registers for port G access
   #endif
   #if defined(HAS_PORTH)
-    reg(PORTH_BaseAddress, void, *PORT_H);   ///< registers for port H access
+    reg(PORTH_BaseAddress, PORT_t, PORT_H);   ///< registers for port H access
   #endif
   #if defined(HAS_PORTI)
-    reg(PORTI_BaseAddress, void, *PORT_I);   ///< registers for port I access
+    reg(PORTI_BaseAddress, PORT_t, PORT_I);   ///< registers for port I access
   #endif
 
   /* PORT Module Reset Values (all ports) */

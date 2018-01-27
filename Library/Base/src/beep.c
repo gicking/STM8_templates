@@ -1,5 +1,5 @@
 /**
-  \file tone.c
+  \file beep.c
    
   \author G. Icking-Konert
   \date 2013-11-22
@@ -8,14 +8,15 @@
   \brief implementation of beeper control
    
   implementation of functions for beeper control to play tone.
-  Note that the beeper has very coarse resolution!
+  Note that the beeper has very basic functionality and coarse resolution.
+  For flexible frequencies and/or duty cycle use timer PWM modules instead.
 */
 
 /*-----------------------------------------------------------------------------
     INCLUDE FILES
 -----------------------------------------------------------------------------*/
 #include "stm8as.h"
-#include "tone.h"
+#include "beep.h"
 #include "sw_delay.h"
 
 
@@ -24,7 +25,7 @@
 ----------------------------------------------------------*/
 
 /**
-  \fn void tone(uint16_t freq, uint16_t duration)
+  \fn void beep(uint16_t freq, uint16_t duration)
    
   \brief play tone via beeper module
    
@@ -34,7 +35,7 @@
   play tone via the beeper module with frequency and duration. Note that the
   beeper module has very coarse resolution -> for music use real timer, not beeper
 */
-void tone(uint16_t freq, uint16_t duration) {
+void beep(uint16_t freq, uint16_t duration) {
 
   uint8_t   SEL, DIV;
   uint32_t  beepFreq;
@@ -75,7 +76,7 @@ void tone(uint16_t freq, uint16_t duration) {
     BEEP.CSR.reg.BEEPEN  = 0;    // disable beeper
   }
 
-} // tone
+} // beep
 
 
 /*-----------------------------------------------------------------------------

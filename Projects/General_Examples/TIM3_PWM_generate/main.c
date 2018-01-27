@@ -32,7 +32,7 @@
 void setup() {
 
   // configure LED pin on STM8S Discovery board (=PD0=TIM3_CC2). Is io_3 on muBoard
-  pinMode(PORT_D, 0, OUTPUT);
+  pinMode(&PORT_D, 0, OUTPUT);
 
   // init TIM3 for PWM
   TIM3_init();

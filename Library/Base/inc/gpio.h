@@ -62,50 +62,39 @@
 #define  RISING                   2        ///< EXINT on rising edge (EXINT & TLI)
 #define  FALLING                  3        ///< EXINT on falling edge (EXINT & TLI)
 
-// bit order for shiftIn() and shiftOut()
-#define LSBFIRST 0
-#define MSBFIRST 1
-
-/// set pin mode
-#define pinMode(port,pin,mode)  { \
-   bitWrite(((PORT_t*) &port)->DDR.byte, pin, mode & 0x04); /* input(=0) or output(=1) */ \
-   bitWrite(((PORT_t*) &port)->CR1.byte, pin, mode & 0x02); /* input: 0=float, 1=pull-up; output: 0=open-drain, 1=push-pull */ \
-   bitWrite(((PORT_t*) &port)->CR2.byte, pin, mode & 0x01); /* input: 0=no exint, 1=exint; output: 0=2MHz slope, 1=10MHz slope */ \
-}
-
-/// set port mode
-#define portMode(port,dir,cr1, cr2)  { \
-   ((PORT_t*) &port)->DDR.byte = dir;             /* input(=0) or output(=1) */ \
-   ((PORT_t*) &port)->CR1.byte = cr1;             /* input: 0=float, 1=pull-up; output: 0=open-drain, 1=push-pull */ \
-   ((PORT_t*) &port)->CR2.byte = cr2;             /* input: 0=no exint, 1=exint; output: 0=2MHz slope, 1=10MHz slope */ \
-}
-
 // direct pin read/write via bitwise access (port + "pin0"..."pin7")
-#define pinOutputReg(port,pin) (((PORT_t*) &port)->ODR.bit.pin)         ///< pin output register (1 pin)
-#define pinInputReg(port,pin)  (((PORT_t*) &port)->IDR.bit.pin)         ///< pin input register (1 pin)
+#define pinOutputReg(pPort,pin)   ((pPort)->ODR.bit.pin)  ///< pin output register (1 pin)
+#define pinInputReg(pPort,pin)    ((pPort)->IDR.bit.pin)  ///< pin input register (1 pin)
 
 // direct port read/write via bytewise access (port)
-#define portOutputReg(port)    (((PORT_t*) &port)->ODR.byte)            ///< port output register (8 pins)
-#define portInputReg(port)     (((PORT_t*) &port)->IDR.byte)            ///< port input register (8 pins)
+#define portOutputReg(pPort)      ((pPort)->ODR.byte)     ///< port output register (8 pins)
+#define portInputReg(pPort)       ((pPort)->IDR.byte)     ///< port input register (8 pins)
 
-// pin read/write via byte manipulation (port + 0...7)
-#define pinLow(port,pin)       (bitClear(portOutputReg(port), pin))        ///< set pin low (1 pin)
-#define pinHigh(port,pin)      (bitSet(portOutputReg(port), pin))          ///< set pin high (1 pin)
-#define pinToggle(port,pin)    (bitToggle(portOutputReg(port), pin))       ///< toggle pin state (1 pin)
-#define pinSet(port,pin,state) (bitWrite(portOutputReg(port), pin, state)) ///< set pin state (1 pin)
-#define pinRead(port,pin)      (bitRead(portInputReg(port), pin))          ///< get pin state (1 pin)
+#define pinHigh(pPort,pin)        ((pPort)->ODR.byte  |= (0x01<<pin))      ///< set pin output state high
+#define pinLow(pPort,pin)         ((pPort)->ODR.byte  &= ~(0x01<<pin))     ///< set pin output state high
+#define pinToggle(pPort,pin)      ((pPort)->ODR.byte  ^= (0x01<<pin))      ///< toggle pin output state
+#define pinSet(pPort,pin,state)   (state ? pinHigh(pPort,pin) : pinLow(pPort,pin)) ///< set pin output state
+#define pinRead(pPort,pin)        (((pPort)->IDR.byte & (0x01<<pin))>>pin) ///< read pin input state
 
 
 /*-----------------------------------------------------------------------------
     DECLARATION OF GLOBAL FUNCTIONS
 -----------------------------------------------------------------------------*/
 
+/// set I/O pin mode
+void pinMode(PORT_t *pPort, uint8_t pin, uint8_t mode);
+
+
+/// set I/O port modes
+void portMode(PORT_t *pPort, uint8_t dir, uint8_t cr1, uint8_t cr2);
+
+
 // for expernal port interrupts
 #if defined(USE_PORTA_ISR) || defined(USE_PORTB_ISR) || defined(USE_PORTC_ISR) || defined(USE_PORTD_ISR) || \
     defined(USE_PORTE_ISR) || defined(USE_PORTF_ISR) || defined(USE_PORT_ISR)
 
   /// configure edge sensitivity for EXINT
-  void    configEdgeExint(void* addrPort, uint8_t edge);
+  void    configEdgeExint(PORT_t *pPort, uint8_t edge);
 
 #endif
 

@@ -5,6 +5,7 @@
   Functionality:
   - assert option byte setting for beeper output 
   - play tones with different pitch
+  Note: the beeper module is VERY basic. For flexible tones use timer instead 
 **********************/
 
 /*----------------------------------------------------------
@@ -12,7 +13,7 @@
 ----------------------------------------------------------*/
 #include "main_general.h"   // board-independent main
 #include "eeprom.h"
-#include "tone.h"
+#include "beep.h"
 
 
 /*----------------------------------------------------------
@@ -49,10 +50,10 @@ void loop() {
   uint16_t freq;
   
   for (freq=500; freq<=4000; freq+=100) {
-    tone(freq,0);
+    beep(freq,0);
     sw_delay(75);
   }
-  tone(0,0);
+  noBeep();
   sw_delay(1500);
 
 } // loop

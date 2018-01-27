@@ -4,13 +4,13 @@
 void toggle_LED(void);
 
 // LED pin write
-#define LED   pinOutputReg(PORT_D, pin0)
+#define LED   pinOutputReg(&PORT_D, pin0)
 
 
 // called once after reset
 void setup() {
 
-  pinMode(PORT_D, 0, OUTPUT);	// configure LED pin
+  pinMode(&PORT_D, 0, OUTPUT);	// configure LED pin
   attachInterruptMillis(toggle_LED);	// attach toggle function to 1ms interrupt
 
 } // setup()

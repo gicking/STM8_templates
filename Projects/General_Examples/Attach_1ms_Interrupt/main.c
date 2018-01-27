@@ -26,8 +26,8 @@ void toggle_green(void);
 ----------------------------------------------------------*/
 
 // access LED pins (green=PH2; red=PH3). See gpio.h
-#define LED_GREEN   pinOutputReg(PORT_H, pin2)
-#define LED_RED     pinOutputReg(PORT_H, pin3)
+#define LED_GREEN   pinOutputReg(&PORT_H, pin2)
+#define LED_RED     pinOutputReg(&PORT_H, pin3)
 
 // blink delay [ms]
 #define BLINK_DELAY   500
@@ -94,9 +94,9 @@ void toggle_green(void) {
 void setup() {
   
   // configure LED pins and init to off(=1)
-  pinMode(PORT_H, 2, OUTPUT);
-  pinMode(PORT_H, 3, OUTPUT);
-  portOutputReg(PORT_H) = 0b00001100;
+  pinMode(&PORT_H, 2, OUTPUT);
+  pinMode(&PORT_H, 3, OUTPUT);
+  portOutputReg(&PORT_H) = 0b00001100;
   
   // attach user function to 1ms interrupt
   attachInterruptMillis(toggle_red);

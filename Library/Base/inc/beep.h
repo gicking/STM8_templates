@@ -1,5 +1,5 @@
 /**
-  \file tone.h
+  \file beep.h
    
   \author G. Icking-Konert
   \date 2013-11-22
@@ -8,14 +8,15 @@
   \brief declaration of beeper control
    
   declaration of functions for beeper control to play tone.
-  Note that the beeper has very coarse resolution!
+  Note that the beeper has very basic functionality and coarse resolution.
+  For flexible frequencies and/or duty cycle use timer PWM modules instead.
 */
 
 /*-----------------------------------------------------------------------------
     MODULE DEFINITION FOR MULTIPLE INCLUSION
 -----------------------------------------------------------------------------*/
-#ifndef _TONE_H_
-#define _TONE_H_
+#ifndef _BEEP_H_
+#define _BEEP_H_
 
 #include <stdint.h>
 
@@ -25,7 +26,7 @@
 -----------------------------------------------------------------------------*/
 
 /// switch off tone
-#define noTone()  tone(0,0);
+#define noBeep()  beep(0,0);
 
 
 /*-----------------------------------------------------------------------------
@@ -33,10 +34,10 @@
 -----------------------------------------------------------------------------*/
 
 /// play tone via beeper module
-void tone(uint16_t freq, uint16_t duration);
+void beep(uint16_t freq, uint16_t duration);
 
 
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION
 -----------------------------------------------------------------------------*/
-#endif // _TONE_H_
+#endif // _BEEP_H_

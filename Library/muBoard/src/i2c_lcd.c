@@ -49,24 +49,14 @@ volatile uint8_t   lcd_addr_i2c = LCD_ADDR_I2C;     ///< I2C address of LCD disp
 
   \return is an LCD attached?
 
-  reset LCD and initialize for output.
+  Initialize LCD for output.
   Also check if LCD display is attached via bus timeout 
 */
 uint8_t lcd_init(uint8_t addr) {
 
   uint8_t   status;
   
-  // configure PE3 as reset pin (active high)
-  pinMode(PORT_E, 3, OUTPUT);
-  
-  // reset LCD display
-  sw_delay(10);
-  pinOutputReg(PORT_E, pin3) = 1;
-  sw_delay(10);
-  pinOutputReg(PORT_E, pin3) = 0;
-  sw_delay(10);
-  
-  
+
   ////
   // check if LCD present by sending a dummy frame
   ////

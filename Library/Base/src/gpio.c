@@ -24,16 +24,63 @@
     FUNCTIONS
 ----------------------------------------------------------*/
 
+/**
+  \fn void pinMode(PORT_t *pPort, uint8_t pin, uint8_t mode)
+   
+  \brief configure pin mode
+  
+  \param[in]  pPort  pointer to port, e.g. &PORT_A
+  \param[in]  pin    pin to configure (0..7)
+  \param[in]  mode   new mode, e.g. INPUT_PULLUP (see gpio.h)
+  
+  Configure pin as input or output mode with various options, e.g. pull-up or open-drain.
+  See gpio.h for supported modes. 
+*/
+void pinMode(PORT_t *pPort, uint8_t pin, uint8_t mode) {
+
+   // set pin mode
+   bitWrite(pPort->DDR.byte, pin, mode & 0x04);     // input(=0) or output(=1)
+   bitWrite(pPort->CR1.byte, pin, mode & 0x02);     // input: 0=float, 1=pull-up; output: 0=open-drain, 1=push-pull
+   bitWrite(pPort->CR2.byte, pin, mode & 0x01);     // input: 0=no exint, 1=exint; output: 0=2MHz slope, 1=10MHz slope
+
+} // pinMode
+
+
+
+/**
+  \fn void portMode(PORT_t *pPort, uint8_t dir, uint8_t cr1, uint8_t cr2)
+   
+  \brief configure pin mode
+  
+  \param[in]  pPort  pointer to port, e.g. &PORT_A
+  \param[in]  dir    bitmask for pin directions: input(=0) or output(=1)
+  \param[in]  cr1    bitmask for pin options 1: input: 0=float, 1=pull-up; output: 0=open-drain, 1=push-pull
+  \param[in]  cr2    bitmask for pin options 2: input: 0=no exint, 1=exint; output: 0=2MHz slope, 1=10MHz slope
+  
+  Configure port pins as input or output mode with various options, e.g. pull-up or open-drain.
+  See gpio.h for supported modes. 
+*/
+void portMode(PORT_t *pPort, uint8_t dir, uint8_t cr1, uint8_t cr2) {
+
+   // set port pin modes
+   pPort->DDR.byte = dir;                       /* input(=0) or output(=1) */ \
+   pPort->CR1.byte = cr1;                       /* input: 0=float, 1=pull-up; output: 0=open-drain, 1=push-pull */ \
+   pPort->CR2.byte = cr2;                       /* input: 0=no exint, 1=exint; output: 0=2MHz slope, 1=10MHz slope */ \
+
+} // portMode
+
+
+
 #if defined(USE_PORTA_ISR) || defined(USE_PORTB_ISR) || defined(USE_PORTC_ISR) || defined(USE_PORTD_ISR) || \
     defined(USE_PORTE_ISR) || defined(USE_PORTF_ISR) || defined(USE_PORT_ISR)
 
   /**
-    \fn void configEdgeExint(void *addrPort, uint8_t edge)
+    \fn void configEdgeExint(PORT_t *pPort, uint8_t edge)
      
     \brief configure edge sensitivity for EXINT
     
-    \param[in]  addrPort  address of port to configure, e.g. PORT_A (see stm8as.h)
-    \param[in]  edge      edge sensitivity. Supported sensitivities are
+    \param[in]  pPort  pointer to port to configure, e.g. &PORT_A (see stm8as.h)
+    \param[in]  edge   port edge sensitivity. Supported sensitivities are
       - LOW         interrupt on low level. Warning: may stall device!
       - CHANGE      interrupt on both edges
       - RISING      interrupt on rising edge
@@ -46,17 +93,17 @@
     \note
       pin interrupts are not en-/disabled by this routine. Use pinMode() in module gpio instead  
   */
-  void configEdgeExint(void *addrPort, uint8_t edge) {
+  void configEdgeExint(PORT_t *pPort, uint8_t edge) {
     
     uint8_t   tmp;
     
     // disable port interrupts for input pins while modifying
     // for output pins slope is modified temporarily, which is uncritical
-    tmp = ((PORT_t*) addrPort)->CR2.byte;
-    ((PORT_t*) addrPort)->CR2.byte = ((PORT_t*) addrPort)->DDR.byte;
+    tmp = pPort->CR2.byte;
+    pPort->CR2.byte = pPort->DDR.byte;
     
     // configure port A ISR
-    if (addrPort == PORT_A) {
+    if (pPort == &PORT_A) {
 
       // set new edge sensitivity
       if (edge == LOW)
@@ -72,7 +119,7 @@
 
     
     // configure port B ISR
-    else if (addrPort == PORT_B) {
+    else if (pPort == &PORT_B) {
       
       // set new edge sensitivity
       if (edge == LOW)
@@ -88,7 +135,7 @@
 
     
     // configure port C ISR
-    else if (addrPort == PORT_C) {
+    else if (pPort == &PORT_C) {
       
       // set new edge sensitivity
       if (edge == LOW)
@@ -104,7 +151,7 @@
 
     
     // configure port D ISR
-    else if (addrPort == PORT_D) {
+    else if (pPort == &PORT_D) {
       
       // set new edge sensitivity
       if (edge == LOW)
@@ -120,7 +167,7 @@
 
     
     // configure port E ISR
-    else if (addrPort == PORT_E) {
+    else if (pPort == &PORT_E) {
       
       // set new edge sensitivity
       if (edge == LOW)
@@ -137,7 +184,7 @@
 
     // configure port F ISR (device dependent)
     #ifdef STM8S903
-      else if (addrPort == PORT_F) {
+      else if (pPort == &PORT_F) {
         
         // set new edge sensitivity
         if (edge == LOW)
@@ -153,7 +200,7 @@
     #endif // STM8S903
       
     // restore original port interrupt setting
-    ((PORT_t*) addrPort)->CR2.byte = tmp;   
+    pPort->CR2.byte = tmp;   
     
   } // configEdgeExint
 
@@ -184,7 +231,7 @@
     
     // disable port D interrupts (TLI=PD7) while modifying
     // for output pins slope is modified temporarily, which is uncritical
-    tmp = ((PORT_t*) &PORT_D)->CR2.byte;
+    tmp = PORT_D.CR2.byte;
     
     // set TLI edge sensitivity (only rising and falling)
     if (edge == RISING)
@@ -193,7 +240,7 @@
       EXTI.CR2.reg.TLIS = 0;
         
     // restore original port interrupt setting
-    ((PORT_t*) &PORT_D)->CR2.byte = tmp;   
+    PORT_D.CR2.byte = tmp;   
       
   } // configEdgeTLI
 

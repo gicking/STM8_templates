@@ -19,9 +19,9 @@
 
 // define board LED pin
 #if defined(STM8S_DISCOVERY)
-  #define LED   pinOutputReg(PORT_D, pin0)   // STM8S Discovery Board
+  #define LED   pinOutputReg(&PORT_D, pin0)   // STM8S Discovery Board
 #elif defined(MUBOARD)
-  #define LED   pinOutputReg(PORT_H, pin3)   // muBoard LED
+  #define LED   pinOutputReg(&PORT_H, pin3)   // muBoard LED
 #else
   #error select supported device/board!
 #endif
@@ -38,9 +38,9 @@ void setup() {
   
   // configure LED pin as output
   #if defined(STM8S_DISCOVERY)
-    pinMode(PORT_D, 0, OUTPUT);    // STM8S Discovery Board
+    pinMode(&PORT_D, 0, OUTPUT);    // STM8S Discovery Board
   #else
-    pinMode(PORT_H, 3, OUTPUT);    // muBoard LED
+    pinMode(&PORT_H, 3, OUTPUT);    // muBoard LED
   #endif
 
 } // setup

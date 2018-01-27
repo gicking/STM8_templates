@@ -50,6 +50,13 @@
 #ifndef true
   #define  true                   1
 #endif
+#ifndef LSBFIRST
+  #define  LSBFIRST               0
+#endif
+#ifndef MSBFIRST
+  #define  MSBFIRST               1
+#endif
+
 
 /*---
  data types
@@ -144,10 +151,13 @@
 
 
 /*---
- interrupts
+ misc functions
 ---*/
-#define interrupts()              ENABLE_INTERRUPTS
-#define noInterrupts()            DISABLE_INTERRUPTS
+#define interrupts()               ENABLE_INTERRUPTS                           ///< globally enable interrupts
+#define noInterrupts()             DISABLE_INTERRUPTS                          ///< globally disable interrupts
+#define nop()                      NOP                                         ///< no-operation (short wait)
+#define trap()                     TRIGGER_TRAP                                ///< trigger a software trap
+#define reset()                    SW_RESET                                    ///< trigger a watchdog reset
 
 
 /*----------------

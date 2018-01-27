@@ -19,8 +19,8 @@
 ----------------------------------------------------------*/
 
 // access LED pins (green=PH2; red=PH3). See gpio.h
-#define LED_GREEN  pinOutputReg(PORT_H, pin2)
-#define LED_RED    pinOutputReg(PORT_H, pin3)
+#define LED_GREEN  pinOutputReg(&PORT_H, pin2)
+#define LED_RED    pinOutputReg(&PORT_H, pin3)
 
 // blink delays [ms]
 #define DELAY_GREEN   500
@@ -37,9 +37,9 @@
 void setup() {
   
   // configure LED pins and init to off(=1)
-  pinMode(PORT_H, 2, OUTPUT);
-  pinMode(PORT_H, 3, OUTPUT);
-  portOutputReg(PORT_H) = 0b00001100;
+  pinMode(&PORT_H, 2, OUTPUT);
+  pinMode(&PORT_H, 3, OUTPUT);
+  portOutputReg(&PORT_H) = 0b00001100;
   
   // set initial timeouts
   setTimeout(0, DELAY_GREEN);

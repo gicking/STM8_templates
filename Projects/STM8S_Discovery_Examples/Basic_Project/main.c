@@ -18,7 +18,7 @@
 ----------------------------------------------------------*/
 
 // define board LED pin on STM8S Discovery Board
-#define LED   pinOutputReg(PORT_D, pin0)
+#define LED   pinOutputReg(&PORT_D, pin0)
 
 
 /*----------------------------------------------------------
@@ -31,7 +31,7 @@
 void setup() {
   
   // configure LED pin as output
-  pinMode(PORT_D, 0, OUTPUT);
+  pinMode(&PORT_D, 0, OUTPUT);
 
 } // setup
 

@@ -28,6 +28,12 @@ void setup() {
 
   char              str[20];    // string buffer for LCD output
 
+  // reset LCD via PE3 (active high)
+  pinMode(&PORT_E, 3, OUTPUT);
+  pinHigh(&PORT_E, 3);
+  sw_delay(10);
+  pinLow(&PORT_E, 3);
+  
   // init LCD. Use default I2C address
   i2c_init();
   

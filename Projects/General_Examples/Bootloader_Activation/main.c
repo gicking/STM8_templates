@@ -19,9 +19,9 @@
     MACROS
 ----------------------------------------------------------*/
 
-#define PIN_BSL pinInputReg(PORT_D, pin7)    // selection pin (= PD7 = muBoard automode) pin
-#define LED     pinOutputReg(PORT_H, pin3)   // muBoard LED
-//#define LED     pinOutputReg(PORT_D, pin0)   // STM8S Discovery
+#define PIN_BSL pinInputReg(&PORT_D, pin7)    // selection pin (= PD7 = muBoard automode) pin
+#define LED     pinOutputReg(&PORT_H, pin3)   // muBoard LED
+//#define LED     pinOutputReg(&PORT_D, pin0)   // STM8S Discovery
 
 
 /*----------------------------------------------------------
@@ -35,11 +35,11 @@ void setup() {
   
   // configure LED pin as output
   LED = 1;
-  pinMode(PORT_H, 3, OUTPUT);
+  pinMode(&PORT_H, 3, OUTPUT);
   
   // configure selection pin (=PD7) as input pull-up and wait a bit to be sure
-  pinMode(PORT_D, 7, INPUT_PULLUP);    // muBoard
-  //pinMode(PORT_D, 0, OUTPUT);          // STM8S Discovery
+  pinMode(&PORT_D, 7, INPUT_PULLUP);    // muBoard
+  //pinMode(&PORT_D, 0, OUTPUT);          // STM8S Discovery
   sw_delay(5);
 
   // deneding on pin state activate/deactivate the BL

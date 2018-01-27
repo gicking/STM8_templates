@@ -15,33 +15,37 @@
 #include "gpio.h"       // pin access routines
 #include "sw_delay.h"   // SW pause without timer
 
+// direct pin output register (not suitable for function parameters)
+#define LED   pinOutputReg(&PORT_D, pin0)
 
 // main routine
 void main(void) {
-  
-  uint8_t  i;
   
   // switch to 16MHz (default is 2MHz) 
   CLK.CKDIVR.byte = 0x00;  
 
   // configure LED pin as output (STM8S Discovery Board)
-  pinMode(PORT_D, 0, OUTPUT);
+  pinMode(&PORT_D, 0, OUTPUT);
   
-  // main loop
+  // main loop, toggle LED state
   while (1) {
 
-    // toggle LED state
+    // manually high / low
     /*
-    pinHigh(PORT_D, 0);
+    pinHigh(&PORT_D, 0);
     sw_delay(500);
-    pinLow(PORT_D, 0);
-    sw_delay(500);
+    pinLow(&PORT_D, 0);
     */
     
-    // toggle LED state
-    pinToggle(PORT_D, 0);
-    sw_delay(500);
+    // via pin toggle
+    //pinToggle(&PORT_D, 0);
+    
+    // via direct pin access
+    LED ^= 0x01;
 
+    // wait a bit
+    sw_delay(500);
+    
   } // main loop
 
 } // main
