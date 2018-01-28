@@ -22,13 +22,8 @@
     GENERAL PROJECT SETTINGS
 -----------------------------------------------------------------------------*/
  
-/// select STM8 device (no default). For supported devices see file "stm8as.h"
-#define STM8S208      // muBoard
-
-
-/*-----------------------------------------------------------------------------
-    ADC2 SETTINGS
------------------------------------------------------------------------------*/
+// select board to set STM8 family, memory size etc. 
+#include "muBoard_config.h"
 
 /// required for timekeeping (1ms interrupt)
 #define USE_TIM4_UPD_ISR

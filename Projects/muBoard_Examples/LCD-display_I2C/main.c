@@ -13,8 +13,7 @@
     INCLUDE FILES
 ----------------------------------------------------------*/
 #include "main_general.h"    // board-independent main
-#include "i2c.h"
-#include "i2c_lcd.h"
+#include "mub_lcd.h"
 
 
 /*----------------------------------------------------------
@@ -38,7 +37,7 @@ void setup() {
   i2c_init();
   
   // init and reset LCD display
-  lcd_init(0x00);
+  lcd_init();
 
   // print to LCD
   //sprintf(str, );

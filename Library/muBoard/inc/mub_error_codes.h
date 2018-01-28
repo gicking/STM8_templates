@@ -1,12 +1,12 @@
 /**
-  \file error_codes.h
+  \file mub_error_codes.h
    
   \author G. Icking-Konert
   \date 2017-02-11
   \version 0.1
   \copyright MIT License (MIT)
    
-  \brief declaration of common error codes
+  \brief declaration of muBoard error codes
    
   declaration of common muBoard error codes for debugging
 */

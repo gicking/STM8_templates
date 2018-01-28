@@ -1,48 +1,52 @@
 /**
-  \file i2c_lcd.h
+  \file mub_digPoti.h
    
   \author G. Icking-Konert
-  \date 2013-11-22
+  \date 2018-01-28
   \version 0.1
    
-  \brief declaration of 2x16 LCD output functions/macros
+  \brief declaration of function to control 20k digital poti
    
-  declaration of functions for printing strings via I2C to 2x16 LCD
-  Batron BTHQ21605V-COG-FSRE-I2C (Farnell 1220409).
-  Connect LCD I2C bus to STM8 SCL/SDA, and LCD reset pin to STM8 pin PE3
+  declaration of function to control 20k digital poti via I2C. Type
+  Analog Devices AD5280BRUZ20 (Farnell 1438441).
+  Connect LCD I2C bus to STM8 SCL/SDA
 */
 
 /*-----------------------------------------------------------------------------
     MODULE DEFINITION FOR MULTIPLE INCLUSION
 -----------------------------------------------------------------------------*/
-#ifndef _I2C_LCD_H_
-#define _I2C_LCD_H_
+#ifndef _MUB_DIGPOTI_
+#define _MUB_DIGPOTI_
 
 
 /*-----------------------------------------------------------------------------
     INCLUDE FILES
 -----------------------------------------------------------------------------*/
+#include <stdint.h>
 #include "stm8as.h"
 #include "config.h"
 #include "misc.h"
-#include <stdint.h>
+#include "i2c.h"
+
+
+/*-----------------------------------------------------------------------------
+    DECLARATION OF GLOBAL MACROS
+-----------------------------------------------------------------------------*/
+
+/// I2C address of digital poti
+#define MUB_ADDR_I2C_POTI  46
+
 
 
 /*-----------------------------------------------------------------------------
     DECLARATION OF GLOBAL FUNCTIONS
 -----------------------------------------------------------------------------*/
 
-/// initialize LCD for output
-uint8_t   lcd_init(uint8_t addr);
-
-/// clear LCD
-void      lcd_clear(void);
-
-/// print string to LCD diplay
-void      lcd_print(uint8_t line, uint8_t col, char *s);
+/// digital potentiometer control
+uint8_t set_dig_poti(uint8_t res);
 
 
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION
 -----------------------------------------------------------------------------*/
-#endif // _I2C_LCD_H_
+#endif // _MUB_DIGPOTI_

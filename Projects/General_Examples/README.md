@@ -218,5 +218,30 @@ ADC2_Continuous_Interrupt:
   - in ADC ISR send every Nth result via UART1 and blink LED
 
 
+I2C_write
+----------
+  Arduino-like project with setup() & loop().
+  Periodically ramp potentiometer resistance attached to I2C (muBoard).
+  Used 20kR potentiometer: Analog Devices AD5280BRUZ20 (Farnell 1438441).
+  Connected via I2C pins PE1/SCL and PE2/SDA
+  Functionality:
+  - initialize I2C bus
+  - periodically ramp resistance
+  - print current value via UART1  
+
+
+I2C_read
+----------
+  Arduino-like project with setup() & loop().
+  Periodically request data from an Arduino configured as I2C slave.
+  Arduino slave from example "Wire/slave sender".
+  Connected via I2C pins PE1/SCL and PE2/SDA
+  Functionality:
+  - initialize I2C bus
+  - periodically read data from Arduino ("hello ")
+  - print data via UART1  
+  Note: **Not yet functional!!!**
+
+
 back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
 
