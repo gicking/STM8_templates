@@ -86,48 +86,49 @@ uint8_t OPT_writeByte(uint16_t addr, uint8_t byte) {
 
 
 /**
-  \fn void OPT_setDefault(void)
+  \fn uint8_t OPT_setDefault(void)
   
   \brief revert to default option byte setting & reset on change
+  
+  \return byte changed (=1) or unchanged (=0)
   
   assert that all option bytes have their default setting (see below).
   On change trigger a reset.
 */
-void OPT_setDefault() {
+uint8_t OPT_setDefault() {
   
-  uint8_t  flagWD = 0;
+  uint8_t  flagChanged = 0;
 
   // reset alternate GPIO mapping (=OPT2/NOPT2)
-  flagWD += OPT_writeByte(OPT2,  0x00);
-  flagWD += OPT_writeByte(NOPT2, 0xFF);
+  flagChanged += OPT_writeByte(OPT2,  0x00);
+  flagChanged += OPT_writeByte(NOPT2, 0xFF);
   
   // deactivate watchdog (=OPT3/NOPT3)
-  flagWD += OPT_writeByte(OPT3,  0x00);
-  flagWD += OPT_writeByte(NOPT3, 0xFF);
+  flagChanged += OPT_writeByte(OPT3,  0x00);
+  flagChanged += OPT_writeByte(NOPT3, 0xFF);
   
   // reset clock options to default (=OPT4/NOPT4)
-  flagWD += OPT_writeByte(OPT4,  0x00);
-  flagWD += OPT_writeByte(NOPT4, 0xFF);
+  flagChanged += OPT_writeByte(OPT4,  0x00);
+  flagChanged += OPT_writeByte(NOPT4, 0xFF);
    
   // max. HCE clock startup time (=OPT5/NOPT5)
-  flagWD += OPT_writeByte(OPT5,  0x00);
-  flagWD += OPT_writeByte(NOPT5, 0xFF);
+  flagChanged += OPT_writeByte(OPT5,  0x00);
+  flagChanged += OPT_writeByte(NOPT5, 0xFF);
    
   // OPT6 is reserved/undocumented
    
   // no flash wait state (required for >16MHz) (=OPT7/NOPT7)
-  flagWD += OPT_writeByte(OPT7,  0x00);
-  flagWD += OPT_writeByte(NOPT7, 0xFF);
+  flagChanged += OPT_writeByte(OPT7,  0x00);
+  flagChanged += OPT_writeByte(NOPT7, 0xFF);
    
   // OPT8-16 contain temporary memory unprotection key (TMU) -> rather don't touch 
 
   // activate ROM-bootloader (=OPT17/NOPT17)  
-  flagWD += OPT_writeByte(OPT17,  0x55);
-  flagWD += OPT_writeByte(NOPT17, 0xAA);
+  flagChanged += OPT_writeByte(OPT17,  0x55);
+  flagChanged += OPT_writeByte(NOPT17, 0xAA);
  
-  // if any option byte was changed trigger SW reset
-  if (flagWD != 0)
-    SW_RESET;
+  // any option byte changed -> return 1
+  return(flagChanged);
 
 } // OPT_setDefault
 
@@ -140,29 +141,30 @@ void OPT_setDefault() {
   
   \param[in] state  enable(=1) or disable(=0) bootloader
   
+  \return byte changed (=1) or unchanged (=0)
+  
   write single byte to address in P-flash or EEPROM.
   On change trigger a reset.
   For address width see file stm8as.h
 */
-void OPT_setBootloader(uint8_t state) {
+uint8_t OPT_setBootloader(uint8_t state) {
   
-  uint8_t   flag = 0;
-  
+  uint8_t  flagChanged = 0;
+
   // activate ROM-bootloader (=OPT17/NOPT17)  
   if (state) {
-    flag += OPT_writeByte(OPT17,  0x55);
-    flag += OPT_writeByte(NOPT17, 0xAA);
+    flagChanged += OPT_writeByte(OPT17,  0x55);
+    flagChanged += OPT_writeByte(NOPT17, 0xAA);
   }
   
   // deactivate bootloader
   else {
-    flag += OPT_writeByte(OPT17,  0x00);
-    flag += OPT_writeByte(NOPT17, 0x00);
+    flagChanged += OPT_writeByte(OPT17,  0x00);
+    flagChanged += OPT_writeByte(NOPT17, 0x00);
   }
  
-  // if option byte was changed trigger SW reset
-  if (flag != 0)
-    SW_RESET;
+  // any option byte changed -> return 1
+  return(flagChanged);
 
 } // OPT_setBootloader
 

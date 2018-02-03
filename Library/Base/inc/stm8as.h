@@ -1318,7 +1318,7 @@ typedef struct {
         uint8_t MSTR     : 1;    ///< Master/slave selection
         uint8_t BR       : 3;    ///< Baudrate control
         uint8_t SPE      : 1;    ///< SPI enable
-        uint8_t LSBFIRST : 1;    ///< Frame format
+        uint8_t xLSBFIRST : 1;    ///< Frame format. Add x to avoid conflict with misc.h
       } reg;
 
     } CR1;

@@ -1,15 +1,14 @@
 /**
-  \file mub_digPoti.c
+  \file digPoti-AD5282.c
    
   \author G. Icking-Konert
   \date 2018-01-28
   \version 0.1
    
-  \brief implementation of function to control 20k digital poti
+  \brief implementation of control for digital poti AD5282
    
-  implementation of function to control 20k digital poti via I2C. Type
-  Analog Devices AD5280BRUZ20 (Farnell 1438441).
-  Connect LCD I2C bus to STM8 SCL/SDA
+  implementation of function to control digital poti AD5282 (Farnell 1438442, 200k)
+  via I2C. Connect SCL/SDA of digital poti and of STM8 
 */
 
 /*-----------------------------------------------------------------------------
@@ -17,10 +16,10 @@
 -----------------------------------------------------------------------------*/
 #include <stdint.h>
 #include "stm8as.h"
-#define _MUB_DIGPOTI__MAIN_    // required for globals in mub_digPoti.h
-  #include "mub_digPoti.h"
-#undef _MUB_DIGPOTI__MAIN_
 #include "i2c.h"
+#define _AD5282_MAIN_
+  #include "digPoti-AD5282.h"
+#undef _AD5282_MAIN_
 
 
 /*----------------------------------------------------------
@@ -28,31 +27,35 @@
 ----------------------------------------------------------*/
 
 /**
-  \fn uint8_t set_dig_poti(uint8_t res)
+  \fn uint8_t AD5282_set_poti(uint8_t res)
    
-  \brief digital potentiometer control
+  \brief 2-channel digital potentiometer control
    
+  \param[in] ch   channel to set (0,1)
   \param[in] res  new resistor value [0..255]
   
   \return  operation succeeded?
    
-  set resistor btw terminal A and washer to 20kR/255*res. Resistance btw
-  terminal B and washer to 20kR/255*(255-res)
+  set resistance btw terminal A and washer ch to Rmax/255*res. Resistance btw
+  terminal B and washer to Rmax/255*(255-res)
 */
-uint8_t set_dig_poti(uint8_t res) {
+uint8_t AD5282_set_poti(uint8_t ch, uint8_t res) {
 
   // I2C Tx buffer
   uint8_t  buf[2], err;
 
   // set buffer
-  buf[0] = 0x00;
-  buf[1] = 0xFF-res; // invert value to have right R(A;washer) behaviour
+  if (ch == 0)
+    buf[0] = 0x00;    // channel A
+  else
+    buf[0] = 0x80;    // channel B
+  buf[1] = res;       // resistance
   
   // generate start condition (w/ timeout)
   err  = i2c_start();
   
   // send command (w/ timeout)
-  err |= i2c_send(MUB_ADDR_I2C_POTI,2,buf);    
+  err |= i2c_send(ADDR_I2C_AD5282,2,buf);    
 
   // generate stop condition (w/ timeout)
   err |= i2c_stop();
@@ -60,7 +63,7 @@ uint8_t set_dig_poti(uint8_t res) {
   // return error status
   return(err);
 
-} // set_dig_poti
+} // AD5282_set_poti
 
 
 /*-----------------------------------------------------------------------------

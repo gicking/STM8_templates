@@ -1,52 +1,43 @@
 /**
-  \file mub_digPoti.h
+  \file mub_diffAmp.h
    
   \author G. Icking-Konert
   \date 2018-01-28
   \version 0.1
    
-  \brief declaration of function to control 20k digital poti
+  \brief declaration of function to control the differential amplifier
    
-  declaration of function to control 20k digital poti via I2C. Type
-  Analog Devices AD5280BRUZ20 (Farnell 1438441).
-  Connect LCD I2C bus to STM8 SCL/SDA
+  declaration of function to control the differential amplifier via I2C. Type
+  OPAMP LM2904 (Farnell 2450774) with feedback via digital poti AD5282BRUZ200 (Farnell 1438442).
+  Connect SCL/SDA of digital poti and of STM8 
 */
 
 /*-----------------------------------------------------------------------------
     MODULE DEFINITION FOR MULTIPLE INCLUSION
 -----------------------------------------------------------------------------*/
-#ifndef _MUB_DIGPOTI_
-#define _MUB_DIGPOTI_
+#ifndef _MUB_DIFFAMP_
+#define _MUB_DIFFAMP_
 
 
 /*-----------------------------------------------------------------------------
     INCLUDE FILES
 -----------------------------------------------------------------------------*/
 #include <stdint.h>
-#include "stm8as.h"
 #include "config.h"
+#include "stm8as.h"
 #include "misc.h"
-#include "i2c.h"
-
-
-/*-----------------------------------------------------------------------------
-    DECLARATION OF GLOBAL MACROS
------------------------------------------------------------------------------*/
-
-/// I2C address of digital poti
-#define MUB_ADDR_I2C_POTI  46
-
+#include "digPoti-AD5282.h"
 
 
 /*-----------------------------------------------------------------------------
     DECLARATION OF GLOBAL FUNCTIONS
 -----------------------------------------------------------------------------*/
 
-/// digital potentiometer control
-uint8_t set_dig_poti(uint8_t res);
+/// differential amplifier control
+uint8_t set_diff_amplifier(uint8_t gain);
 
 
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION
 -----------------------------------------------------------------------------*/
-#endif // _MUB_DIGPOTI_
+#endif // _MUB_DIFFAMP_

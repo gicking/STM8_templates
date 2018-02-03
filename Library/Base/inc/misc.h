@@ -51,10 +51,10 @@
   #define  true                   1
 #endif
 #ifndef LSBFIRST
-  #define  LSBFIRST               0
+  #define  LSBFIRST               1
 #endif
 #ifndef MSBFIRST
-  #define  MSBFIRST               1
+  #define  MSBFIRST               0
 #endif
 
 
@@ -99,6 +99,10 @@
 #define map(x,inMin,inMax,outMin,outMax)                                       /**< re-map a number from one range to another **/ \
                                    ((int32_t)(x-inMin)*(int32_t)(outMax-outMin)/(inMax-inMin)+outMin)
 #define scale(x,inMax,outMax)      (((int32_t)x*(int32_t)outMax)/inMax)        ///< scale a number from one range to another (like map() but with 0 offsets)
+
+#define exp(x)                     expf(x)                                     ///< 
+#define log(x)                     logf(x)                                     ///< 
+#define log10(x)                   log10f(x)                                   ///< 
 #define pow(x,y)                   powf(x,y)                                   ///< 
 #define sq(x)                      ((float)x*(float)x)                         ///< 
 #define sqrt(x)                    sqrtf(x)                                    ///< 
@@ -109,6 +113,14 @@
 #define sin(x)                     sinf(x)
 #define cos(x)                     cosf(x)
 #define tan(x)                     tanf(x)
+#define cot(x)                     cotf(x)
+#define asin(x)                    asinf(x)
+#define acos(x)                    acosf(x)
+#define atan(x)                    atanf(x)
+#define atan2(x,y)                 atan2f(x,y)
+
+
+
 #define deg2rad(x)                 (x * 0.017453293)                           ///< convert degrees to radians (=x*pi/180)
 #define rad2deg(x)                 (x * 57.29577952)                           ///< convert radians to degrees (=x*180/pi)
 
@@ -167,9 +179,11 @@
 /*---
  rounding functions
 ---*/
+#define fabs(a)                    fabsf(a)                                    ///< 
 #define round(a)                   ((uint32_t)((float) a + 0.50001))           ///< round a floating point value
 #define ceil(a)                    ceilf(a)                                    ///< round to next lower integer, use compiler function
 #define floor(a)                   floorf(a)                                   ///< round to next higher integer, use compiler function
+#define modf(x,y)                  modff(x,y)                                  ///< 
 
 /*---
  conversion
@@ -183,7 +197,19 @@
  pre-defined values
 ----------------*/
 
-#define PI                          3.141592653                       ///< Archimedes' constant 
+#if !defined(PI)
+  #define PI          3.1415926536
+#endif
+#if !defined(TWO_PI)
+  #define TWO_PI      6.2831853071
+#endif
+#if !defined(HALF_PI)
+  #define HALF_PI     1.5707963268
+#endif
+#if !defined(QUART_PI)
+  #define QUART_PI    0.7853981634
+#endif
+
 #define EUL                         2.718281828                       ///< Euler number
 #define SQRT2                       1.414213562                       ///< square root of two
 #define SQRT3                       1.732050807                       ///< square root of three

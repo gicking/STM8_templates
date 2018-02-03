@@ -151,31 +151,6 @@ INLINE uint32_t micros(void) {
 } // micros()
 
 
-
-/**
-  \fn void resetTime(void)
-   
-  \brief reset software times
-  
-  reset SW clock to zero. Also account for TIM4 counter and
-  us counter.
-*/
-INLINE void resetTime(void) {
-
-  // for consistency of CNT ans SR briefly stop timer
-  TIM4.CR1.reg.CEN = 0;
-
-  // reset time variables and TIM4 counter
-  g_millis = 0L;
-  g_micros = 0L;
-  TIM4.CNTR.byte = 0x00;
-  
-  // restart timmer
-  TIM4.CR1.reg.CEN = 1;
-
-} // resetTime()
-
-
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION
 -----------------------------------------------------------------------------*/

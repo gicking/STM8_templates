@@ -12,8 +12,7 @@
 /*----------------------------------------------------------
     INCLUDE FILES
 ----------------------------------------------------------*/
-#include "main_general.h"    // board-independent main
-#include "mub_lcd.h"
+#include "main_muBoard.h"    // board-independent main
 
 
 /*----------------------------------------------------------
@@ -25,24 +24,10 @@
 //////////
 void setup() {
 
-  char              str[20];    // string buffer for LCD output
-
-  // reset LCD via PE3 (active high)
-  pinMode(&PORT_E, 3, OUTPUT);
-  pinHigh(&PORT_E, 3);
-  sw_delay(10);
-  pinLow(&PORT_E, 3);
-  
-  // init LCD. Use default I2C address
-  i2c_init();
-  
-  // init and reset LCD display
-  lcd_init();
-
   // print to LCD
-  //sprintf(str, );
   lcd_print(1, 1, "hello user...");
-  
+  delay(1000);
+    
 } // setup
 
 
@@ -52,7 +37,7 @@ void setup() {
 //////////
 void loop() {
   
-  char              str[20];    // string buffer for LCD output
+  char  str[20];    // string buffer for LCD output
 
   // print to LCD
   sprintf(str, "time = %d s", (int) (millis()/1000L));

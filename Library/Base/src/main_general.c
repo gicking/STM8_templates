@@ -1,5 +1,5 @@
 /**
-  \file main_general.h
+  \file main_general.c
    
   \author G. Icking-Konert
   \date 2017-02-19

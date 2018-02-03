@@ -2,18 +2,12 @@
   Arduino-like project with setup() & loop().
   Periodically ramp potentiometer resistance via I2C.
   Used 20kR potentiometer: Analog Devices AD5280BRUZ20 (Farnell 1438441).
-  Connected via I2C pins PE1/SCL and PE2/SDA
-  Functionality:
-  - initialize I2C bus
-  - periodically ramp resistance
-  - print current value via UART1  
 **********************/
 
 /*----------------------------------------------------------
     INCLUDE FILES
 ----------------------------------------------------------*/
-#include "main_general.h"    // board-independent main
-#include "mub_digPoti.h"     // control digital poti via I2C
+#include "main_muBoard.h"    // board-independent main
 #include "uart1_blocking.h"  // minimal UART1 communication
 #include "putchar.h"         // for printf()
 
@@ -27,14 +21,7 @@
 //////////
 void setup() {
 
-  // init I2C bus
-  i2c_init();
-  
-  // init UART1 to 115.2kBaud, 8N1, full duplex
-  UART1_begin(115200);
-
-  // use UART1 for printf() output
-  putcharAttach(UART1_write);
+  // nothing to do, initialization is done in main() 
 
 } // setup
 

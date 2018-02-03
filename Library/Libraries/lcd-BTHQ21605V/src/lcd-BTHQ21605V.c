@@ -1,15 +1,15 @@
 /**
-  \file mub_lcd.c
+  \file lcd-BTHQ21605V.c
    
   \author G. Icking-Konert
   \date 2013-11-22
   \version 0.1
    
-  \brief implementation of 2x16 LCD output functions/macros
+  \brief implementation of 2x16 I2C LCD functions for BTHQ21605V-COG-FSRE-I2C
    
   implementation of functions for printing strings via I2C to 2x16 LCD
   Batron BTHQ21605V-COG-FSRE-I2C (Farnell 1220409).
-  Connect LCD I2C bus to STM8 SCL/SDA, and LCD reset pin to STM8 pin PE3
+  Connect LCD I2C bus to STM8 SCL/SDA, and LCD reset pin to any STM8 GPIO
 */
 
 /*-----------------------------------------------------------------------------
@@ -20,12 +20,12 @@
 #include <string.h>
 #include <stdint.h>
 #include "stm8as.h"
-#define _MUB_LCD__MAIN_    // required for globals in mub_lcd.h
-  #include "mub_lcd.h"
-#undef _MUB_LCD__MAIN_
 #include "i2c.h"
 #include "gpio.h"
 #include "sw_delay.h"
+#define _BTHQ21605V_MAIN_
+  #include "lcd-BTHQ21605V.h"
+#undef _BTHQ21605V_MAIN_
 
 
 /*----------------------------------------------------------
@@ -33,19 +33,28 @@
 ----------------------------------------------------------*/
 
 /**
-  \fn uint8_t lcd_init(void)
+  \fn uint8_t BTHQ21605V_lcd_init(PORT_t *pPortRST, uint8_t pinRST)
    
-  \brief initialize LCD for output
+  \brief reset and initialize LCD for output
+  
+  \param[in]  pPortRST  pointer to port for LCD reset, e.g. &PORT_A
+  \param[in]  pinRST    pin for LCD reset (0..7)
   
   \return is an LCD attached?
 
-  Initialize LCD for output.
-  Also check if LCD display is attached via bus timeout 
+  Reset and rnitialize LCD for output.
+  Check if LCD display is attached via bus timeout 
 */
-uint8_t lcd_init(void) {
+uint8_t BTHQ21605V_lcd_init(PORT_t *pPortRST, uint8_t pinRST) {
 
   uint8_t   status;
   
+  // reset LCD via **high** pulse
+  pinMode(pPortRST, pinRST, OUTPUT);
+  pinHigh(pPortRST, pinRST);
+  sw_delay(50);
+  pinLow(pPortRST, pinRST);
+
 
   ////
   // check if LCD present by sending a dummy frame
@@ -53,9 +62,9 @@ uint8_t lcd_init(void) {
   
   // generate start condition
   i2c_start();
-  
+
   // send dummy frame (with timeout)
-  status = (uint8_t) (i2c_send(MUB_ADDR_I2C_LCD, 0, NULL));
+  status = (uint8_t) (i2c_send(ADDR_I2C_BTHQ21605V, 0, NULL));
 
   // generate stop condition
   i2c_stop();
@@ -63,37 +72,37 @@ uint8_t lcd_init(void) {
   
   // if LCD is present clear it
   if (status) 
-    lcd_clear();
+    BTHQ21605V_lcd_clear();
   
   // return LCD status
   return(status);
 
-} // lcd_init
+} // BTHQ21605V_lcd_init
 
 
 
 /**
-  \fn void clear_lcd(void)
+  \fn void BTHQ21605V_clear_lcd(void)
    
   \brief clear LCD display
   
   clear both lines of LCD display  
 */
-void lcd_clear() {
+void BTHQ21605V_lcd_clear() {
 
   uint8_t   str[1];
   
   // print empty lines to both lines clears LCD
   sprintf(str, "");
-  lcd_print(1, 1, str);
-  lcd_print(2, 1, str);
+  BTHQ21605V_lcd_print(1, 1, str);
+  BTHQ21605V_lcd_print(2, 1, str);
 
-} // lcd_clear
+} // BTHQ21605V_lcd_clear
 
 
 
 /**
-  \fn void lcd_print(uint8_t line, uint8_t col, char *s)
+  \fn void BTHQ21605V_lcd_print(uint8_t line, uint8_t col, char *s)
    
   \brief print to LCD display
   
@@ -104,7 +113,7 @@ void lcd_clear() {
   print up to 16 chars to line in LCD display
   
 */
-void lcd_print(uint8_t line, uint8_t col, char *s) {
+void BTHQ21605V_lcd_print(uint8_t line, uint8_t col, char *s) {
 
   uint8_t   s2[21];
   uint8_t   len;
@@ -132,7 +141,7 @@ void lcd_print(uint8_t line, uint8_t col, char *s) {
   i2c_start();
 
   // send data (with timeout)
-  i2c_send(MUB_ADDR_I2C_LCD, i, s2);
+  i2c_send(ADDR_I2C_BTHQ21605V, i, s2);
   
 
   //////
@@ -164,7 +173,7 @@ void lcd_print(uint8_t line, uint8_t col, char *s) {
   i2c_start();
 
   // send to LCD (with timeout)
-  i2c_send(MUB_ADDR_I2C_LCD, 17, s2);
+  i2c_send(ADDR_I2C_BTHQ21605V, 17, s2);
 
   // generate stop condition
   i2c_stop();
@@ -172,7 +181,7 @@ void lcd_print(uint8_t line, uint8_t col, char *s) {
   // wait until bus is free (with timeout)
   i2c_waitFree();
 
-} // lcd_print
+} // BTHQ21605V_lcd_print
 
 
 /*-----------------------------------------------------------------------------
