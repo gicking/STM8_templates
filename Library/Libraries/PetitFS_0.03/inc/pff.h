@@ -21,8 +21,9 @@
 extern "C" {
 #endif
 
-#include "integer.h"
+#include "pffinteger.h"
 #include "pffconf.h"
+#include "pffdiskio.h"
 
 #if _PFATFS != _PFFCONF
 #error Wrong configuration file (pffconf.h).

@@ -2,7 +2,7 @@
 /* Low level disk I/O module skeleton for Petit FatFs (C)ChaN, 2014      */
 /*-----------------------------------------------------------------------*/
 
-#include "diskio.h"
+#include "pffdiskio.h"
 
 
 /*-------------------------------------------------------------------------*/
@@ -211,6 +211,41 @@ BYTE send_cmd (
    Public Functions
 
 ---------------------------------------------------------------------------*/
+
+/*-----------------------------------------------------------------------*/
+/* Print error message:                                                  */
+/*   rc   = PetitFs return value                                         */
+/*   halt = 1:endless loop                                               */
+/*-----------------------------------------------------------------------*/
+void pf_print_error(BYTE rc, BYTE halt) {
+
+	// print error message
+	printf("PetitFS failed with return code %u ", rc);
+  if (rc == 0)
+	  printf("(OK)\n");
+	else if (rc == 1)
+	  printf("(DISK_ERR)\n");
+	else if (rc == 2)
+	  printf("(NOT_READY)\n");
+	else if (rc == 3)
+	  printf("(NO_FILE)\n");
+	else if (rc == 4)
+	  printf("(NOT_OPENED)\n");
+	else if (rc == 5)
+	  printf("(NOT_ENABLED)\n");
+	else if (rc == 6)
+	  printf("(NO_FILESYSTEM)\n");
+	else
+	  printf("(unknown)\n");
+	
+	// if specified, wait forever
+  if (halt) {
+	  printf("\n\nhalt program\n");
+    while(1);
+  }
+	
+} // pf_print_error
+
 
 
 /*-----------------------------------------------------------------------*/

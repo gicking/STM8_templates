@@ -48,6 +48,7 @@
   pinMode(&PORT_C, 5, OUTPUT);                 /* SPI_SCK */  \
   pinMode(&PORT_F, 0, OUTPUT);                 /* CSN for SD card */  \
 }
+
 #define SPI_MOSI   pinOutputReg(&PORT_C,pin6)  ///< SPI MOSI output
 #define SPI_MISO   pinInputReg(&PORT_C,pin7)   ///< SPI MISO input
 #define SPI_SCK    pinOutputReg(&PORT_C,pin5)  ///< SPI SCK output

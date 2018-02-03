@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-#include "integer.h"
+#include "pffinteger.h"
 
 
 /* Status of Disk Functions */
@@ -28,6 +28,7 @@ typedef enum {
 /*---------------------------------------*/
 /* Prototypes for disk control functions */
 
+void    pf_print_error(BYTE rc, BYTE halt);
 DSTATUS disk_initialize (void);
 DRESULT disk_readp (BYTE* buff, DWORD sector, UINT offser, UINT count);
 DRESULT disk_writep (const BYTE* buff, DWORD sc);

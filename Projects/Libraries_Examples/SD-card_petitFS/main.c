@@ -29,35 +29,6 @@
     FUNCTIONS
 ----------------------------------------------------------*/
 
-/* Stop with dying message: rc = FatFs return value */
-void die (FRESULT rc) {
-
-	// print error message
-	printf("PetitFS failed with return code %u ", rc);
-  if (rc == 0)
-	  printf("(OK)\n");
-	else if (rc == 1)
-	  printf("(DISK_ERR)\n");
-	else if (rc == 2)
-	  printf("(NOT_READY)\n");
-	else if (rc == 3)
-	  printf("(NO_FILE)\n");
-	else if (rc == 4)
-	  printf("(NOT_OPENED)\n");
-	else if (rc == 5)
-	  printf("(NOT_ENABLED)\n");
-	else if (rc == 6)
-	  printf("(NO_FILESYSTEM)\n");
-	else
-	  printf("(unknown)\n");
-	
-	// wait forever
-	while(1);
-	
-} // die
-
-
-
 //////////
 // user setup, called once after reset
 //////////
@@ -99,15 +70,19 @@ void loop() {
 	UNUSED(dir);
 	UNUSED(bw);
 	
+	// mount SD card
 	printf("\nMount a volume.\n");
 	rc = pf_mount(&fatfs);
-	if (rc) die(rc);
+	if (rc) pf_print_error(rc,1);
 
   #if _USE_READ
-	  printf("\nOpen a test file (message.txt).\n");
+  
+	  // open existing file for read
+    printf("\nOpen a test file (message.txt).\n");
 	  rc = pf_open("MESSAGE.TXT");
-	  if (rc) die(rc);
+	  if (rc) pf_print_error(rc,1);
 
+	  // dump content to PC
 	  printf("\nType the file content.\n");
 	  for (;;) {
 		  rc = pf_read(buff, sizeof(buff), &br);	/* Read a chunk of file */
@@ -115,35 +90,49 @@ void loop() {
 		  for (i = 0; i < br; i++)		/* Type the data */
 			  putchar(buff[i]);
 	  }
-	  if (rc) die(rc);
-  #endif
+	  if (rc) pf_print_error(rc,1);
+  
+  #endif // _USE_READ
+
 
   #if _USE_WRITE
+
+	  // open existing file for overwriting (size remains constant!)
 	  printf("\nOpen a file to write (write.txt).\n");
 	  rc = pf_open("WRITE.TXT");
-	  if (rc) die(rc);
+	  if (rc) pf_print_error(rc,1);
 
-	  printf("\nWrite a text data. (Hello world!)\n");
+    // print message
+    printf("\nstart overwiting ... ");
+
+    // overwrite until filesize reached
 	  size = 0;
 	  start = millis();
 	  for (;;) {
 		  rc = pf_write("Hello world!\r\n", 14, &bw);
 		  if (rc || !bw) break;
-		  size += 14;
+		  size += bw;
 	  }
-	  if (rc) die(rc);
-    stop = millis();
+	  stop = millis();
 	
-	  printf("\nTerminate the file write process (%ld bytes in %ldms).\n", (long) size, (long) (stop-start));
+    // print message
+    printf("done, wrote %ld bytes in %ldms\n", (long) size, (long) (stop-start));
+	  
+	  // terminate file write process
 	  rc = pf_write(0, 0, &bw);
-	  if (rc) die(rc);
-  #endif
+	  if (rc) pf_print_error(rc,1);
+	  
+  #endif // _USE_WRITE
+  
 
   #if _USE_DIR
+
+	  // get pointer to root directory
 	  printf("\nOpen root directory.\n");
 	  rc = pf_opendir(&dir, "");
-	  if (rc) die(rc);
+	  if (rc) pf_print_error(rc,1);
 
+	  // list root directory
 	  printf("\nDirectory listing...\n");
 	  for (;;) {
 		  rc = pf_readdir(&dir, &fno);	/* Read a directory item */
@@ -153,9 +142,11 @@ void loop() {
 		  else
 			  printf("%8lu  %s\n", fno.fsize, fno.fname);
 	  }
-	  if (rc) die(rc);
-  #endif
+	  if (rc) pf_print_error(rc,1);
 
+  #endif // _USE_DIR
+
+	// print message
 	printf("\nTest completed.\n");
 	for (;;) ;
 
