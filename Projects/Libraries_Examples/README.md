@@ -36,5 +36,15 @@ SD-card_petitFS
     - pin macros are required in `config.h`
 
 
+SD-card_fatFS
+----------
+  Arduino-like project with setup() & loop(). 
+  Read & write to SD card via [FatFS](http://www.elm-chan.org/fsw/ff/00index_e.html)
+  and bitbanging -> slow (meas. 27kB/s), but requires no dedicated SPI.
+  Notes:
+    - SD cards generally use 3.3V -> check schematics
+    - pin macros are required in `config.h`
+
+
 back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
 
