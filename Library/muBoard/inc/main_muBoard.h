@@ -34,7 +34,7 @@
 #include "stm8as.h"                 // STM8 registers etc.
 #include "gpio.h"                   // every embedded SW uses pins somehow...
 #include "timer4.h"                 // required for SW clock
-#include "adc2.h"                   // measure routines for ADC
+#include "adc.h"                    // measure routines for ADC
 #include "uart1_blocking.h"         // minimal UART1 communication
 #include "putchar.h"                // for printf()
 #include "spi.h"                    // SPI communication

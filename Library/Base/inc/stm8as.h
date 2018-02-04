@@ -3464,11 +3464,11 @@ typedef struct {
 
       /// bitwise access to register
       struct {
-        uint8_t CH		: 4;		///< Channel selection bits
-        uint8_t AWDIE		: 1;		///< Analog watchdog interrupt enable
-        uint8_t EOCIE		: 1;		///< Interrupt enable for EOC
-        uint8_t AWD		: 1;		///< Analog Watchdog flag
-        uint8_t EOC		: 1;		///< End of conversion
+        uint8_t CH      : 4;    ///< Channel selection bits
+        uint8_t res     : 1;    ///< Reserved
+        uint8_t EOCIE   : 1;    ///< Interrupt enable for EOC
+        uint8_t res2    : 1;    ///< Reserved
+        uint8_t EOC     : 1;    ///< End of conversion flag
       } reg;
 
     } CSR;
@@ -3500,13 +3500,11 @@ typedef struct {
 
       /// bitwise access to register
       struct {
-        uint8_t res			: 1;		///< Reserved, must be kept cleared
-        uint8_t SCAN		: 1;		///< Scan mode enable
-        uint8_t res2		: 1;		///< Reserved, must be kept cleared
+        uint8_t res			: 3;		///< Reserved, must be kept cleared
         uint8_t ALIGN		: 1;		///< Data alignment
         uint8_t EXTSEL	: 2;		///< External event selection
         uint8_t EXTTRIG : 1;		///< External trigger enable
-        uint8_t res3		: 1;		///< Reserved, must be kept cleared
+        uint8_t res2		: 1;		///< Reserved, must be kept cleared
       } reg;
 
     } CR2;

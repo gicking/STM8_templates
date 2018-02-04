@@ -22,11 +22,9 @@
     GENERAL PROJECT SETTINGS
 -----------------------------------------------------------------------------*/
  
-// select board to set STM8 family, memory size etc. 
-//#include "muBoard_config.h"
-
 /// alternatively select STM8 device directly. For supported devices see file "stm8as.h"
-#define STM8S208      // muBoard
+#define STM8S105      // STM8S Discovery
+//#define STM8S208      // muBoard
 
 
 /*-----------------------------------------------------------------------------

@@ -49,8 +49,8 @@ void muBoard_resetHardware(void) {
   // init 1ms SW clock
   TIM4_init();
 
-  // init ADC2 for measuring poti 
-  ADC2_init(ADC_SINGLE_SHOT);
+  // init ADC
+  ADC_init(ADC_SINGLE_SHOT);
 
   // init I2C bus
   i2c_init();
@@ -122,7 +122,7 @@ void main(void)
   
   
   // measure Vcore to determine if Vdd=5V or 3.3V
-  if (ADC2_measure_single(ADC_VCORE) < 464)
+  if (ADC_measure(ADC_VCORE) < 464)
     g_Vdd = 5;
   else
     g_Vdd = 3;

@@ -193,29 +193,28 @@ P-Flash_Datalogger:
   - read from P-flash and print to terminal 
 
 
-ADC2_Measure:
+ADC_Measure:
 ----------
   Arduino-like project with setup() & loop().
-  Periodically measure via ADC2 and send result via 
-  UART1 in ADC interrupt routine (muBoard)
+  Periodically measure via ADC and switch LED on/off
+  depending on analog threshold
   Functionality:
-  - configure UART1 for PC in-/output
-  - use UART1 send for putchar() output
-  - initialize ADC2 for single measurement
-  - periodically send ADC result via UART1 and blink LED
+  - configure pin for LED
+  - initialize ADC for single measurement
+  - measure ADC and switch LED depending on value 
 
 
-ADC2_Continuous_Interrupt:
+ADC_Continuous_with_ISR:
 ----------
   Arduino-like project with setup() & loop().
-  Continuously measure via ADC2 and send result via 
-  UART1 in ADC interrupt routine (muBoard)
+  Continuously measure ADC channels 0..7 in background
+  via ADC interrupt. That way, recent ADC results are
+  always available.
   Functionality:
-  - configure UART1 for PC in-/output
-  - use UART1 send for putchar() output
-  - initialize ADC2 for continuous mode
-  - attach ISR to ADC2_EOC interrupt
-  - in ADC ISR send every Nth result via UART1 and blink LED
+  - initialize ADC for continuous mode
+  - attach ISR to ADC_EOC interrupt
+  - in ADC ISR sweep through ADC channels
+  - send out ADC results via UART on user request
 
 
 I2C_write

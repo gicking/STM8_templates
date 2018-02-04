@@ -96,6 +96,7 @@
 #define max(a,b)                   ((a > b) ?  (a) : (b))                      ///< maximum of 2 numbers
 //#define abs(x)                     (((x) < 0) ? -(x) : (x))                  // absolute value of number (obsolete: already part of SDCC)
 #define constrain(x,low,high)      ((x)<(low)?(low):((x)>(high)?(high):(x)))   ///< clip value to range [low;high]
+#define inRange(x,low,high)        ((x)>=(low))&&((x)<=(high))                 ///< check if value in range [low;high]
 #define map(x,inMin,inMax,outMin,outMax)                                       /**< re-map a number from one range to another **/ \
                                    ((int32_t)(x-inMin)*(int32_t)(outMax-outMin)/(inMax-inMin)+outMin)
 #define scale(x,inMax,outMax)      (((int32_t)x*(int32_t)outMax)/inMax)        ///< scale a number from one range to another (like map() but with 0 offsets)
@@ -113,7 +114,6 @@
 #define sin(x)                     sinf(x)
 #define cos(x)                     cosf(x)
 #define tan(x)                     tanf(x)
-#define cot(x)                     cotf(x)
 #define asin(x)                    asinf(x)
 #define acos(x)                    acosf(x)
 #define atan(x)                    atanf(x)
