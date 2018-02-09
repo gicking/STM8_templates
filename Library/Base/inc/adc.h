@@ -138,6 +138,22 @@ INLINE void ADC_start_conversion(void) {
 
 
 /**
+  \fn void ADC_stop_conversion(void)
+   
+  \brief stop ADC conversion
+  
+  stop ADC conversion in continuous mode.
+*/
+INLINE void ADC_stop_conversion(void) {
+
+  // stop ADC conversion
+  ADC.CR1.reg.ADON=0;
+
+} // ADC_stop_conversion()
+
+
+
+/**
   \fn uint8_t ADC_check_conversion_flag(void)
    
   \brief check ADC conversion done
