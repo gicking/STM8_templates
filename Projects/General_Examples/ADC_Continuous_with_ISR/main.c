@@ -15,7 +15,7 @@
 ----------------------------------------------------------*/
 #include "main_general.h"    // board-independent main
 #include "adc.h"             // ADC measurements
-#include "uart1_blocking.h"  // minimal UART1 communication
+#include "uart1.h"           // UART1 communication
 #include "putchar.h"         // for printf()
 #include "getchar.h"         // for gets()
 
@@ -85,7 +85,7 @@ void setup() {
   putcharAttach(UART1_write);
 
   // use UART1 blocking read for gets() input
-  getcharAttach(UART1_readBlock);
+  getcharAttach(UART1_read);
   
   // wait a it for console to launch
   sw_delay(1000);

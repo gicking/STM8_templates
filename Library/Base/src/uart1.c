@@ -1,20 +1,22 @@
 /**
-  \file uart1_blocking.c
+  \file uart1.c
    
   \author G. Icking-Konert
   \date 2013-11-22
   \version 0.1
    
-  \brief implementation  of blocking UART1 / USART functions & macros
+  \brief implementation of UART1 / USART functions & macros
    
-  implementation of UART1 / USART functions and macros for blocking send & 
-  polling receive. This is the most primitive communication.
+  implementation of UART1 / USART functions and macros for send & receive.
+  Optional functionality via #define:
+    - USE_UART1_TXE_ISR:  use TXE interrupt (default is w/o ISR)
+    - USE_UART1_RXF_ISR:  use RXF interrupt (default is w/o ISR)
 */
 
 /*-----------------------------------------------------------------------------
     INCLUDE FILES
 -----------------------------------------------------------------------------*/
-#include "uart1_blocking.h"
+#include "uart1.h"
 
 
 /*----------------------------------------------------------
@@ -51,28 +53,6 @@ void UART1_begin(uint32_t BR) {
 
 } // UART1_begin
 
-
- 
-/**
-  \fn void  UART1_write(uint8_t data)
-   
-  \brief send byte via UART1
-  
-  \param[in]  data   byte to send
-
-  send byte via UART1 directly and blocking
-*/
-void  UART1_write(uint8_t data) {
-
-  // wait until TX buffer is available
-  while (!(UART1.SR.reg.TXE));
-    
-  // send byte
-  UART1.DR.byte = data;
-  
-} // UART1_write
-
-
  
 /**
   \fn void  UART1_writeBytes(uint16_t num, uint8_t *data)
@@ -88,69 +68,12 @@ void  UART1_writeBytes(uint16_t num, uint8_t *data) {
 
   uint16_t i;
 
-  // send bytes (blocking)
+  // send bytes
   for (i=0; i<num; i++) {
-    
-    // wait until TX buffer is available
-    while (!(UART1.SR.reg.TXE));
-    
-    // send byte
-    UART1.DR.byte = data[i];      
-  }
+    UART1_write(data[i]);
+  }      
 
 } // UART1_writeBytes
-
-
-
-/**
-  \fn uint8_t UART1_read(void)
-   
-  \brief UART1 data receive function
-  
-  \return  received byte or 0x00 (if buffer is empty)
-  
-  return content of UART1 Rx data register, or 0x00 if no byte was received
-*/
-uint8_t UART1_read(void) {
-
-  uint8_t   data;
-  
-  // get content of UART1 Rx register
-  if (UART1.SR.reg.RXNE)
-    data = UART1.DR.byte;
-  else
-    data = 0x00;
-   
-  // return the data
-  return(data);
-
-} // UART1_read
-
-
-
-/**
-  \fn uint8_t UART1_readBlock(void)
-   
-  \brief UART1 byte receive function. Blocking
-  
-  \return received byte
-  
-  wait until byte received via UART1 and return content of Rx register
-*/
-uint8_t UART1_readBlock(void) {
-
-  uint8_t   data;
-  
-  // wait until byte received
-  while (!(UART1.SR.reg.RXNE));
-
-  // ger data from Rx buffer
-  data = UART1.DR.byte;
-   
-  // return byte
-  return(data);
-
-} // UART1_readBlock
 
 /*-----------------------------------------------------------------------------
     END OF MODULE

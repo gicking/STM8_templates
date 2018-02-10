@@ -15,7 +15,7 @@
 ----------------------------------------------------------*/
 #include "main_general.h"    // board-independent main
 #include "i2c.h"             // I2C communication
-#include "uart1_blocking.h"  // minimal UART1 communication
+#include "uart1.h"           // UART1 communication
 #include "putchar.h"         // for printf()
 
 // address of I2C slave (see Arduino example "Wire/slave sender")

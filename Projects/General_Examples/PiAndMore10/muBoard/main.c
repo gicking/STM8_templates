@@ -1,6 +1,6 @@
 // include modules
 #include "main_general.h"
-#include "uart1_blocking.h"  // minimal UART1 communication
+#include "uart1.h"           // UART1 communication
 #include "putchar.h"         // for printf()
 
 void toggle_LED(void);

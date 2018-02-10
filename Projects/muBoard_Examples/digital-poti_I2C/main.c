@@ -8,7 +8,7 @@
     INCLUDE FILES
 ----------------------------------------------------------*/
 #include "main_muBoard.h"    // board-independent main
-#include "uart1_blocking.h"  // minimal UART1 communication
+#include "uart1.h"           // UART1 communication
 #include "putchar.h"         // for printf()
 
 

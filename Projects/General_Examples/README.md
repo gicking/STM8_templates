@@ -145,6 +145,27 @@ Gets_Printf_UART:
   - read string from PC, convert to number and send value to PC
 
 
+echo_UART:
+----------
+  Arduino-like project with setup() & loop(). 
+  Echo bytes received via UART1 with polling.
+  Functionality:
+  - configure UART1 for PC in-/output
+  - poll if byte was received via UART1
+  - echo bytes back to PC
+
+
+echo_UART_with_ISR:
+----------
+  Arduino-like project with setup() & loop(). 
+  Echo bytes received via UART1 with interrupts.
+  Functionality:
+  - configure UART1 for PC in-/output
+  - attach send and receive ISRs to UART1 interrupts
+  - in receive ISR echo received byte to PC
+  - in send ISR toggle LED for each sent byte
+
+
 Dhrystone: 
 ----------
   STM8 port of Dhrystone benchmark test without Arduino-like 

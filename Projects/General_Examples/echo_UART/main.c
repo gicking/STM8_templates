@@ -1,11 +1,10 @@
 /**********************
-  Arduino-like project with setup() & loop(). Read number
-  as string via UART from PC terminal and echo value back.
+  Arduino-like project with setup() & loop(). 
+  Echo bytes received via UART1 with polling.
   Functionality:
   - configure UART1 for PC in-/output
-  - use UART1 send for putchar() output
-  - use UART1 receive for gets() input
-  - read string from PC, convert to number and send value to PC
+  - poll if byte was received via UART1
+  - echo bytes back to PC
 **********************/
 
 /*----------------------------------------------------------
@@ -13,8 +12,6 @@
 ----------------------------------------------------------*/
 #include "main_general.h"    // board-independent main
 #include "uart1.h"           // UART1 communication
-#include "putchar.h"         // for printf()
-#include "getchar.h"         // for gets()
 
 
 /*----------------------------------------------------------
@@ -29,15 +26,6 @@ void setup() {
   // init UART1 to 115.2kBaud, 8N1, full duplex
   UART1_begin(115200);
 
-  // use UART1 for printf() output
-  putcharAttach(UART1_write);
-
-  // use UART1 blocking read for gets() input
-  getcharAttach(UART1_read);
-  
-  // wait a it for console to launch
-  sw_delay(1000);
-
 } // setup
 
 
@@ -47,18 +35,13 @@ void setup() {
 //////////
 void loop() {
   
-  char    str[20];
-  int     num;
+  char    c;
 
-  // read a string via UART1
-  printf("Enter a number: ");
-  gets(str);
-  
-  // convert to integer [-2^16; 2^16-1]
-  num = atoi(str);
-  
-  // print result via UART1
-  printf("value: %d\n\n", num);
+  // check for character received
+  if (UART1_available()) {
+    c = UART1_read();
+    UART1_write(c);
+  }
   
 } // loop
 

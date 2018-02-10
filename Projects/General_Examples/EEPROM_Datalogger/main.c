@@ -13,7 +13,7 @@
 ----------------------------------------------------------*/
 #include <stdio.h>
 #include "main_general.h"    // board-independent main
-#include "uart1_blocking.h"  // minimal UART1 communication
+#include "uart1.h"           // UART1 communication
 #include "putchar.h"         // for printf()
 #include "eeprom.h"          // for EEPROM read/write
 

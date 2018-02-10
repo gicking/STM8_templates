@@ -45,7 +45,7 @@
 #endif
 
 
-// only if UART1 interrupts are used
+// only if ADC interrupts are used
 #if defined(USE_ADC_ISR)
 
   /// enable ADC EOC interrupt

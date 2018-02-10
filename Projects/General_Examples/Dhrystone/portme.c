@@ -12,11 +12,11 @@
   - template based on: http://www.colecovision.eu/stm8/dhrystone-stm8af5288-usart3-sdcc-3.6.0.tar.gz
 **********************/
 
-#include "stm8as.h"                   // STM8 peripheral registers
-#include "timer4.h"                   // 1ms clock
-#include "uart1_blocking.h"           // minimal UART1 communication
-#include "putchar.h"                  // required for printf()
-#include "sw_delay.h"                 // for sw_delay()
+#include "stm8as.h"          // STM8 peripheral registers
+#include "timer4.h"          // 1ms clock
+#include "uart1.h"           // UART1 communication
+#include "putchar.h"         // required for printf()
+#include "sw_delay.h"        // for sw_delay()
 
 
 //////////

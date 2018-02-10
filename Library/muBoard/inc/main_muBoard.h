@@ -35,7 +35,7 @@
 #include "gpio.h"                   // every embedded SW uses pins somehow...
 #include "timer4.h"                 // required for SW clock
 #include "adc.h"                    // measure routines for ADC
-#include "uart1_blocking.h"         // minimal UART1 communication
+#include "uart1.h"                  // UART1 communication to PC
 #include "putchar.h"                // for printf()
 #include "spi.h"                    // SPI communication
 #include "i2c.h"                    // I2C communication
