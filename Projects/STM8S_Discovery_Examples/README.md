@@ -40,5 +40,20 @@ Attach_1ms_Interrupt:
   - after N cycles detach user function
 
 
+echo_UART_with_ISR: (requires USB<->TTL adapter for PC communication)
+----------
+  Arduino-like project with setup() & loop(). 
+  Echo bytes received via UART2 with interrupts.
+  STM8S Discovery pinning:
+    CN1 pin5  = GND
+    CN4 pin10 = UART2 TxD
+    CN4 pin11 = UART2 RxD
+  Functionality:
+  - configure UART2 with 19.2kBaud
+  - attach send and receive ISRs to UART2 interrupts
+  - in receive ISR echo received byte+1 to PC
+  - in send ISR toggle LED for each sent byte
+
+
 back to [Wiki](https://github.com/gicking/STM8_templates/wiki)
 

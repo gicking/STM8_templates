@@ -134,25 +134,25 @@
 
 
 /// irq8 - External interrupt 5 (GPIOF) or CAN receive interrupt -- device dependent
-#ifdef STM8S903
+#if defined(HAS_CAN)
+  #if defined(USE_CAN_RX_ISR)
+    #define __CAN_RX_VECTOR__        8
+    ISR_HANDLER(CAN_RX_ISR, __CAN_RX_VECTOR__);
+  #else
+    #define CAN_RX_ISR              NonHandledInterrupt              
+  #endif
+#else
   #if defined(USE_PORTF_ISR)
     #define __PORTF_VECTOR__        8
     ISR_HANDLER(PORTF_ISR, __PORTF_VECTOR__);
   #else
     #define PORTF_ISR               NonHandledInterrupt              
   #endif
-#elif defined (STM8S208) || defined (STM8AF52Ax)
-   #if defined(USE_CAN_RX_ISR)
-   #define __CAN_RX_VECTOR__        8
-    ISR_HANDLER(CAN_RX_ISR, __CAN_RX_VECTOR__);
-  #else
-    #define CAN_RX_ISR              NonHandledInterrupt              
-  #endif
 #endif
 
 
 /// irq9 - CAN transmit interrupt -- device dependent
-#if defined (STM8S208) || defined (STM8AF52Ax)
+#if defined(HAS_CAN)
   #if defined(USE_CAN_TX_ISR)
     #define __CAN_TX_VECTOR__       9
     ISR_HANDLER(CAN_TX_ISR, __CAN_TX_VECTOR__);
@@ -190,7 +190,7 @@
 
 
 /// irq13 - TIM5 or TIM2 Update/overflow interrupt -- device dependent
-#ifdef STM8S903
+#if defined(HAS_TIM5)
   #if defined(USE_TIM5_UPD_ISR)
     #define __TIM5_UPD_VECTOR__     13
     ISR_HANDLER(TIM5_UPD_ISR, __TIM5_UPD_VECTOR__);
@@ -208,7 +208,7 @@
 
 
 /// irq14 - TIM5 or TIM2 Capture/Compare interrupt -- device dependent
-#ifdef STM8S903
+#if defined(HAS_TIM5)
   #if defined(USE_TIM5_CAPCOM_ISR)
     #define __TIM5_CAPCOM_VECTOR__  14
     ISR_HANDLER(TIM5_CAPCOM_ISR, __TIM5_CAPCOM_VECTOR__);
@@ -226,8 +226,7 @@
 
 
 /// irq15 - TIM3 Update/overflow interrupt -- device dependent
-#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8S105) || \
-    defined(STM8S005) ||  defined (STM8AF62Ax) || defined (STM8AF52Ax) || defined (STM8AF626x)
+#if defined(HAS_TIM3)
   #if defined(USE_TIM3_UPD_ISR)
     #define __TIM3_UPD_VECTOR__     15
     ISR_HANDLER(TIM3_UPD_ISR, __TIM3_UPD_VECTOR__);
@@ -238,8 +237,7 @@
 
 
 /// irq16 - TIM3 Capture/Compare interrupt -- device dependent
-#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8S105) || \
-    defined(STM8S005) ||  defined (STM8AF62Ax) || defined (STM8AF52Ax) || defined (STM8AF626x)
+#if defined(HAS_TIM3)
   #if defined(USE_TIM3_CAPCOM_ISR)
     #define __TIM3_CAPCOM_VECTOR__  16
     ISR_HANDLER(TIM3_CAPCOM_ISR, __TIM3_CAPCOM_VECTOR__);
@@ -250,8 +248,7 @@
 
 
 /// irq17 - USART/UART1 send (TX empty) interrupt -- device dependent
-#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8S103) || \
-    defined(STM8S003) ||  defined (STM8AF62Ax) || defined (STM8AF52Ax) || defined (STM8S903)
+#if defined(HAS_UART1)
   #if defined(USE_UART1_TXE_ISR)
     #define __UART1_TXE_VECTOR__    17
     ISR_HANDLER(UART1_TXE_ISR, __UART1_TXE_VECTOR__);
@@ -262,8 +259,7 @@
 
 
 /// irq18 - USART/UART1 receive (RX full) interrupt -- device dependent
-#if defined (STM8S208) || defined(STM8S207) || defined(STM8S007) || defined(STM8S103) || \
-    defined(STM8S003) ||  defined (STM8AF62Ax) || defined (STM8AF52Ax) || defined (STM8S903)
+#if defined(HAS_UART1)
   #if defined(USE_UART1_RXF_ISR)
     #define __UART1_RXF_VECTOR__    18
     ISR_HANDLER(UART1_RXF_ISR, __UART1_RXF_VECTOR__);
@@ -283,8 +279,7 @@
 
 
 /// irq20 - UART2/3/4 send (TX empty) interrupt -- device dependent
-#if defined(STM8S105) || defined(STM8S005) ||  defined (STM8AF626x) || defined(STM8S207) || \
-    defined(STM8S007) || defined(STM8S208) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+#if defined(HAS_UART2) || defined(HAS_UART3) || defined(HAS_UART4) 
   #if defined(USE_UART234_TXE_ISR)
     #define __UART234_TXE_VECTOR__ 20
     ISR_HANDLER(UART234_TXE_ISR, __UART234_TXE_VECTOR__);
@@ -295,8 +290,7 @@
 
 
 /// irq21 - UART2/3/4 receive (RX full) interrupt -- device dependent
-#if defined(STM8S105) || defined(STM8S005) ||  defined (STM8AF626x) || defined(STM8S207) || \
-    defined(STM8S007) || defined(STM8S208) || defined (STM8AF52Ax) || defined (STM8AF62Ax)
+#if defined(HAS_UART2) || defined(HAS_UART3) || defined(HAS_UART4) 
   #if defined(USE_UART234_RXF_ISR)
     #define __UART234_RXF_VECTOR__ 21
     ISR_HANDLER(UART234_RXF_ISR, __UART234_RXF_VECTOR__);
@@ -316,7 +310,7 @@
  
 
 /// irq23 - TIM4 or TIM6 Update/Overflow interrupt
-#if defined(STM8S903) || defined(STM8AF622x)
+#if defined(HAS_TIM6)
   #if defined(USE_TIM6_UPD_ISR)
     #define __TIM6_UPD_VECTOR__     23
     ISR_HANDLER(TIM6_UPD_ISR, __TIM6_UPD_VECTOR__);

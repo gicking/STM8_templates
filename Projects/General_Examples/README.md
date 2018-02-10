@@ -152,7 +152,7 @@ echo_UART:
   Functionality:
   - configure UART1 for PC in-/output
   - poll if byte was received via UART1
-  - echo bytes back to PC
+  - echo bytes+1 back to PC
 
 
 echo_UART_with_ISR:
@@ -162,7 +162,7 @@ echo_UART_with_ISR:
   Functionality:
   - configure UART1 for PC in-/output
   - attach send and receive ISRs to UART1 interrupts
-  - in receive ISR echo received byte to PC
+  - in receive ISR echo received byte+1 to PC
   - in send ISR toggle LED for each sent byte
 
 

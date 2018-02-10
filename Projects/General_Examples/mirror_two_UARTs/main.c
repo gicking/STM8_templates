@@ -1,10 +1,12 @@
 /**********************
   Arduino-like project with setup() & loop(). 
-  Echo bytes received via UART1 with polling.
+  Mirror bytes received via UART1 to UART3 and vice
+  versa with polling.
   Functionality:
-  - configure UART1 for PC in-/output
-  - poll if byte was received via UART1
-  - echo bytes+1 back to PC
+  - configure UART1 to 115.2kBaud
+  - configure UART3 to 19.2kBaud
+  - poll if byte was received via UART1 or UART3
+  - if byte received, mirror to other UART
 **********************/
 
 /*----------------------------------------------------------
@@ -12,6 +14,7 @@
 ----------------------------------------------------------*/
 #include "main_general.h"    // board-independent main
 #include "uart1.h"           // UART1 communication
+#include "uart3.h"           // UART3 communication
 
 
 /*----------------------------------------------------------
@@ -23,8 +26,9 @@
 //////////
 void setup() {
 
-  // init UART1 to 115.2kBaud, 8N1, full duplex
+  // init UART1 to 115.2kBaud and UART3 to 19.2kBaud
   UART1_begin(115200);
+  UART3_begin(19200);
 
 } // setup
 
@@ -35,14 +39,14 @@ void setup() {
 //////////
 void loop() {
   
-  char    c;
-
-  // check for character received
-  if (UART1_available()) {
-    c = UART1_read();
-    UART1_write(c+1);
-  }
+  // if character received via UART1, mirror it to UART3
+  if (UART1_available())
+    UART3_write(UART1_read());
   
+  // if character received via UART3, mirror it to UART1
+  if (UART3_available())
+    UART1_write(UART3_read());
+
 } // loop
 
 /*-----------------------------------------------------------------------------

@@ -1,9 +1,13 @@
 /**********************
   Arduino-like project with setup() & loop(). 
-  Echo bytes received via UART1 with interrupts.
+  Echo bytes received via UART2 with interrupts.
+  STM8S Discovery pinning:
+    CN1 pin5  = GND
+    CN4 pin10 = UART2 TxD
+    CN4 pin11 = UART2 RxD
   Functionality:
-  - configure UART1 for PC in-/output
-  - attach send and receive ISRs to UART1 interrupts
+  - configure UART2 with 19.2kBaud
+  - attach send and receive ISRs to UART2 interrupts
   - in receive ISR echo received byte+1 to PC
   - in send ISR toggle LED for each sent byte
 **********************/
@@ -12,7 +16,7 @@
     INCLUDE FILES
 ----------------------------------------------------------*/
 #include "main_general.h"    // board-independent main
-#include "uart1.h"           // UART1 communication
+#include "uart2.h"           // UART2 communication
 
 
 /*----------------------------------------------------------
@@ -20,41 +24,44 @@
 ----------------------------------------------------------*/
 
 /**
-  \fn void UART1_RXF_ISR(void)
+  \fn void UART234_RXF_ISR(void)
  
-  \brief UART1 receive interrupt
+  \brief UART2 receive interrupt
   
-  UART1 receive interrupt. Send received byte and enable send interrupt
+  UART2 receive interrupt. Send received byte and enable send interrupt
 */
-ISR_HANDLER(UART1_RXF_ISR, __UART1_RXF_VECTOR__) {
+ISR_HANDLER(UART234_RXF_ISR, __UART234_RXF_VECTOR__) {
 
   // send received byte 
-  UART1_write(UART1_read()+1);
+  UART2_write(UART2_read()+1);
   
   // enable TXE interrupt
-  UART1_enable_send_interrupt();
+  UART2_enable_send_interrupt();
    
-} // UART1_RXF_ISR
+  // toggle LED state
+  pinToggle(&PORT_D, 0);
+
+} // UART234_RXF_ISR
 
 
 
 /**
-  \fn void UART1_TXE_ISR(void)
+  \fn void UART234_TXE_ISR(void)
  
-  \brief UART1 send interrupt
+  \brief UART2 send interrupt
   
-  UART1 send interrupt. Toggle pin after byte sent, and disable
+  UART2 send interrupt. Toggle pin after byte sent, and disable
   TXE interrupt again (else stall the device)
 */
-ISR_HANDLER(UART1_TXE_ISR, __UART1_TXE_VECTOR__) {
+ISR_HANDLER(UART234_TXE_ISR, __UART234_TXE_VECTOR__) {
 
   // toggle LED state
-  pinToggle(&PORT_H, 3);
+  pinToggle(&PORT_D, 0);
   
   // disable send interrupt again (important!)
-  UART1_disable_send_interrupt();
+  UART2_disable_send_interrupt();
    
-} // UART1_TXE_ISR
+} // UART234_TXE_ISR
 
 
 
@@ -63,14 +70,14 @@ ISR_HANDLER(UART1_TXE_ISR, __UART1_TXE_VECTOR__) {
 //////////
 void setup() {
 
-  // init UART1 to 115.2kBaud, 8N1, full duplex
-  UART1_begin(115200);
+  // init UART2 to 19.2kBaud, 8N1, full duplex
+  UART2_begin(115200);
 
   // enable receive interrupt
-  UART1_enable_receive_interrupt();
+  UART2_enable_receive_interrupt();
   
   // configure LED pin as output
-  pinMode(&PORT_H, 3, OUTPUT);    // muBoard LED
+  pinMode(&PORT_D, 0, OUTPUT);    // STM8S Discovery LED
 
 } // setup
 
@@ -81,7 +88,7 @@ void setup() {
 //////////
 void loop() {
   
-  // dummy, all action happens in UART1 interrupts
+  // dummy, all action happens in UART2 interrupts
   
 } // loop
 
