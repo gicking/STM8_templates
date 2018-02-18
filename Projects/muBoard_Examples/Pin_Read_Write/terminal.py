@@ -17,7 +17,7 @@ import sys
 import os
 import platform
 import argparse
-sys.path.append(TOOL_DIR)
+sys.path.insert(0,TOOL_DIR)  # assert that TOOL_DIR is searched first
 import misc
 
 

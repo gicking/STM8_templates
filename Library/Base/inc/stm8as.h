@@ -6,10 +6,10 @@
   \version 0.3
   \copyright MIT License (MIT)
    
-  \brief definition of STM8 peripherals etc.
+  \brief definition of STM8S & STM8A device peripherals etc.
    
-  definition of STM8 peripheral registers, interrupt
-  vector table, and some useful macros
+  definition of STM8S (standard) and STM8A (automotive) device peripheral 
+  registers, interrupt vector table, and some useful macros
 */
 
 /*-----------------------------------------------------------------------------
@@ -1227,8 +1227,8 @@ typedef struct {
       /// bitwise access to register
       struct {
         uint8_t   TIM3_CAP  : 2;    ///< TIM3 Capture/Compare (=irq16) interrupt priority (Reserved)
-        uint8_t   USART1_TX : 2;    ///< UART1 Tx complete (=irq17) interrupt priority 
-        uint8_t   USART1_RX : 2;    ///< UART1 Rx full (=irq18) interrupt priority 
+        uint8_t   UART1_TX : 2;     ///< UART1/USART Tx complete (=irq17) interrupt priority 
+        uint8_t   UART1_RX : 2;     ///< UART1/USART Rx full (=irq18) interrupt priority 
         uint8_t   I2C       : 2;    ///< I2C (=irq19) interrupt priority 
       } reg;
 
@@ -1243,8 +1243,8 @@ typedef struct {
       
       /// bitwise access to register
       struct {
-        uint8_t   UART3_TX  : 2;    ///< LINUART3 Tx complete (=irq20) interrupt priority 
-        uint8_t   UART3_RX  : 2;    ///< LINUART3 Rx full (=irq21) interrupt priority 
+        uint8_t   UART234_TX : 2;    ///< UART234/LINUART Tx complete (=irq20) interrupt priority 
+        uint8_t   UART234_RX  : 2;    ///< UART234/LINUART Rx full (=irq21) interrupt priority 
         uint8_t   ADC       : 2;    ///< ADC (=irq22) interrupt priority 
         uint8_t   TIM4_UPD  : 2;    ///< TIM4 Update (=irq23) interrupt priority (Reserved)
       } reg;

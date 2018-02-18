@@ -8,7 +8,7 @@
 import sys
 import os
 import platform
-sys.path.append('../Tools')
+sys.path.insert(0,'../Tools')
 import misc
 
 # execute all 'clean.py' below the current folder
