@@ -5,7 +5,7 @@
 '''
 
 # set general options
-UPLOAD   = 'SWIM'       # select 'BSL' or 'SWIM'
+UPLOAD   = 'BSL'       # select 'BSL' or 'SWIM'
 TERMINAL = False        # set True to open terminal after upload
 RESET    = 1            # STM8 reset: 0=skip, 1=manual, 2=DTR line (RS232), 3=send 'Re5eT!' @ 115.2kBaud, 4=Arduino pin 8, 5=Raspi pin 12
 OPTIONS  = ''           # e.g. device for SPL ('-DSTM8S105', see stm8s.h)

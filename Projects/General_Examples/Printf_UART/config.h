@@ -29,7 +29,7 @@
 #define USE_TIM4_UPD_ISR
 
 // use ftoa() function for printing floats. Requires ~3.3kB flash
-#define USE_FTOA 
+//#define USE_FTOA 
 
 
 /*-----------------------------------------------------------------------------

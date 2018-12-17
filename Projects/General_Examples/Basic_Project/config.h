@@ -18,8 +18,8 @@
 #define _CONFIG_H_
 
 // select board to set STM8 family, memory size etc. 
-//#include "muBoard_config.h"
-#include "STM8S_Discovery_config.h"
+#include "muBoard_config.h"
+//#include "STM8S_Discovery_config.h"
 
 
 /// required for timekeeping (1ms interrupt)

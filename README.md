@@ -1,6 +1,12 @@
 STM8 Templates with Arduino look&feel 
 =================
 
+**Sorry, we're closed!**
+
+Due to lack of time and shifted emphasis this repository is no longer maintained. Sorry for any inconvenience and thanks a lot for your understanding! 
+
+------------------
+
 This repository provides "Arduino-like" C-libraries & -templates for the low-cost [STM8A and STM8S](https://en.wikipedia.org/wiki/STM8) 8-bit microcontrollers by [STMicro](http://st.com).
 
 Where sensible, compatibility with Arduino has been kept. However, due to focus on easy porting to new STM8 boards and some new features, 100% Arduino-compatibility was not always achievable. If you seek this, please check out the [_sduino_ project](https://github.com/tenbaht/sduino). 
@@ -11,6 +17,6 @@ Where sensible, compatibility with Arduino has been kept. However, due to focus 
 - for legal stuff see [LICENSE](LICENSE)
 - and, last but not least, volunteers are highly welcome...
 
-Have fun!  
+Have fun!
 Georg Icking-Konert
 
